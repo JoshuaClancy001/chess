@@ -58,8 +58,23 @@ public class ChessPiece {
         if (piece.type == PieceType.KING){
             return rules.KingMoves(board,myPosition);
         }
+        else if (piece.type == PieceType.QUEEN){
+            return rules.QueenMoves(board,myPosition);
+        }
+        else if (piece.type == PieceType.ROOK){
+            return rules.RookMoves(board,myPosition);
+        }
+        else if (piece.type == PieceType.BISHOP){
+            return rules.BishopMoves(board,myPosition);
+        }
+        else if (piece.type == PieceType.KNIGHT){
+            return rules.KnightMoves(board,myPosition);
+        }
+        else if (piece.type == PieceType.PAWN){
+            return rules.PawnMoves(board,myPosition);
+        }
 
-        return rules.KingMoves(board,myPosition);
+        return null;
     }
 
     @Override
