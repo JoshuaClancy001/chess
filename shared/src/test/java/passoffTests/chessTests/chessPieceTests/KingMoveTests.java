@@ -1,5 +1,7 @@
 package passoffTests.chessTests.chessPieceTests;
 
+import chess.ChessPiece;
+import chess.ChessPosition;
 import org.junit.jupiter.api.Test;
 
 import static passoffTests.TestFactory.*;
@@ -21,6 +23,7 @@ public class KingMoveTests {
                         """,
                 startPosition(3, 6),
                 endPositions(new int[][]{{4, 6}, {4, 7}, {3, 7}, {2, 7}, {2, 6}, {2, 5}, {3, 5}, {4, 5}})
+
         );
     }
 
