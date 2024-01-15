@@ -190,22 +190,32 @@ public class MovementRules {
 
         ArrayList<ChessPosition> newPawnPositions = new ArrayList<>();
         if (board.getPiece(ogPosition).getTeamColor() == ChessGame.TeamColor.WHITE) {
-            newPawnPositions.add(new ChessPosition(ogPosition.row + 1, ogPosition.col));//u2r1
 
-            if (board.getPiece(new ChessPosition(ogPosition.row + 1, ogPosition.col + 1)) != null)
-                if (board.getPiece(ogPosition).getTeamColor() != board.getPiece(new ChessPosition(ogPosition.row + 1, ogPosition.col + 1)).getTeamColor()) {
-                    newPawnPositions.add(new ChessPosition(ogPosition.row + 1, ogPosition.col + 1));
-                }
-            if (board.getPiece(new ChessPosition(ogPosition.row + 1, ogPosition.col - 1)) != null) {
-                if (board.getPiece(ogPosition).getTeamColor() != board.getPiece(new ChessPosition(ogPosition.row + 1, ogPosition.col - 1)).getTeamColor()) {
-                    newPawnPositions.add(new ChessPosition(ogPosition.row + 1, ogPosition.col - 1));
+            if (ogPosition.getRow() == 2) {
+                newPawnPositions.add(new ChessPosition(ogPosition.row + 2, ogPosition.col));
+            }
+
+                newPawnPositions.add(new ChessPosition(ogPosition.row + 1, ogPosition.col));//u2r1}
+
+                if (board.getPiece(new ChessPosition(ogPosition.row + 1, ogPosition.col + 1)) != null)
+                    if (board.getPiece(ogPosition).getTeamColor() != board.getPiece(new ChessPosition(ogPosition.row + 1, ogPosition.col + 1)).getTeamColor()) {
+                        newPawnPositions.add(new ChessPosition(ogPosition.row + 1, ogPosition.col + 1));
+                    }
+                if (board.getPiece(new ChessPosition(ogPosition.row + 1, ogPosition.col - 1)) != null) {
+                    if (board.getPiece(ogPosition).getTeamColor() != board.getPiece(new ChessPosition(ogPosition.row + 1, ogPosition.col - 1)).getTeamColor()) {
+                        newPawnPositions.add(new ChessPosition(ogPosition.row + 1, ogPosition.col - 1));
+                    }
                 }
             }
-        }
 
         if (board.getPiece(ogPosition).getTeamColor() == ChessGame.TeamColor.BLACK) {
-            newPawnPositions.add(new ChessPosition(ogPosition.row - 1, ogPosition.col));//u2r1
 
+            if (ogPosition.getRow() == 7) {
+                newPawnPositions.add(new ChessPosition(ogPosition.row - 2, ogPosition.col));
+            }
+
+            newPawnPositions.add(new ChessPosition(ogPosition.row - 1, ogPosition.col));//u2r1
+            }
             if (board.getPiece(new ChessPosition(ogPosition.row - 1, ogPosition.col - 1)) != null)
                 if (board.getPiece(ogPosition).getTeamColor() != board.getPiece(new ChessPosition(ogPosition.row - 1, ogPosition.col - 1)).getTeamColor()) {
                     newPawnPositions.add(new ChessPosition(ogPosition.row - 1, ogPosition.col - 1));
@@ -215,7 +225,6 @@ public class MovementRules {
                     newPawnPositions.add(new ChessPosition(ogPosition.row - 1, ogPosition.col + 1));
                 }
             }
-        }
 
         for (ChessPosition i : newPawnPositions) {
 
