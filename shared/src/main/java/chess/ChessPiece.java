@@ -73,7 +73,6 @@ public class ChessPiece {
         else if (piece.type == PieceType.PAWN){
             return rules.PawnMoves(board,myPosition);
         }
-
         return null;
     }
 
