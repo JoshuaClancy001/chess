@@ -624,6 +624,9 @@ public class MovementRules {
         return newPossiblePositions;}
     public ArrayList<ChessMove> PawnMoves(ChessBoard board, ChessPosition ogPosition){
 
+
+        ArrayList<String> newPossiblePositionsString = new ArrayList<>();
+
         ArrayList<ChessMove> newPossiblePositions = new ArrayList<>();
         ChessPosition newPosition;
         ChessPosition newPositionAtStart;
@@ -668,21 +671,52 @@ public class MovementRules {
                 }
             }
                 else{
-                    newPossiblePositions.add(new ChessMove(ogPosition,newPosition,null));
+                    if (newPosition.getRow() == 8 || newPosition.getRow() == 1) {
+                        newPossiblePositions.add((new ChessMove(ogPosition, newPosition, ChessPiece.PieceType.QUEEN)));
+                        newPossiblePositions.add(new ChessMove(ogPosition, newPosition, ChessPiece.PieceType.KNIGHT));
+                        newPossiblePositions.add(new ChessMove(ogPosition, newPosition, ChessPiece.PieceType.BISHOP));
+                        newPossiblePositions.add(new ChessMove(ogPosition, newPosition, ChessPiece.PieceType.ROOK));
+                    }
+                    else {
+                        newPossiblePositions.add(new ChessMove(ogPosition, newPosition, null));
+                    }
                 }
 
 
             if (board.getPiece(enemeyToTheLeft) != null){
                 if(board.getPiece(enemeyToTheLeft).getTeamColor() != board.getPiece(ogPosition).getTeamColor()){
-                    newPossiblePositions.add(new ChessMove(ogPosition,enemeyToTheLeft,null));
+                    if (enemeyToTheLeft.getRow() == 8 || enemeyToTheLeft.getRow() == 1) {
+                        newPossiblePositions.add((new ChessMove(ogPosition,enemeyToTheLeft, ChessPiece.PieceType.QUEEN)));
+                        newPossiblePositions.add(new ChessMove(ogPosition, enemeyToTheLeft, ChessPiece.PieceType.KNIGHT));
+                        newPossiblePositions.add(new ChessMove(ogPosition, enemeyToTheLeft, ChessPiece.PieceType.BISHOP));
+                        newPossiblePositions.add(new ChessMove(ogPosition, enemeyToTheLeft, ChessPiece.PieceType.ROOK));
+                    }
+                    else{
+                        newPossiblePositions.add(new ChessMove(ogPosition,enemeyToTheLeft,null));
+                    }
                 }
             }
 
             if (board.getPiece(enemeyToTheRight) != null){
                 if(board.getPiece(enemeyToTheRight).getTeamColor() != board.getPiece(ogPosition).getTeamColor()){
-                    newPossiblePositions.add(new ChessMove(ogPosition,enemeyToTheRight,null));
+
+                    if (enemeyToTheRight.getRow() == 8 || enemeyToTheRight.getRow() == 1) {
+                        newPossiblePositions.add((new ChessMove(ogPosition, enemeyToTheRight, ChessPiece.PieceType.QUEEN)));
+                        newPossiblePositions.add(new ChessMove(ogPosition, enemeyToTheRight, ChessPiece.PieceType.KNIGHT));
+                        newPossiblePositions.add(new ChessMove(ogPosition, enemeyToTheRight, ChessPiece.PieceType.BISHOP));
+                        newPossiblePositions.add(new ChessMove(ogPosition, enemeyToTheRight, ChessPiece.PieceType.ROOK));
+                    }
+                    else {
+                        newPossiblePositions.add(new ChessMove(ogPosition,enemeyToTheRight,null));
+                    }
                 }
             }
         }
+
+        for (ChessMove i : newPossiblePositions){
+            System.out.println(i.to_string());
+        }
+
+
         return newPossiblePositions;}
 }

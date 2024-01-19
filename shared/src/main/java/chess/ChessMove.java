@@ -43,6 +43,10 @@ public class ChessMove {
         return this.promotionPiece;
     }
 
+    public String to_string(){
+        return "(" + getStartPosition().getRow() + "," + getStartPosition().getColumn() + ") -> " +"(" + getEndPosition().getRow() + "," + getEndPosition().getColumn() + ")" + "(" + getPromotionPiece() + ")";
+    }
+
 
     @Override
     public boolean equals(Object o) {
@@ -51,6 +55,7 @@ public class ChessMove {
         ChessMove chessMove = (ChessMove) o;
         return Objects.equals(start, chessMove.start) && Objects.equals(end, chessMove.end) && promotionPiece == chessMove.promotionPiece;
     }
+
 
     @Override
     public int hashCode() {
