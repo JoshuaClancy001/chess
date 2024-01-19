@@ -650,24 +650,39 @@ public class MovementRules {
         }
 
         else if (ogPosition.row == startingRow){
-            newPossiblePositions.add(new ChessMove(ogPosition,newPosition,null));
-            newPossiblePositions.add(new ChessMove(ogPosition,newPositionAtStart,null));
 
-        }
-        else {
-            newPossiblePositions.add(new ChessMove(ogPosition,newPosition,null));
-            if(board.getPiece(ogPosition) != null && board.getPiece(enemeyToTheLeft) != null) {
-
-                if (board.getPiece(ogPosition).getTeamColor() != board.getPiece(enemeyToTheLeft).getTeamColor()) {
-                    newPossiblePositions.add(new ChessMove(ogPosition, enemeyToTheLeft, null));
-                } else if (board.getPiece(ogPosition).getTeamColor() != board.getPiece(enemeyToTheRight).getTeamColor()) {
-                    newPossiblePositions.add(new ChessMove(ogPosition, enemeyToTheRight, null));
+            if (board.getPiece(newPosition) != null){
+                System.out.println("You Cant move there");
+            }
+            else {
+                newPossiblePositions.add(new ChessMove(ogPosition, newPosition, null));
+                if (board.getPiece(newPositionAtStart) == null){
+                    newPossiblePositions.add(new ChessMove(ogPosition, newPositionAtStart, null));
                 }
             }
         }
+        else {
+            if (board.getPiece(newPosition) != null) {
+                if (board.getPiece(newPosition).getTeamColor() == board.getPiece(ogPosition).getTeamColor()) {
+                    System.out.println("That is your piece, You can't move there");
+                }
+            }
+                else{
+                    newPossiblePositions.add(new ChessMove(ogPosition,newPosition,null));
+                }
 
 
+            if (board.getPiece(enemeyToTheLeft) != null){
+                if(board.getPiece(enemeyToTheLeft).getTeamColor() != board.getPiece(ogPosition).getTeamColor()){
+                    newPossiblePositions.add(new ChessMove(ogPosition,enemeyToTheLeft,null));
+                }
+            }
 
-
+            if (board.getPiece(enemeyToTheRight) != null){
+                if(board.getPiece(enemeyToTheRight).getTeamColor() != board.getPiece(ogPosition).getTeamColor()){
+                    newPossiblePositions.add(new ChessMove(ogPosition,enemeyToTheRight,null));
+                }
+            }
+        }
         return newPossiblePositions;}
 }
