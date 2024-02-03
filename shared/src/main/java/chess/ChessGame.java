@@ -58,19 +58,19 @@ public class ChessGame {
         else {
             moves = this.board.getPiece(startPosition).pieceMoves(this.board,startPosition);
 
-//            for (ChessMove move : moves) {
-//                ChessPiece piece = this.board.getPiece(move.getStartPosition());
-//                this.board.addPiece(move.getEndPosition(), piece);
-//                this.board.removePiece(move.getStartPosition());
-//
-//                if (!isInCheck(this.board.getPiece(move.getEndPosition()).getTeamColor())){
-//                    validMoves.add(move);
-//                }
-//                undoMove(move);
-//            }
+            for (ChessMove move : moves) {
+                ChessPiece piece = this.board.getPiece(move.getStartPosition());
+                this.board.addPiece(move.getEndPosition(), piece);
+                this.board.removePiece(move.getStartPosition());
+
+                if (!isInCheck(this.board.getPiece(move.getEndPosition()).getTeamColor())){
+                    validMoves.add(move);
+                }
+                undoMove(move);
+            }
         }
 
-        return moves;
+        return validMoves;
     }
 
     /**
@@ -160,12 +160,9 @@ public class ChessGame {
                 if (board.getPiece(new ChessPosition(i,j)) != null && board.getPiece(new ChessPosition(i,j)).getTeamColor() == teamColor){
                     moves = board.getPiece(new ChessPosition(i,j)).pieceMoves(board,new ChessPosition(i,j));
                     for (ChessMove move: moves){
-                        try {
-                            makeMove(move);
-                        } catch (InvalidMoveException e) {
-                            undoMove(move);
-                            break;
-                        }
+                        ChessPiece piece = this.board.getPiece(move.getStartPosition());
+                        this.board.addPiece(move.getEndPosition(), piece);
+                        this.board.removePiece(move.getStartPosition());
                         if (!isInCheck(teamColor)) {
                             undoMove(move);
                             return false;
@@ -191,17 +188,17 @@ public class ChessGame {
     public boolean isInStalemate(TeamColor teamColor) {
         boolean isInStalemate = false;
         Collection<ChessMove> validMoves = new ArrayList<>();
+        Collection<ChessMove> Moves = new ArrayList<>();
         for (int i = 0; i < 9; i++) {
             for (int j = 0; j < 9; j++) {
                 if (board.getPiece(new ChessPosition(i, j)) != null && board.getPiece(new ChessPosition(i, j)).getTeamColor() == teamColor) {
-                    validMoves = validMoves(new ChessPosition(i, j));
-                    if (validMoves.isEmpty()){
-                        if (!isInCheckmate(teamColor)){
-                            isInStalemate = true;
-                        }
-                    }
+                    Moves = validMoves(new ChessPosition(i, j));
+                    validMoves.addAll(Moves);
                 }
             }
+        }
+        if (validMoves.isEmpty()){
+            isInStalemate = true;
         }
         return isInStalemate;
     }
