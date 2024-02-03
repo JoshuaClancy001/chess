@@ -84,7 +84,7 @@ public class ChessGame {
             ChessPiece piece = this.board.getPiece(move.getEndPosition());
             this.board.addPiece(move.getStartPosition(), piece);
             this.board.removePiece(move.getEndPosition());
-            if (takenPiece != null) {
+            if (takenPiece != null) { // if you took a piece when you moved, put it back
                 this.board.addPiece(move.getEndPosition(), takenPiece);
             }
 
@@ -144,16 +144,14 @@ public class ChessGame {
         ChessPosition kingPosition = null;
         Collection<ChessMove> moves = new ArrayList<>();
 
-        for (int i = 0; i < 9; i++) {
-            for (int j = 0; j < 9; j++) {
-                if(board.getPiece(new ChessPosition(i,j)) != null){
-                if (board.getPiece(new ChessPosition(i, j)).getTeamColor() == teamColor && board.getPiece(new ChessPosition(i, j)).getPieceType() == ChessPiece.PieceType.KING) {
-                    kingPosition = new ChessPosition(i, j);
-                }
-                }
-            }
-        }
+        kingPosition = findKingPosition(teamColor, kingPosition);
 
+        isInCheck = areYouInCheck(teamColor, kingPosition, isInCheck);
+        return isInCheck;
+    }
+
+    private boolean areYouInCheck(ChessGame.TeamColor teamColor, ChessPosition kingPosition, boolean isInCheck) {
+        Collection<ChessMove> moves;
         for (int i = 1; i < 9; i++){
             for (int j = 1; j < 9; j++){
                 if (board.getPiece(new ChessPosition(i,j)) != null && board.getPiece(new ChessPosition(i,j)).getTeamColor() != teamColor){
@@ -167,6 +165,19 @@ public class ChessGame {
             }
         }
         return isInCheck;
+    }
+
+    private ChessPosition findKingPosition(ChessGame.TeamColor teamColor, ChessPosition kingPosition) {
+        for (int i = 0; i < 9; i++) {
+            for (int j = 0; j < 9; j++) {
+                if(board.getPiece(new ChessPosition(i,j)) != null){
+                if (board.getPiece(new ChessPosition(i, j)).getTeamColor() == teamColor && board.getPiece(new ChessPosition(i, j)).getPieceType() == ChessPiece.PieceType.KING) {
+                    kingPosition = new ChessPosition(i, j);
+                }
+                }
+            }
+        }
+        return kingPosition;
     }
 
     /**
