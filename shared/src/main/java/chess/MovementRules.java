@@ -9,153 +9,194 @@ public class MovementRules {
 
     }
 
+    public void rightMove(int range,ChessBoard board,ChessPosition ogPosition, ArrayList<ChessMove> newPossiblePositions){
+        for (int i = 1; i < range; i++) {
+            ChessPosition newPosition = new ChessPosition(ogPosition.getRow(), ogPosition.getColumn() + i);
+            if (newPosition.getRow() < 1 || newPosition.getRow() > 8 || newPosition.getColumn() < 1 || newPosition.getColumn() > 8) {
+                ;
+            }
+            else if(board.getPiece(newPosition) != null){
+                if(board.getPiece(ogPosition).getTeamColor() == board.getPiece(newPosition).getTeamColor()){
+                    break;
+                }
+                else{
+                    newPossiblePositions.add(new ChessMove(ogPosition, newPosition, null));
+                    break;
+                }
+            }
+            else{
+                newPossiblePositions.add(new ChessMove(ogPosition, newPosition, null));
+            }
+        }
+    }
+    public void leftMove(int range,ChessBoard board,ChessPosition ogPosition, ArrayList<ChessMove> newPossiblePositions){
+        for (int i = 1; i < range; i++) {
+            ChessPosition newPosition = new ChessPosition(ogPosition.getRow(), ogPosition.getColumn() - i);
+            if (newPosition.getRow() < 1 || newPosition.getRow() > 8 || newPosition.getColumn() < 1 || newPosition.getColumn() > 8) {
+                ;
+            }
+            else if(board.getPiece(newPosition) != null){
+                if(board.getPiece(ogPosition).getTeamColor() == board.getPiece(newPosition).getTeamColor()){
+                    break;
+                }
+                else{
+                    newPossiblePositions.add(new ChessMove(ogPosition, newPosition, null));
+                    break;
+                }
+            }
+            else{
+                newPossiblePositions.add(new ChessMove(ogPosition, newPosition, null));
+            }
+        }
+    }
+    public void upMove(int range,ChessBoard board,ChessPosition ogPosition, ArrayList<ChessMove> newPossiblePositions){
+        for (int i = 1; i < range; i++) {
+            ChessPosition newPosition = new ChessPosition(ogPosition.getRow()+i, ogPosition.getColumn());
+            if (newPosition.getRow() < 1 || newPosition.getRow() > 8 || newPosition.getColumn() < 1 || newPosition.getColumn() > 8) {
+                ;
+            }
+            else if(board.getPiece(newPosition) != null){
+                if(board.getPiece(ogPosition).getTeamColor() == board.getPiece(newPosition).getTeamColor()){
+                    break;
+                }
+                else{
+                    newPossiblePositions.add(new ChessMove(ogPosition, newPosition, null));
+                    break;
+                }
+            }
+            else{
+                newPossiblePositions.add(new ChessMove(ogPosition, newPosition, null));
+            }
+        }
+    }
+    public void downMove(int range,ChessBoard board,ChessPosition ogPosition, ArrayList<ChessMove> newPossiblePositions){
+        for (int i = 1; i < range; i++) {
+            ChessPosition newPosition = new ChessPosition(ogPosition.getRow()-i, ogPosition.getColumn());
+            if (newPosition.getRow() < 1 || newPosition.getRow() > 8 || newPosition.getColumn() < 1 || newPosition.getColumn() > 8) {
+                ;
+            }
+            else if(board.getPiece(newPosition) != null){
+                if(board.getPiece(ogPosition).getTeamColor() == board.getPiece(newPosition).getTeamColor()){
+                    break;
+                }
+                else{
+                    newPossiblePositions.add(new ChessMove(ogPosition, newPosition, null));
+                    break;
+                }
+            }
+            else{
+                newPossiblePositions.add(new ChessMove(ogPosition, newPosition, null));
+            }
+        }
+    }
+    public void upRightMove(int range,ChessBoard board,ChessPosition ogPosition, ArrayList<ChessMove> newPossiblePositions){
+        for (int i = 1; i < range; i++) {
+            ChessPosition newPosition = new ChessPosition(ogPosition.getRow()+i, ogPosition.getColumn() + i);
+            if (newPosition.getRow() < 1 || newPosition.getRow() > 8 || newPosition.getColumn() < 1 || newPosition.getColumn() > 8) {
+                ;
+            }
+            else if(board.getPiece(newPosition) != null){
+                if(board.getPiece(ogPosition).getTeamColor() == board.getPiece(newPosition).getTeamColor()){
+                    break;
+                }
+                else{
+                    newPossiblePositions.add(new ChessMove(ogPosition, newPosition, null));
+                    break;
+                }
+            }
+            else{
+                newPossiblePositions.add(new ChessMove(ogPosition, newPosition, null));
+            }
+        }
+    }
+    public void upLeftMove(int range,ChessBoard board,ChessPosition ogPosition, ArrayList<ChessMove> newPossiblePositions){
+        for (int i = 1; i < range; i++) {
+            ChessPosition newPosition = new ChessPosition(ogPosition.getRow()+i, ogPosition.getColumn() - i);
+            if (newPosition.getRow() < 1 || newPosition.getRow() > 8 || newPosition.getColumn() < 1 || newPosition.getColumn() > 8) {
+                ;
+            }
+            else if(board.getPiece(newPosition) != null){
+                if(board.getPiece(ogPosition).getTeamColor() == board.getPiece(newPosition).getTeamColor()){
+                    break;
+                }
+                else{
+                    newPossiblePositions.add(new ChessMove(ogPosition, newPosition, null));
+                    break;
+                }
+            }
+            else{
+                newPossiblePositions.add(new ChessMove(ogPosition, newPosition, null));
+            }
+        }
+    }
+    public void downRightMove(int range,ChessBoard board,ChessPosition ogPosition, ArrayList<ChessMove> newPossiblePositions){
+        for (int i = 1; i < range; i++) {
+            ChessPosition newPosition = new ChessPosition(ogPosition.getRow()-i, ogPosition.getColumn() + i);
+            if (newPosition.getRow() < 1 || newPosition.getRow() > 8 || newPosition.getColumn() < 1 || newPosition.getColumn() > 8) {
+                ;
+            }
+            else if(board.getPiece(newPosition) != null){
+                if(board.getPiece(ogPosition).getTeamColor() == board.getPiece(newPosition).getTeamColor()){
+                    break;
+                }
+                else{
+                    newPossiblePositions.add(new ChessMove(ogPosition, newPosition, null));
+                    break;
+                }
+            }
+            else{
+                newPossiblePositions.add(new ChessMove(ogPosition, newPosition, null));
+            }
+        }
+    }
+    public void downLeftMove(int range,ChessBoard board,ChessPosition ogPosition, ArrayList<ChessMove> newPossiblePositions){
+        for (int i = 1; i < range; i++) {
+            ChessPosition newPosition = new ChessPosition(ogPosition.getRow()-i, ogPosition.getColumn() - i);
+            if (newPosition.getRow() < 1 || newPosition.getRow() > 8 || newPosition.getColumn() < 1 || newPosition.getColumn() > 8) {
+                ;
+            }
+            else if(board.getPiece(newPosition) != null){
+                if(board.getPiece(ogPosition).getTeamColor() == board.getPiece(newPosition).getTeamColor()){
+                    break;
+                }
+                else{
+                    newPossiblePositions.add(new ChessMove(ogPosition, newPosition, null));
+                    break;
+                }
+            }
+            else{
+                newPossiblePositions.add(new ChessMove(ogPosition, newPosition, null));
+            }
+        }
+    }
+    public void knightMove(int i,int j, ChessBoard board,ChessPosition ogPosition,ArrayList<ChessMove> newPossiblePositions){
+        ChessPosition newPosition = new ChessPosition(ogPosition.getRow() +i , ogPosition.getColumn() + j);
+        if (newPosition.getRow() < 1 || newPosition.getRow() > 8 || newPosition.getColumn() < 1 || newPosition.getColumn() > 8) {
+            ;
+        }
+        else if(board.getPiece(newPosition) != null){
+            if(board.getPiece(ogPosition).getTeamColor() == board.getPiece(newPosition).getTeamColor()){
+
+            }
+            else{
+                newPossiblePositions.add(new ChessMove(ogPosition, newPosition, null));
+            }
+        }
+        else{
+            newPossiblePositions.add(new ChessMove(ogPosition, newPosition, null));
+        }
+    }
     public ArrayList<ChessMove> KingMoves(ChessBoard board, ChessPosition ogPosition) {
         ArrayList<ChessMove> newPossiblePositions = new ArrayList<>();
 
-        for (int i = 1; i < 9; i++) {
-            ChessPosition newPosition = new ChessPosition(ogPosition.getRow() , ogPosition.getColumn()+1);
-            if (newPosition.getRow() < 1 || newPosition.getRow() > 8 || newPosition.getColumn() < 1 || newPosition.getColumn() > 8) {
-                System.out.println("Off the board");
-            }
-            else if(board.getPiece(newPosition) != null){
-                if(board.getPiece(ogPosition).getTeamColor() == board.getPiece(newPosition).getTeamColor()){
-                    break;
-                }
-                else{
-                    newPossiblePositions.add(new ChessMove(ogPosition, newPosition, null));
-                    break;
-                }
-            }
-            else{
-                newPossiblePositions.add(new ChessMove(ogPosition, newPosition, null));
-            }
-        }// right 1
-        for (int i = 1; i < 9; i++) {
-            ChessPosition newPosition = new ChessPosition(ogPosition.getRow(), ogPosition.getColumn()-1);
-            if (newPosition.getRow() < 1 || newPosition.getRow() > 8 || newPosition.getColumn() < 1 || newPosition.getColumn() > 8) {
-                System.out.println("Off the board");
-            }
-            else if(board.getPiece(newPosition) != null){
-                if(board.getPiece(ogPosition).getTeamColor() == board.getPiece(newPosition).getTeamColor()){
-                    break;
-                }
-                else{
-                    newPossiblePositions.add(new ChessMove(ogPosition, newPosition, null));
-                    break;
-                }
-            }
-            else{
-                newPossiblePositions.add(new ChessMove(ogPosition, newPosition, null));
-            }
-        }// left 1
-        for (int i = 1; i < 9; i++) {
-            ChessPosition newPosition = new ChessPosition(ogPosition.getRow()+1, ogPosition.getColumn());
-            if (newPosition.getRow() < 1 || newPosition.getRow() > 8 || newPosition.getColumn() < 1 || newPosition.getColumn() > 8) {
-                System.out.println("Off the board");
-            }
-            else if(board.getPiece(newPosition) != null){
-                if(board.getPiece(ogPosition).getTeamColor() == board.getPiece(newPosition).getTeamColor()){
-                    break;
-                }
-                else{
-                    newPossiblePositions.add(new ChessMove(ogPosition, newPosition, null));
-                    break;
-                }
-            }
-            else{
-                newPossiblePositions.add(new ChessMove(ogPosition, newPosition, null));
-            }
-        }// up 1
-        for (int i = 1; i < 9; i++) {
-            ChessPosition newPosition = new ChessPosition(ogPosition.getRow()-1,ogPosition.getColumn());
-            if (newPosition.getRow() < 1 || newPosition.getRow() > 8 || newPosition.getColumn() < 1 || newPosition.getColumn() > 8) {
-                System.out.println("Off the board");
-            }
-            else if(board.getPiece(newPosition) != null){
-                if(board.getPiece(ogPosition).getTeamColor() == board.getPiece(newPosition).getTeamColor()){
-                    break;
-                }
-                else{
-                    newPossiblePositions.add(new ChessMove(ogPosition, newPosition, null));
-                    break;
-                }
-            }
-            else{
-                newPossiblePositions.add(new ChessMove(ogPosition, newPosition, null));
-            }
-        }// down 1
-        for (int i = 1; i < 9; i++) {
-            ChessPosition newPosition = new ChessPosition(ogPosition.getRow() +1, ogPosition.getColumn() + 1);
-            if (newPosition.getRow() < 1 || newPosition.getRow() > 8 || newPosition.getColumn() < 1 || newPosition.getColumn() > 8) {
-                System.out.println("Off the board");
-            }
-            else if(board.getPiece(newPosition) != null){
-                if(board.getPiece(ogPosition).getTeamColor() == board.getPiece(newPosition).getTeamColor()){
-                    break;
-                }
-                else{
-                    newPossiblePositions.add(new ChessMove(ogPosition, newPosition, null));
-                    break;
-                }
-            }
-            else{
-                newPossiblePositions.add(new ChessMove(ogPosition, newPosition, null));
-            }
-        }// up 1 right 1
-        for (int i = 1; i < 9; i++) {
-            ChessPosition newPosition = new ChessPosition(ogPosition.getRow() +1, ogPosition.getColumn() -1);
-            if (newPosition.getRow() < 1 || newPosition.getRow() > 8 || newPosition.getColumn() < 1 || newPosition.getColumn() > 8) {
-                System.out.println("Off the board");
-            }
-            else if(board.getPiece(newPosition) != null){
-                if(board.getPiece(ogPosition).getTeamColor() == board.getPiece(newPosition).getTeamColor()){
-                    break;
-                }
-                else{
-                    newPossiblePositions.add(new ChessMove(ogPosition, newPosition, null));
-                    break;
-                }
-            }
-            else{
-                newPossiblePositions.add(new ChessMove(ogPosition, newPosition, null));
-            }
-        }// up 1 left 1
-        for (int i = 1; i < 9; i++) {
-            ChessPosition newPosition = new ChessPosition(ogPosition.getRow()-1 , ogPosition.getColumn() + 1);
-            if (newPosition.getRow() < 1 || newPosition.getRow() > 8 || newPosition.getColumn() < 1 || newPosition.getColumn() > 8) {
-                System.out.println("Off the board");
-            }
-            else if(board.getPiece(newPosition) != null){
-                if(board.getPiece(ogPosition).getTeamColor() == board.getPiece(newPosition).getTeamColor()){
-                    break;
-                }
-                else{
-                    newPossiblePositions.add(new ChessMove(ogPosition, newPosition, null));
-                    break;
-                }
-            }
-            else{
-                newPossiblePositions.add(new ChessMove(ogPosition, newPosition, null));
-            }
-        }// down 1 right 1
-        for (int i = 1; i < 9; i++) {
-            ChessPosition newPosition = new ChessPosition(ogPosition.getRow() -1, ogPosition.getColumn() -1);
-            if (newPosition.getRow() < 1 || newPosition.getRow() > 8 || newPosition.getColumn() < 1 || newPosition.getColumn() > 8) {
-                System.out.println("Off the board");
-            }
-            else if(board.getPiece(newPosition) != null){
-                if(board.getPiece(ogPosition).getTeamColor() == board.getPiece(newPosition).getTeamColor()){
-                    break;
-                }
-                else{
-                    newPossiblePositions.add(new ChessMove(ogPosition, newPosition, null));
-                    break;
-                }
-            }
-            else{
-                newPossiblePositions.add(new ChessMove(ogPosition, newPosition, null));
-            }
-        }// down 1 left 1
+        rightMove(2,board,ogPosition,newPossiblePositions);
+        leftMove(2,board,ogPosition,newPossiblePositions);
+        upMove(2,board,ogPosition,newPossiblePositions);
+        downMove(2,board,ogPosition,newPossiblePositions);
+        upRightMove(2,board,ogPosition,newPossiblePositions);
+        upLeftMove(2,board,ogPosition,newPossiblePositions);
+        downRightMove(2,board,ogPosition,newPossiblePositions);
+        downLeftMove(2,board,ogPosition,newPossiblePositions);
 
 
         return newPossiblePositions;
@@ -163,151 +204,14 @@ public class MovementRules {
     public ArrayList<ChessMove> QueenMoves(ChessBoard board, ChessPosition ogPosition) {
         ArrayList<ChessMove> newPossiblePositions = new ArrayList<>();
 
-        for (int i = 1; i < 9; i++) {
-            ChessPosition newPosition = new ChessPosition(ogPosition.getRow() + i, ogPosition.getColumn() + i);
-            if (newPosition.getRow() < 1 || newPosition.getRow() > 8 || newPosition.getColumn() < 1 || newPosition.getColumn() > 8) {
-                System.out.println("Off the board");
-            }
-            else if(board.getPiece(newPosition) != null){
-                if(board.getPiece(ogPosition).getTeamColor() == board.getPiece(newPosition).getTeamColor()){
-                    break;
-                }
-                else{
-                    newPossiblePositions.add(new ChessMove(ogPosition, newPosition, null));
-                    break;
-                }
-            }
-            else{
-                newPossiblePositions.add(new ChessMove(ogPosition, newPosition, null));
-            }
-        }// up right
-        for (int i = 1; i < 9; i++) {
-            ChessPosition newPosition = new ChessPosition(ogPosition.getRow() - i, ogPosition.getColumn() + i);
-            if (newPosition.getRow() < 1 || newPosition.getRow() > 8 || newPosition.getColumn() < 1 || newPosition.getColumn() > 8) {
-                System.out.println("Off the board");
-            }
-            else if(board.getPiece(newPosition) != null){
-                if(board.getPiece(ogPosition).getTeamColor() == board.getPiece(newPosition).getTeamColor()){
-                    break;
-                }
-                else{
-                    newPossiblePositions.add(new ChessMove(ogPosition, newPosition, null));
-                    break;
-                }
-            }
-            else{
-                newPossiblePositions.add(new ChessMove(ogPosition, newPosition, null));
-            }
-        }// down right
-        for (int i = 1; i < 9; i++) {
-            ChessPosition newPosition = new ChessPosition(ogPosition.getRow() + i, ogPosition.getColumn() - i);
-            if (newPosition.getRow() < 1 || newPosition.getRow() > 8 || newPosition.getColumn() < 1 || newPosition.getColumn() > 8) {
-                System.out.println("Off the board");
-            }
-            else if(board.getPiece(newPosition) != null){
-                if(board.getPiece(ogPosition).getTeamColor() == board.getPiece(newPosition).getTeamColor()){
-                    break;
-                }
-                else{
-                    newPossiblePositions.add(new ChessMove(ogPosition, newPosition, null));
-                    break;
-                }
-            }
-            else{
-                newPossiblePositions.add(new ChessMove(ogPosition, newPosition, null));
-            }
-        }// up left
-        for (int i = 1; i < 9; i++) {
-            ChessPosition newPosition = new ChessPosition(ogPosition.getRow() - i, ogPosition.getColumn() - i);
-            if (newPosition.getRow() < 1 || newPosition.getRow() > 8 || newPosition.getColumn() < 1 || newPosition.getColumn() > 8) {
-                System.out.println("Off the board");
-            }
-            else if(board.getPiece(newPosition) != null){
-                if(board.getPiece(ogPosition).getTeamColor() == board.getPiece(newPosition).getTeamColor()){
-                    break;
-                }
-                else{
-                    newPossiblePositions.add(new ChessMove(ogPosition, newPosition, null));
-                    break;
-                }
-            }
-            else{
-                newPossiblePositions.add(new ChessMove(ogPosition, newPosition, null));
-            }
-        }// down left
-
-        for (int i = 1; i < 9; i++) {
-            ChessPosition newPosition = new ChessPosition(ogPosition.getRow() , ogPosition.getColumn() + i);
-            if (newPosition.getRow() < 1 || newPosition.getRow() > 8 || newPosition.getColumn() < 1 || newPosition.getColumn() > 8) {
-                System.out.println("Off the board");
-            }
-            else if(board.getPiece(newPosition) != null){
-                if(board.getPiece(ogPosition).getTeamColor() == board.getPiece(newPosition).getTeamColor()){
-                    break;
-                }
-                else{
-                    newPossiblePositions.add(new ChessMove(ogPosition, newPosition, null));
-                    break;
-                }
-            }
-            else{
-                newPossiblePositions.add(new ChessMove(ogPosition, newPosition, null));
-            }
-        }// right
-        for (int i = 1; i < 9; i++) {
-            ChessPosition newPosition = new ChessPosition(ogPosition.getRow(), ogPosition.getColumn() - i);
-            if (newPosition.getRow() < 1 || newPosition.getRow() > 8 || newPosition.getColumn() < 1 || newPosition.getColumn() > 8) {
-                System.out.println("Off the board");
-            }
-            else if(board.getPiece(newPosition) != null){
-                if(board.getPiece(ogPosition).getTeamColor() == board.getPiece(newPosition).getTeamColor()){
-                    break;
-                }
-                else{
-                    newPossiblePositions.add(new ChessMove(ogPosition, newPosition, null));
-                    break;
-                }
-            }
-            else{
-                newPossiblePositions.add(new ChessMove(ogPosition, newPosition, null));
-            }
-        }// left
-        for (int i = 1; i < 9; i++) {
-            ChessPosition newPosition = new ChessPosition(ogPosition.getRow() + i, ogPosition.getColumn());
-            if (newPosition.getRow() < 1 || newPosition.getRow() > 8 || newPosition.getColumn() < 1 || newPosition.getColumn() > 8) {
-                System.out.println("Off the board");
-            }
-            else if(board.getPiece(newPosition) != null){
-                if(board.getPiece(ogPosition).getTeamColor() == board.getPiece(newPosition).getTeamColor()){
-                    break;
-                }
-                else{
-                    newPossiblePositions.add(new ChessMove(ogPosition, newPosition, null));
-                    break;
-                }
-            }
-            else{
-                newPossiblePositions.add(new ChessMove(ogPosition, newPosition, null));
-            }
-        }// up
-        for (int i = 1; i < 9; i++) {
-            ChessPosition newPosition = new ChessPosition(ogPosition.getRow() - i, ogPosition.getColumn());
-            if (newPosition.getRow() < 1 || newPosition.getRow() > 8 || newPosition.getColumn() < 1 || newPosition.getColumn() > 8) {
-                System.out.println("Off the board");
-            }
-            else if(board.getPiece(newPosition) != null){
-                if(board.getPiece(ogPosition).getTeamColor() == board.getPiece(newPosition).getTeamColor()){
-                    break;
-                }
-                else{
-                    newPossiblePositions.add(new ChessMove(ogPosition, newPosition, null));
-                    break;
-                }
-            }
-            else{
-                newPossiblePositions.add(new ChessMove(ogPosition, newPosition, null));
-            }
-        }// down
+        rightMove(9,board,ogPosition,newPossiblePositions);
+        leftMove(9,board,ogPosition,newPossiblePositions);
+        upMove(9,board,ogPosition,newPossiblePositions);
+        downMove(9,board,ogPosition,newPossiblePositions);
+        upRightMove(9,board,ogPosition,newPossiblePositions);
+        upLeftMove(9,board,ogPosition,newPossiblePositions);
+        downRightMove(9,board,ogPosition,newPossiblePositions);
+        downLeftMove(9,board,ogPosition,newPossiblePositions);
 
         return newPossiblePositions;
 
@@ -317,227 +221,23 @@ public class MovementRules {
 
         ArrayList<ChessPosition> newBishopPositions = new ArrayList<>();
 
-        for (int i = 1; i < 9; i++) {
-            ChessPosition newPosition = new ChessPosition(ogPosition.getRow() + i, ogPosition.getColumn() + i);
-            if (newPosition.getRow() < 1 || newPosition.getRow() > 8 || newPosition.getColumn() < 1 || newPosition.getColumn() > 8) {
-                System.out.println("Off the board");
-            }
-            else if(board.getPiece(newPosition) != null){
-                if(board.getPiece(ogPosition).getTeamColor() == board.getPiece(newPosition).getTeamColor()){
-                    break;
-                }
-                else{
-                    newPossiblePositions.add(new ChessMove(ogPosition, newPosition, null));
-                    break;
-                }
-            }
-            else{
-                newPossiblePositions.add(new ChessMove(ogPosition, newPosition, null));
-            }
-        }// up right
-        for (int i = 1; i < 9; i++) {
-            ChessPosition newPosition = new ChessPosition(ogPosition.getRow() - i, ogPosition.getColumn() + i);
-            if (newPosition.getRow() < 1 || newPosition.getRow() > 8 || newPosition.getColumn() < 1 || newPosition.getColumn() > 8) {
-                System.out.println("Off the board");
-            }
-            else if(board.getPiece(newPosition) != null){
-                if(board.getPiece(ogPosition).getTeamColor() == board.getPiece(newPosition).getTeamColor()){
-                    break;
-                }
-                else{
-                    newPossiblePositions.add(new ChessMove(ogPosition, newPosition, null));
-                    break;
-                }
-            }
-            else{
-                newPossiblePositions.add(new ChessMove(ogPosition, newPosition, null));
-            }
-        }// down right
-        for (int i = 1; i < 9; i++) {
-            ChessPosition newPosition = new ChessPosition(ogPosition.getRow() + i, ogPosition.getColumn() - i);
-            if (newPosition.getRow() < 1 || newPosition.getRow() > 8 || newPosition.getColumn() < 1 || newPosition.getColumn() > 8) {
-                System.out.println("Off the board");
-            }
-            else if(board.getPiece(newPosition) != null){
-                if(board.getPiece(ogPosition).getTeamColor() == board.getPiece(newPosition).getTeamColor()){
-                    break;
-                }
-                else{
-                    newPossiblePositions.add(new ChessMove(ogPosition, newPosition, null));
-                    break;
-                }
-            }
-            else{
-                newPossiblePositions.add(new ChessMove(ogPosition, newPosition, null));
-            }
-        }// up left
-        for (int i = 1; i < 9; i++) {
-            ChessPosition newPosition = new ChessPosition(ogPosition.getRow() - i, ogPosition.getColumn() - i);
-            if (newPosition.getRow() < 1 || newPosition.getRow() > 8 || newPosition.getColumn() < 1 || newPosition.getColumn() > 8) {
-                System.out.println("Off the board");
-            }
-            else if(board.getPiece(newPosition) != null){
-                if(board.getPiece(ogPosition).getTeamColor() == board.getPiece(newPosition).getTeamColor()){
-                    break;
-                }
-                else{
-                    newPossiblePositions.add(new ChessMove(ogPosition, newPosition, null));
-                    break;
-                }
-            }
-            else{
-                newPossiblePositions.add(new ChessMove(ogPosition, newPosition, null));
-            }
-        }// down left
+        upRightMove(9,board,ogPosition,newPossiblePositions);
+        upLeftMove(9,board,ogPosition,newPossiblePositions);
+        downRightMove(9,board,ogPosition,newPossiblePositions);
+        downLeftMove(9,board,ogPosition,newPossiblePositions);
 
         return newPossiblePositions;}
     public ArrayList<ChessMove> KnightMoves(ChessBoard board, ChessPosition ogPosition){
         ArrayList<ChessMove> newPossiblePositions = new ArrayList<>();
 
-        for (int i = 1; i < 9; i++) {
-            ChessPosition newPosition = new ChessPosition(ogPosition.getRow() +2 , ogPosition.getColumn() + 1);
-            if (newPosition.getRow() < 1 || newPosition.getRow() > 8 || newPosition.getColumn() < 1 || newPosition.getColumn() > 8) {
-                System.out.println("Off the board");
-            }
-            else if(board.getPiece(newPosition) != null){
-                if(board.getPiece(ogPosition).getTeamColor() == board.getPiece(newPosition).getTeamColor()){
-                    break;
-                }
-                else{
-                    newPossiblePositions.add(new ChessMove(ogPosition, newPosition, null));
-                    break;
-                }
-            }
-            else{
-                newPossiblePositions.add(new ChessMove(ogPosition, newPosition, null));
-            }
-        }// up 2 right 1
-        for (int i = 1; i < 9; i++) {
-            ChessPosition newPosition = new ChessPosition(ogPosition.getRow() +2, ogPosition.getColumn() -1);
-            if (newPosition.getRow() < 1 || newPosition.getRow() > 8 || newPosition.getColumn() < 1 || newPosition.getColumn() > 8) {
-                System.out.println("Off the board");
-            }
-            else if(board.getPiece(newPosition) != null){
-                if(board.getPiece(ogPosition).getTeamColor() == board.getPiece(newPosition).getTeamColor()){
-                    break;
-                }
-                else{
-                    newPossiblePositions.add(new ChessMove(ogPosition, newPosition, null));
-                    break;
-                }
-            }
-            else{
-                newPossiblePositions.add(new ChessMove(ogPosition, newPosition, null));
-            }
-        }// up 2 left 1
-        for (int i = 1; i < 9; i++) {
-            ChessPosition newPosition = new ChessPosition(ogPosition.getRow() -2, ogPosition.getColumn() + 1);
-            if (newPosition.getRow() < 1 || newPosition.getRow() > 8 || newPosition.getColumn() < 1 || newPosition.getColumn() > 8) {
-                System.out.println("Off the board");
-            }
-            else if(board.getPiece(newPosition) != null){
-                if(board.getPiece(ogPosition).getTeamColor() == board.getPiece(newPosition).getTeamColor()){
-                    break;
-                }
-                else{
-                    newPossiblePositions.add(new ChessMove(ogPosition, newPosition, null));
-                    break;
-                }
-            }
-            else{
-                newPossiblePositions.add(new ChessMove(ogPosition, newPosition, null));
-            }
-        }// down 2 right 1
-        for (int i = 1; i < 9; i++) {
-            ChessPosition newPosition = new ChessPosition(ogPosition.getRow()-2,ogPosition.getColumn()-1);
-            if (newPosition.getRow() < 1 || newPosition.getRow() > 8 || newPosition.getColumn() < 1 || newPosition.getColumn() > 8) {
-                System.out.println("Off the board");
-            }
-            else if(board.getPiece(newPosition) != null){
-                if(board.getPiece(ogPosition).getTeamColor() == board.getPiece(newPosition).getTeamColor()){
-                    break;
-                }
-                else{
-                    newPossiblePositions.add(new ChessMove(ogPosition, newPosition, null));
-                    break;
-                }
-            }
-            else{
-                newPossiblePositions.add(new ChessMove(ogPosition, newPosition, null));
-            }
-        }// down 2 left 1
-        for (int i = 1; i < 9; i++) {
-            ChessPosition newPosition = new ChessPosition(ogPosition.getRow() +1, ogPosition.getColumn() + 2);
-            if (newPosition.getRow() < 1 || newPosition.getRow() > 8 || newPosition.getColumn() < 1 || newPosition.getColumn() > 8) {
-                System.out.println("Off the board");
-            }
-            else if(board.getPiece(newPosition) != null){
-                if(board.getPiece(ogPosition).getTeamColor() == board.getPiece(newPosition).getTeamColor()){
-                    break;
-                }
-                else{
-                    newPossiblePositions.add(new ChessMove(ogPosition, newPosition, null));
-                    break;
-                }
-            }
-            else{
-                newPossiblePositions.add(new ChessMove(ogPosition, newPosition, null));
-            }
-        }// up 1 right 2
-        for (int i = 1; i < 9; i++) {
-            ChessPosition newPosition = new ChessPosition(ogPosition.getRow() +1, ogPosition.getColumn() -2);
-            if (newPosition.getRow() < 1 || newPosition.getRow() > 8 || newPosition.getColumn() < 1 || newPosition.getColumn() > 8) {
-                System.out.println("Off the board");
-            }
-            else if(board.getPiece(newPosition) != null){
-                if(board.getPiece(ogPosition).getTeamColor() == board.getPiece(newPosition).getTeamColor()){
-                    break;
-                }
-                else{
-                    newPossiblePositions.add(new ChessMove(ogPosition, newPosition, null));
-                    break;
-                }
-            }
-            else{
-                newPossiblePositions.add(new ChessMove(ogPosition, newPosition, null));
-            }
-        }// up 1 left 2
-        for (int i = 1; i < 9; i++) {
-            ChessPosition newPosition = new ChessPosition(ogPosition.getRow()-1 , ogPosition.getColumn() + 2);
-            if (newPosition.getRow() < 1 || newPosition.getRow() > 8 || newPosition.getColumn() < 1 || newPosition.getColumn() > 8) {
-                System.out.println("Off the board");
-            }
-            else if(board.getPiece(newPosition) != null){
-                if(board.getPiece(ogPosition).getTeamColor() == board.getPiece(newPosition).getTeamColor()){
-                    break;
-                }
-                else{
-                    newPossiblePositions.add(new ChessMove(ogPosition, newPosition, null));
-                    break;
-                }
-            }
-            else{
-                newPossiblePositions.add(new ChessMove(ogPosition, newPosition, null));
-            }
-        }// down 1 right 2
-        for (int i = 1; i < 9; i++) {
-            ChessPosition newPosition = new ChessPosition(ogPosition.getRow() -1, ogPosition.getColumn() -2);
-            if (newPosition.getRow() < 1 || newPosition.getRow() > 8 || newPosition.getColumn() < 1 || newPosition.getColumn() > 8) {
-                System.out.println("Off the board");
-            }
-            else if(board.getPiece(newPosition) != null){
-                if(board.getPiece(ogPosition).getTeamColor() == board.getPiece(newPosition).getTeamColor()){
-                    break;
-                }
-                else{
-                    newPossiblePositions.add(new ChessMove(ogPosition, newPosition, null));
-                    break;
-                }
-            }
-            else{
-                newPossiblePositions.add(new ChessMove(ogPosition, newPosition, null));
-            }
-        }// down 1 left 2
+        knightMove(2,1,board,ogPosition,newPossiblePositions);// up 2 right 1
+        knightMove(2,-1,board,ogPosition,newPossiblePositions);// up 2 left 1
+        knightMove(-2,1,board,ogPosition,newPossiblePositions);// down 2 right 1
+        knightMove(-2,-1,board,ogPosition,newPossiblePositions);// down 2 left 1
+        knightMove(1,2,board,ogPosition,newPossiblePositions);// up 1 right 2
+        knightMove(1,-2,board,ogPosition,newPossiblePositions);// up 1 left 2
+        knightMove(-1,2,board,ogPosition,newPossiblePositions);// down 1 right 2
+        knightMove(-1,-2,board,ogPosition,newPossiblePositions);// down 1 left 2
 
 
 
@@ -546,78 +246,10 @@ public class MovementRules {
 
         ArrayList<ChessMove> newPossiblePositions = new ArrayList<>();
 
-        for (int i = 1; i < 9; i++) {
-            ChessPosition newPosition = new ChessPosition(ogPosition.getRow() , ogPosition.getColumn() + i);
-            if (newPosition.getRow() < 1 || newPosition.getRow() > 8 || newPosition.getColumn() < 1 || newPosition.getColumn() > 8) {
-                System.out.println("Off the board");
-            }
-            else if(board.getPiece(newPosition) != null){
-                if(board.getPiece(ogPosition).getTeamColor() == board.getPiece(newPosition).getTeamColor()){
-                    break;
-                }
-                else{
-                    newPossiblePositions.add(new ChessMove(ogPosition, newPosition, null));
-                    break;
-                }
-            }
-            else{
-                newPossiblePositions.add(new ChessMove(ogPosition, newPosition, null));
-            }
-        }// right
-        for (int i = 1; i < 9; i++) {
-            ChessPosition newPosition = new ChessPosition(ogPosition.getRow(), ogPosition.getColumn() - i);
-            if (newPosition.getRow() < 1 || newPosition.getRow() > 8 || newPosition.getColumn() < 1 || newPosition.getColumn() > 8) {
-                System.out.println("Off the board");
-            }
-            else if(board.getPiece(newPosition) != null){
-                if(board.getPiece(ogPosition).getTeamColor() == board.getPiece(newPosition).getTeamColor()){
-                    break;
-                }
-                else{
-                    newPossiblePositions.add(new ChessMove(ogPosition, newPosition, null));
-                    break;
-                }
-            }
-            else{
-                newPossiblePositions.add(new ChessMove(ogPosition, newPosition, null));
-            }
-        }// left
-        for (int i = 1; i < 9; i++) {
-            ChessPosition newPosition = new ChessPosition(ogPosition.getRow() + i, ogPosition.getColumn());
-            if (newPosition.getRow() < 1 || newPosition.getRow() > 8 || newPosition.getColumn() < 1 || newPosition.getColumn() > 8) {
-                System.out.println("Off the board");
-            }
-            else if(board.getPiece(newPosition) != null){
-                if(board.getPiece(ogPosition).getTeamColor() == board.getPiece(newPosition).getTeamColor()){
-                    break;
-                }
-                else{
-                    newPossiblePositions.add(new ChessMove(ogPosition, newPosition, null));
-                    break;
-                }
-            }
-            else{
-                newPossiblePositions.add(new ChessMove(ogPosition, newPosition, null));
-            }
-        }// up
-        for (int i = 1; i < 9; i++) {
-            ChessPosition newPosition = new ChessPosition(ogPosition.getRow() - i, ogPosition.getColumn());
-            if (newPosition.getRow() < 1 || newPosition.getRow() > 8 || newPosition.getColumn() < 1 || newPosition.getColumn() > 8) {
-                System.out.println("Off the board");
-            }
-            else if(board.getPiece(newPosition) != null){
-                if(board.getPiece(ogPosition).getTeamColor() == board.getPiece(newPosition).getTeamColor()){
-                    break;
-                }
-                else{
-                    newPossiblePositions.add(new ChessMove(ogPosition, newPosition, null));
-                    break;
-                }
-            }
-            else{
-                newPossiblePositions.add(new ChessMove(ogPosition, newPosition, null));
-            }
-        }// down
+        rightMove(9,board,ogPosition,newPossiblePositions);
+        leftMove(9,board,ogPosition,newPossiblePositions);
+        upMove(9,board,ogPosition,newPossiblePositions);
+        downMove(9,board,ogPosition,newPossiblePositions);
 
 
 
@@ -646,7 +278,7 @@ public class MovementRules {
         }
 
         if (newPosition.getRow() < 1 || newPosition.getRow() > 8 || newPosition.getColumn() < 1 || newPosition.getColumn() > 8) {
-            System.out.println("Off the board");
+            ;
         }
 
         else if (ogPosition.getRow() == startingRow){
