@@ -90,38 +90,47 @@ public class ChessGame {
 
     }
     public void makeMove(ChessMove move) throws InvalidMoveException {
-        Collection<ChessMove> valid = new ArrayList<>();
+        Collection<ChessMove> valid;
         valid = validMoves(move.getStartPosition());
 
-        if (this.board.getPiece(move.getStartPosition()).getTeamColor() != this.TeamColor){
+        if (this.board.getPiece(move.getStartPosition()).getTeamColor() != this.TeamColor){ // is it your turn?
             throw new InvalidMoveException("Invalid Move");
         }
-            if (valid.contains(move)) {
-                ChessPiece piece = this.board.getPiece(move.getStartPosition());
-                ChessPiece takenPiece = this.board.getPiece(move.getEndPosition());
-                if (move.getPromotionPiece() != null){
-                    this.board.addPiece(move.getEndPosition(),new ChessPiece(this.TeamColor,move.getPromotionPiece()));
-                }
-                else {
-                    this.board.addPiece(move.getEndPosition(), piece);
-                }
-                this.board.removePiece(move.getStartPosition());
-
-                if (this.TeamColor == TeamColor.WHITE){
-                    setTeamTurn(TeamColor.BLACK);
-                }
-                else{
-                    setTeamTurn(TeamColor.WHITE);
-                }
-                if (isInCheck(piece.getTeamColor())){
-                    undoMove(move,takenPiece);
-                    throw new InvalidMoveException();
-                }
+            if (valid.contains(move)) { // can you actually move there?
+                checkIfMoveIsLegal(move);
             }
-            else {
+            else { // If you cant then throw exception
                 throw new InvalidMoveException("Invalid Move");
             }
 
+    }
+
+    private void checkIfMoveIsLegal(ChessMove move) throws InvalidMoveException {
+        ChessPiece piece = this.board.getPiece(move.getStartPosition());
+        ChessPiece takenPiece = this.board.getPiece(move.getEndPosition());
+        if (move.getPromotionPiece() != null){
+            this.board.addPiece(move.getEndPosition(),new ChessPiece(this.TeamColor, move.getPromotionPiece()));
+        }
+        else {
+            this.board.addPiece(move.getEndPosition(), piece);
+        }
+        this.board.removePiece(move.getStartPosition());
+
+        changeTurn();
+
+        if (isInCheck(piece.getTeamColor())){
+            undoMove(move,takenPiece);
+            throw new InvalidMoveException();
+        }
+    }
+
+    private void changeTurn() {
+        if (this.TeamColor == TeamColor.WHITE){
+            setTeamTurn(TeamColor.BLACK);
+        }
+        else{
+            setTeamTurn(TeamColor.WHITE);
+        }
     }
 
     /**
