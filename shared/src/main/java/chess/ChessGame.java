@@ -99,14 +99,20 @@ public class ChessGame {
             if (valid.contains(move)) {
                 ChessPiece piece = this.board.getPiece(move.getStartPosition());
                 ChessPiece takenPiece = this.board.getPiece(move.getEndPosition());
+                if (move.getPromotionPiece() != null){
+                    this.board.addPiece(move.getEndPosition(),new ChessPiece(this.TeamColor,move.getPromotionPiece()));
+                }
+                else {
+                    this.board.addPiece(move.getEndPosition(), piece);
+                }
+                this.board.removePiece(move.getStartPosition());
+
                 if (this.TeamColor == TeamColor.WHITE){
                     setTeamTurn(TeamColor.BLACK);
                 }
                 else{
                     setTeamTurn(TeamColor.WHITE);
                 }
-                this.board.addPiece(move.getEndPosition(), piece);
-                this.board.removePiece(move.getStartPosition());
                 if (isInCheck(piece.getTeamColor())){
                     undoMove(move,takenPiece);
                     throw new InvalidMoveException();
