@@ -60,13 +60,14 @@ public class ChessGame {
 
             for (ChessMove move : moves) {
                 ChessPiece piece = this.board.getPiece(move.getStartPosition());
+                ChessPiece takenPiece = this.board.getPiece((move.getEndPosition()));
                 this.board.addPiece(move.getEndPosition(), piece);
                 this.board.removePiece(move.getStartPosition());
 
                 if (!isInCheck(this.board.getPiece(move.getEndPosition()).getTeamColor())){
                     validMoves.add(move);
                 }
-                undoMove(move);
+                undoMove(move,takenPiece);
             }
         }
 
@@ -79,10 +80,13 @@ public class ChessGame {
      * @param move chess move to preform
      * @throws InvalidMoveException if move is invalid
      */
-    public void undoMove(ChessMove move)  {
+    public void undoMove(ChessMove move, ChessPiece takenPiece)  {
             ChessPiece piece = this.board.getPiece(move.getEndPosition());
             this.board.addPiece(move.getStartPosition(), piece);
             this.board.removePiece(move.getEndPosition());
+            if (takenPiece != null) {
+                this.board.addPiece(move.getEndPosition(), takenPiece);
+            }
 
     }
     public void makeMove(ChessMove move) throws InvalidMoveException {
@@ -161,14 +165,15 @@ public class ChessGame {
                     moves = board.getPiece(new ChessPosition(i,j)).pieceMoves(board,new ChessPosition(i,j));
                     for (ChessMove move: moves){
                         ChessPiece piece = this.board.getPiece(move.getStartPosition());
+                        ChessPiece takenPiece = this.board.getPiece(move.getEndPosition());
                         this.board.addPiece(move.getEndPosition(), piece);
                         this.board.removePiece(move.getStartPosition());
                         if (!isInCheck(teamColor)) {
-                            undoMove(move);
+                            undoMove(move,takenPiece);
                             return false;
                             }
                         else{
-                            undoMove(move);
+                            undoMove(move,takenPiece);
                         }
                     }
                 }
