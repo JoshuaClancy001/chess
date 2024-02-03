@@ -58,20 +58,24 @@ public class ChessGame {
         else {
             moves = this.board.getPiece(startPosition).pieceMoves(this.board,startPosition);
 
-            for (ChessMove move : moves) {
-                ChessPiece piece = this.board.getPiece(move.getStartPosition());
-                ChessPiece takenPiece = this.board.getPiece((move.getEndPosition()));
-                this.board.addPiece(move.getEndPosition(), piece);
-                this.board.removePiece(move.getStartPosition());
-
-                if (!isInCheck(this.board.getPiece(move.getEndPosition()).getTeamColor())){
-                    validMoves.add(move);
-                }
-                undoMove(move,takenPiece);
-            }
+            doesMoveLeaveInCheck(moves, validMoves); // if it doesn't add move to validMoves
         }
 
         return validMoves;
+    }
+
+    private void doesMoveLeaveInCheck(Collection<ChessMove> moves, Collection<ChessMove> validMoves) {
+        for (ChessMove move : moves) {
+            ChessPiece piece = this.board.getPiece(move.getStartPosition());
+            ChessPiece takenPiece = this.board.getPiece((move.getEndPosition()));
+            this.board.addPiece(move.getEndPosition(), piece);
+            this.board.removePiece(move.getStartPosition());
+
+            if (!isInCheck(this.board.getPiece(move.getEndPosition()).getTeamColor())){
+                validMoves.add(move);
+            }
+            undoMove(move,takenPiece);
+        }
     }
 
     /**
