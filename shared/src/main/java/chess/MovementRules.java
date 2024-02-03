@@ -288,8 +288,44 @@ public class MovementRules {
                 if (board.getPiece(newPositionAtStart) == null){
                     newPossiblePositions.add(new ChessMove(ogPosition, newPositionAtStart, null));
                 }
+                if (enemeyToTheLeft.getRow() < 1 || enemeyToTheLeft.getRow() > 8 || enemeyToTheLeft.getColumn() < 1 || enemeyToTheLeft.getColumn() > 8) {
+                    ;
+                }
+                else {
+                    if (board.getPiece(enemeyToTheLeft) != null) {
+                        if (board.getPiece(enemeyToTheLeft).getTeamColor() != board.getPiece(ogPosition).getTeamColor()) {
+                            if (enemeyToTheLeft.getRow() == 8 || enemeyToTheLeft.getRow() == 1) {
+                                newPossiblePositions.add((new ChessMove(ogPosition, enemeyToTheLeft, ChessPiece.PieceType.QUEEN)));
+                                newPossiblePositions.add(new ChessMove(ogPosition, enemeyToTheLeft, ChessPiece.PieceType.KNIGHT));
+                                newPossiblePositions.add(new ChessMove(ogPosition, enemeyToTheLeft, ChessPiece.PieceType.BISHOP));
+                                newPossiblePositions.add(new ChessMove(ogPosition, enemeyToTheLeft, ChessPiece.PieceType.ROOK));
+                            } else {
+                                newPossiblePositions.add(new ChessMove(ogPosition, enemeyToTheLeft, null));
+                            }
+                        }
+                    }
+                }
+
+                if (enemeyToTheRight.getRow() < 1 || enemeyToTheRight.getRow() > 8 || enemeyToTheRight.getColumn() < 1 || enemeyToTheRight.getColumn() > 8) {
+                    ;
+                }
+                else {
+                    if (board.getPiece(enemeyToTheRight) != null) {
+                        if (board.getPiece(enemeyToTheRight).getTeamColor() != board.getPiece(ogPosition).getTeamColor()) {
+
+                            if (enemeyToTheRight.getRow() == 8 || enemeyToTheRight.getRow() == 1) {
+                                newPossiblePositions.add((new ChessMove(ogPosition, enemeyToTheRight, ChessPiece.PieceType.QUEEN)));
+                                newPossiblePositions.add(new ChessMove(ogPosition, enemeyToTheRight, ChessPiece.PieceType.KNIGHT));
+                                newPossiblePositions.add(new ChessMove(ogPosition, enemeyToTheRight, ChessPiece.PieceType.BISHOP));
+                                newPossiblePositions.add(new ChessMove(ogPosition, enemeyToTheRight, ChessPiece.PieceType.ROOK));
+                            } else {
+                                newPossiblePositions.add(new ChessMove(ogPosition, enemeyToTheRight, null));
+                            }
+                        }
+                    }
+                }
             }
-        }
+            }
         else {
             if (board.getPiece(newPosition) == null) {
                 if (newPosition.getRow() == 8 || newPosition.getRow() == 1) {

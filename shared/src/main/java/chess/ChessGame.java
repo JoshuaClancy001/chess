@@ -96,9 +96,9 @@ public class ChessGame {
         if (this.board.getPiece(move.getStartPosition()).getTeamColor() != this.TeamColor){
             throw new InvalidMoveException("Invalid Move");
         }
-
             if (valid.contains(move)) {
                 ChessPiece piece = this.board.getPiece(move.getStartPosition());
+                ChessPiece takenPiece = this.board.getPiece(move.getEndPosition());
                 if (this.TeamColor == TeamColor.WHITE){
                     setTeamTurn(TeamColor.BLACK);
                 }
@@ -107,6 +107,10 @@ public class ChessGame {
                 }
                 this.board.addPiece(move.getEndPosition(), piece);
                 this.board.removePiece(move.getStartPosition());
+                if (isInCheck(piece.getTeamColor())){
+                    undoMove(move,takenPiece);
+                    throw new InvalidMoveException();
+                }
             }
             else {
                 throw new InvalidMoveException("Invalid Move");
@@ -135,8 +139,8 @@ public class ChessGame {
             }
         }
 
-        for (int i = 0; i < 9; i++){
-            for (int j = 0; j < 9; j++){
+        for (int i = 1; i < 9; i++){
+            for (int j = 1; j < 9; j++){
                 if (board.getPiece(new ChessPosition(i,j)) != null && board.getPiece(new ChessPosition(i,j)).getTeamColor() != teamColor){
                     moves = board.getPiece(new ChessPosition(i,j)).pieceMoves(board,new ChessPosition(i,j));
                     for (ChessMove move: moves){
