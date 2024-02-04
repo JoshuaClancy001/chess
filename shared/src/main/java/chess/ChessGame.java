@@ -66,7 +66,7 @@ public class ChessGame {
     }
 
     private void doesMoveLeaveInCheck(Collection<ChessMove> moves, Collection<ChessMove> validMoves) {
-        for (ChessMove move : moves) {
+        for (ChessMove move : moves) { // for every move, make the move, see if in check, undo the move
             ChessPiece piece = this.board.getPiece(move.getStartPosition());
             ChessPiece takenPiece = this.board.getPiece((move.getEndPosition()));
             this.board.addPiece(move.getEndPosition(), piece);
@@ -151,7 +151,7 @@ public class ChessGame {
 
         kingPosition = findKingPosition(teamColor, kingPosition);
 
-        isInCheck = areYouInCheck(teamColor, kingPosition, isInCheck);
+        isInCheck = areYouInCheck(teamColor, kingPosition, isInCheck); // if you are return true, else return false
         return isInCheck;
     }
 
@@ -237,7 +237,7 @@ public class ChessGame {
                 }
             }
         }
-        if (validMoves.isEmpty()){
+        if (validMoves.isEmpty()){//get all the possible moves and if its empty, we are in stalemate
             isInStalemate = true;
         }
         return isInStalemate;
