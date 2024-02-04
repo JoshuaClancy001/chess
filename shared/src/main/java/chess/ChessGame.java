@@ -52,13 +52,14 @@ public class ChessGame {
     public Collection<ChessMove> validMoves(ChessPosition startPosition){
         Collection<ChessMove> moves;
         Collection<ChessMove> validMoves =  new ArrayList<>();
-        if (this.board.getPiece(startPosition) == null){
+        if (this.board.getPiece(startPosition) == null){ // if there isn't a piece at the moves start
             return null;
         }
         else {
-            moves = this.board.getPiece(startPosition).pieceMoves(this.board,startPosition);
+            moves = this.board.getPiece(startPosition).pieceMoves(this.board,startPosition); // get all posible moves the piece can make
 
-            doesMoveLeaveInCheck(moves, validMoves); // if it doesn't add move to validMoves
+            doesMoveLeaveInCheck(moves, validMoves); // for each move it can make, if it doesn't leave the king in check,
+                                                     // add it to valid moves
         }
 
         return validMoves;
