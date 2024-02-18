@@ -1,10 +1,7 @@
 package service;
 
-import Request.LoginRequest;
-import Request.LogoutRequest;
-import Result.LoginResult;
-import model.AuthData;
-import model.UserData;
+import service.Request.LoginRequest;
+import service.Result.LoginResult;
 
 public class LoginService {
     public LoginResult login(LoginRequest loginRequest){return null;}

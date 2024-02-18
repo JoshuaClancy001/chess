@@ -1,5 +1,10 @@
 package service;
 
-public class ClearApplicationService {
-    public void clearApplication(){}
+public class ClearApplicationService extends Services {
+
+    public void clearApplication(){
+        userDao.clearUsers();
+        authDAO.clearAuths();
+        gameDAO.clearGames();
+    }
 }

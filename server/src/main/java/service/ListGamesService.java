@@ -1,11 +1,7 @@
 package service;
 
-import Request.ListGamesRequest;
-import Result.ListGamesResult;
-import model.AuthData;
-import model.GameData;
-
-import java.util.ArrayList;
+import service.Request.ListGamesRequest;
+import service.Result.ListGamesResult;
 
 public class ListGamesService {
     public ListGamesResult listGames(ListGamesRequest listGamesRequest){return null;}

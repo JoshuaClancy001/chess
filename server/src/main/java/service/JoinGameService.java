@@ -1,9 +1,7 @@
 package service;
 
-import Request.JoinGameRequest;
-import Result.JoinGameResult;
-import model.AuthData;
-import model.GameData;
+import service.Request.JoinGameRequest;
+import service.Result.JoinGameResult;
 
 public class JoinGameService {
     public JoinGameResult joinGame(JoinGameRequest joinGameRequest){return null;}
