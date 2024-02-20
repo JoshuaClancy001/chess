@@ -1,5 +1,6 @@
 package server;
 
+import Handlers.RegisterHandler;
 import spark.*;
 
 public class Server {
@@ -11,7 +12,8 @@ public class Server {
 
         // Register your endpoints and handle exceptions here.
 
-        Spark.awaitInitialization();
+        Spark.post("/user", ((request, response) ->
+                (new RegisterHandler().handleRegisterRequest("{ \"username\": \"john_doe\", \"password\": \"password123\", \"email\": \"john@example.com\" }"))));
         return Spark.port();
     }
 
