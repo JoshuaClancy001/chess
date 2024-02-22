@@ -7,7 +7,7 @@ import java.util.UUID;
 
 public class MemoryAuthDAO implements AuthDAO {
 
-    private ArrayList<String> authTokens = new ArrayList<>();
+    private static ArrayList<String> authTokens = new ArrayList<>();
     @Override
     public void createAuth() {
         String authToken = UUID.randomUUID().toString();

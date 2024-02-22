@@ -19,7 +19,8 @@ public class RegistrationService extends Services{
 
     public RegisterResult register(RegisterRequest registerRequest) throws DataAccessException {
         createUser(registerRequest);
-        return new RegisterResult(createAuth());
+        String authToken = createAuth();
+        return new RegisterResult(authToken);
     }
 
     public String getUser(String username){
@@ -30,15 +31,11 @@ public class RegistrationService extends Services{
         UserData user = new UserData(register.username(), register.password(), register.email());
 
         if (getUser(user.username()) == null){
-            throw new DataAccessException("User already exists");
-        }
-        else{
             userDao.createUser(user);
         }
-    }
 
-    public String createAuth(){
-
-        return UUID.randomUUID().toString();
+        else if (getUser(user.username()).equals(register.username())){
+            throw new DataAccessException("User already exists");
+        }
     }
 }

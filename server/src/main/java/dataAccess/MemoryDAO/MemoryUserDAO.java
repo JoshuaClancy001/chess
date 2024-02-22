@@ -8,21 +8,26 @@ import java.util.ArrayList;
 
 public class MemoryUserDAO implements UserDAO {
 
-    private ArrayList<UserData> users = new ArrayList<>();
+    private static ArrayList<UserData> users = new ArrayList<>();
 
     @Override
-    public void createUser(UserData player) throws DataAccessException {
+    public void createUser(UserData player){
         users.add(player);
     }
 
     @Override
     public String readUser(String username){
+
+        if (users.size() == 0){
+            return "empty";
+        }
+
         for (UserData user : users){
             if (username.equals(user.username())){
-                return null;
+                return username;
             }
         }
-        return username;
+        return null;
     }
 
     @Override

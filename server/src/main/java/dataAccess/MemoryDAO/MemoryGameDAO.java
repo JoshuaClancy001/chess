@@ -6,7 +6,7 @@ import model.GameData;
 import java.util.ArrayList;
 
 public class MemoryGameDAO implements GameDAO {
-    private ArrayList<GameData> games = new ArrayList<>();
+    private static ArrayList<GameData> games = new ArrayList<>();
     @Override
     public void createGame() {
 
