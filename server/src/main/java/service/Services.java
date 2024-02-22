@@ -12,7 +12,11 @@ public class Services {
     static protected MemoryGameDAO gameDAO = new MemoryGameDAO();
 
     public String createAuth(){
-
         return UUID.randomUUID().toString();
     }
+
+    public String getUser(String username,String password){
+        return userDao.readUser(username,password);
+    }
+
 }

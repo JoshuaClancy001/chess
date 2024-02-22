@@ -16,7 +16,7 @@ public class MemoryUserDAO implements UserDAO {
     }
 
     @Override
-    public String readUser(String username){
+    public String readUser(String username, String password){
 
         if (users.size() == 0){
             return "empty";
@@ -24,7 +24,10 @@ public class MemoryUserDAO implements UserDAO {
 
         for (UserData user : users){
             if (username.equals(user.username())){
-                return username;
+                if(password.equals((user.password()))){
+                    return username;
+                }
+                return "Wrong Password";
             }
         }
         return null;

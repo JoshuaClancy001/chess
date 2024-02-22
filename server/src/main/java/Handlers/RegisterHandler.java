@@ -30,7 +30,7 @@ public class RegisterHandler {
                 res.status(403);
                 return "{ \"message\": \"Error: already taken\" }";
             }
-            else if (e.getMessage().equals("bad reqeust")){
+            else if (e.getMessage().equals("bad request")){
                 res.status(400);
                 return "{ \"message\": \"Error: bad request\" }";
             }

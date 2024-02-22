@@ -13,19 +13,25 @@ public class LoginService extends  Services{
     }
     public LoginResult login(LoginRequest loginRequest) throws DataAccessException{
 
-        String user = getUser(loginRequest.username());
+        String user = getUser(loginRequest.username(),loginRequest.password());
 
-        if (user != null && !user.equals("empty")){
+        if (user != null && !user.equals("empty") && !user.equals("Wrong Password")){
             String authToken = createAuth();
             return new LoginResult(loginRequest.username(),authToken);
 
+        }
+        else if (user == null){
+            throw new DataAccessException("User not Registered");
+        }
+        else if (user.equals("Wrong Password")){
+            throw new DataAccessException("Wrong Password");
         }
         else{
             throw new DataAccessException("User not Registered");
         }
 
     }
-    public String getUser(String username){
-        return userDao.readUser(username);
+    public String getUser(String username, String password){
+        return userDao.readUser(username,password);
     }
 }
