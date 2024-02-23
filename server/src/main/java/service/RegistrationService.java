@@ -16,7 +16,7 @@ public class RegistrationService extends Services{
 
     public RegisterResult register(RegisterRequest registerRequest) throws DataAccessException {
         createUser(registerRequest);
-        String authToken = createAuth();
+        String authToken = createAuth(registerRequest.username());
         return new RegisterResult(registerRequest.username(),authToken);
     }
     public void createUser(RegisterRequest register)throws DataAccessException{

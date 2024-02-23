@@ -1,22 +1,36 @@
 package dataAccess.MemoryDAO;
 
 import dataAccess.AuthDAO;
+import dataAccess.DataAccessException;
+import model.AuthData;
 
 import java.util.ArrayList;
 import java.util.UUID;
 
 public class MemoryAuthDAO implements AuthDAO {
 
-    private static ArrayList<String> authTokens = new ArrayList<>();
+    private static ArrayList<AuthData> authTokens = new ArrayList<>();
+
     @Override
-    public void createAuth() {
+    public String createAuth(String username) {
         String authToken = UUID.randomUUID().toString();
-        authTokens.add(authToken);
+
+        AuthData authData = new AuthData(authToken,username);
+
+        authTokens.add(authData);
+
+        return authToken;
     }
 
     @Override
-    public void readAuth() {
+    public AuthData readAuth(String authToken)throws DataAccessException {
 
+        for (AuthData data : authTokens){
+            if (data.authToken().equals(authToken)){
+                return data;
+            }
+        }
+        return null;
     }
 
     @Override
@@ -25,8 +39,12 @@ public class MemoryAuthDAO implements AuthDAO {
     }
 
     @Override
-    public void deleteAuth() {
-
+    public void deleteAuth(String authToken) {
+        for (int i = 0; i < authTokens.size(); i++){
+            if (authTokens.get(i).authToken().equals(authToken)){
+                authTokens.remove(i);
+            }
+        }
     }
 
     @Override

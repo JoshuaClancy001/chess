@@ -16,7 +16,7 @@ public class LoginService extends  Services{
         String user = getUser(loginRequest.username(),loginRequest.password());
 
         if (user != null && !user.equals("empty") && !user.equals("Wrong Password")){
-            String authToken = createAuth();
+            String authToken = createAuth(loginRequest.username());
             return new LoginResult(loginRequest.username(),authToken);
 
         }
