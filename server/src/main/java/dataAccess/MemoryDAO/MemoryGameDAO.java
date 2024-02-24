@@ -13,8 +13,8 @@ public class MemoryGameDAO implements GameDAO {
     }
 
     @Override
-    public void readGame() {
-
+    public ArrayList<GameData> readGame() {
+        return games;
     }
 
     @Override

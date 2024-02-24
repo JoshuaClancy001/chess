@@ -2,7 +2,6 @@ package service;
 
 import dataAccess.DataAccessException;
 import service.Request.LoginRequest;
-import service.Request.LogoutRequest;
 import service.Result.LoginResult;
 
 public class LoginService extends  Services{

@@ -1,8 +1,27 @@
 package service;
 
+import dataAccess.DataAccessException;
+import model.AuthData;
 import service.Request.ListGamesRequest;
+import service.Request.LoginRequest;
 import service.Result.ListGamesResult;
 
-public class ListGamesService {
-    public ListGamesResult listGames(String authTOken, ListGamesRequest listGamesRequest){return null;}
+public class ListGamesService extends Services {
+
+    private ListGamesRequest listGames;
+
+    public ListGamesService(ListGamesRequest listGames) {
+        this.listGames = listGames;
+    }
+    public ListGamesResult listGames(String authToken, ListGamesRequest listGamesRequest)throws DataAccessException{
+
+        AuthData data = getAuth(authToken);
+
+        if (data == null){
+            throw new DataAccessException("Unauthorized");
+        }
+
+        return new ListGamesResult(listGames2());
+
+        }
 }

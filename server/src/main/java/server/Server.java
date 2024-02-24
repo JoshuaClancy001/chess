@@ -1,9 +1,6 @@
 package server;
 
-import Handlers.ClearApplicationHandler;
-import Handlers.LoginHandler;
-import Handlers.LogoutHandler;
-import Handlers.RegisterHandler;
+import Handlers.*;
 import spark.*;
 
 public class Server {
@@ -23,6 +20,9 @@ public class Server {
 
         Spark.delete("/session", ((request, response) ->
                 (new LogoutHandler().handleLogoutRequest(request,response))));
+
+        Spark.get("/game", ((request, response) ->
+                (new ListGamesHandler().handleListGamesRequest(request,response))));
 
         Spark.delete("/db", ((request,response) ->
                 (new ClearApplicationHandler().handleClearApplicationRequest(request,response))));

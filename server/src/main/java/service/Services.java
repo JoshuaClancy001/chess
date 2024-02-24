@@ -6,7 +6,9 @@ import dataAccess.MemoryDAO.MemoryAuthDAO;
 import dataAccess.MemoryDAO.MemoryGameDAO;
 import dataAccess.MemoryDAO.MemoryUserDAO;
 import model.AuthData;
+import model.GameData;
 
+import java.util.ArrayList;
 import java.util.UUID;
 
 public class Services {
@@ -18,6 +20,10 @@ public class Services {
         String auth = authDAO.createAuth(username);
 
         return auth;
+    }
+
+    public ArrayList<GameData> listGames2(){
+        return gameDAO.readGame();
     }
 
     public String getUser(String username,String password){
