@@ -24,6 +24,11 @@ public class Server {
         Spark.get("/game", ((request, response) ->
                 (new ListGamesHandler().handleListGamesRequest(request,response))));
 
+        Spark.post("/game", ((request, response) ->
+                (new CreateGameHandler().handleCreateGameRequest(request,response))));
+        Spark.put("/game", ((request, response) ->
+                (new JoinGameHandler().handleJoinGameRequest(request,response))));
+
         Spark.delete("/db", ((request,response) ->
                 (new ClearApplicationHandler().handleClearApplicationRequest(request,response))));
 

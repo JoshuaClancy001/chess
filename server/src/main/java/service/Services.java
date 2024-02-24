@@ -1,6 +1,5 @@
 package service;
 
-import dataAccess.AuthDAO;
 import dataAccess.DataAccessException;
 import dataAccess.MemoryDAO.MemoryAuthDAO;
 import dataAccess.MemoryDAO.MemoryGameDAO;
@@ -9,7 +8,6 @@ import model.AuthData;
 import model.GameData;
 
 import java.util.ArrayList;
-import java.util.UUID;
 
 public class Services {
     static protected MemoryUserDAO userDao = new MemoryUserDAO();
@@ -20,6 +18,14 @@ public class Services {
         String auth = authDAO.createAuth(username);
 
         return auth;
+    }
+
+    public void addPlayer(String clientColor,String username){
+
+    }
+
+    public GameData addGame(String gameName){
+        return gameDAO.addGame(gameName);
     }
 
     public ArrayList<GameData> listGames2(){
