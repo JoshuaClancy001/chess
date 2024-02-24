@@ -1,11 +1,9 @@
 package service;
 
-import service.Request.RegisterRequest;
-import service.Result.RegisterResult;
+import Request.RegisterRequest;
+import Result.RegisterResult;
 import dataAccess.DataAccessException;
 import model.UserData;
-
-import java.util.UUID;
 
 public class RegistrationService extends Services{
     private RegisterRequest register;

@@ -24,11 +24,16 @@ public class MemoryAuthDAO implements AuthDAO {
 
     @Override
     public AuthData readAuth(String authToken)throws DataAccessException {
-
+        boolean isValidAuthToken = false;
+        int index = 0;
         for (AuthData data : authTokens){
             if (data.authToken().equals(authToken)){
                 return data;
             }
+            index += 1;
+        }
+        if (!isValidAuthToken) {
+            return null;
         }
         return null;
     }
@@ -39,12 +44,14 @@ public class MemoryAuthDAO implements AuthDAO {
     }
 
     @Override
-    public void deleteAuth(String authToken) {
+    public void deleteAuth(String authToken) throws DataAccessException {
         for (int i = 0; i < authTokens.size(); i++){
             if (authTokens.get(i).authToken().equals(authToken)){
                 authTokens.remove(i);
+                return;
             }
         }
+        throw new DataAccessException("AuthToken Not There");
     }
 
     @Override

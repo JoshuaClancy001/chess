@@ -1,13 +1,6 @@
-import Handlers.RegisterHandler;
 import server.Server;
-import service.ClearApplicationService;
-import service.Request.RegisterRequest;
 import chess.*;
 import dataAccess.DataAccessException;
-import service.RegistrationService;
-import service.Result.RegisterResult;
-import service.Services;
-import spark.Spark;
 
 public class Main {
     public static void main(String[] args) throws DataAccessException {

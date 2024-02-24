@@ -16,7 +16,6 @@ public class Services {
 
     public String createAuth(String username){
         String auth = authDAO.createAuth(username);
-
         return auth;
     }
 
@@ -28,7 +27,7 @@ public class Services {
         return gameDAO.addGame(gameName);
     }
 
-    public ArrayList<GameData> listGames2(){
+    public ArrayList<GameData> listGames(){
         return gameDAO.readGame();
     }
 
@@ -40,7 +39,7 @@ public class Services {
         return authDAO.readAuth(authToken);
     }
 
-    public void deleteAuth(String authToken){
+    public void deleteAuth(String authToken)throws DataAccessException {
         authDAO.deleteAuth(authToken);
     }
 }

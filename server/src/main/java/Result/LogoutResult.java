@@ -1,4 +1,4 @@
-package service.Result;
+package Result;
 
 public record LogoutResult() {
 }

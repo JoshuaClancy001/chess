@@ -2,9 +2,8 @@ package service;
 
 import dataAccess.DataAccessException;
 import model.AuthData;
-import service.Request.ListGamesRequest;
-import service.Request.LoginRequest;
-import service.Result.ListGamesResult;
+import Request.ListGamesRequest;
+import Result.ListGamesResult;
 
 public class ListGamesService extends Services {
 
@@ -21,7 +20,7 @@ public class ListGamesService extends Services {
             throw new DataAccessException("Unauthorized");
         }
 
-        return new ListGamesResult(listGames2());
+        return new ListGamesResult(listGames());
 
     }
 }

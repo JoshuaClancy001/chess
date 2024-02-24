@@ -1,8 +1,8 @@
 package service;
 
 import dataAccess.DataAccessException;
-import service.Request.LoginRequest;
-import service.Result.LoginResult;
+import Request.LoginRequest;
+import Result.LoginResult;
 
 public class LoginService extends  Services{
     private LoginRequest login;
@@ -29,8 +29,5 @@ public class LoginService extends  Services{
             throw new DataAccessException("User not Registered");
         }
 
-    }
-    public String getUser(String username, String password){
-        return userDao.readUser(username,password);
     }
 }

@@ -29,9 +29,10 @@ public class MemoryGameDAO implements GameDAO {
 
     @Override
     public void updateGame(String clientColor,String username, int gameID) throws DataAccessException {
-
+        boolean isValidGame = false;
         for (GameData data : games){
             if (data.getGameID() == gameID) {
+                isValidGame = true;
                 if (clientColor != null) {
                     if (clientColor.equals("WHITE")) {
                         if (data.getWhiteUsername() != null) {
@@ -44,13 +45,17 @@ public class MemoryGameDAO implements GameDAO {
                         }
                         data.setBlackUsername(username);
                     }
-                    break;
+
                 }
+                return;
             }
-            else {
-                throw new DataAccessException("no gameID");
-            }
+
         }
+
+        if (isValidGame == false){
+            throw new DataAccessException("no gameID");
+        }
+
 
     }
 

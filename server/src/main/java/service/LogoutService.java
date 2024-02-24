@@ -2,9 +2,8 @@ package service;
 
 import dataAccess.DataAccessException;
 import model.AuthData;
-import service.Request.LogoutRequest;
-import service.Request.RegisterRequest;
-import service.Result.LogoutResult;
+import Request.LogoutRequest;
+import Result.LogoutResult;
 
 public class LogoutService extends Services {
 

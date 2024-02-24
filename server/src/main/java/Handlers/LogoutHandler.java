@@ -3,8 +3,8 @@ package Handlers;
 import com.google.gson.Gson;
 import dataAccess.DataAccessException;
 import service.LogoutService;
-import service.Request.LogoutRequest;
-import service.Result.LogoutResult;
+import Request.LogoutRequest;
+import Result.LogoutResult;
 import spark.Request;
 import spark.Response;
 
