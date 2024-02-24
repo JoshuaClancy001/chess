@@ -31,12 +31,8 @@ public class ListGamesHandler {
                 res.status(401);
                 return "{ \"message\": \"Error: unauthorized\" }";
             }
-            else if (e.getMessage().equals("Wrong Password")){
-                res.status(401);
-                return "{ \"message\": \"Error: unauthorized\" }";
-            }
             else{
-                res.status(501);
+                res.status(401);
                 return "{ \"message\": \"Error: description\" }";
             }
         }
