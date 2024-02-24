@@ -23,5 +23,5 @@ public class ListGamesService extends Services {
 
         return new ListGamesResult(listGames2());
 
-        }
+    }
 }
