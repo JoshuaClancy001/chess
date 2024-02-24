@@ -21,8 +21,8 @@ public class JoinGamesService extends Services {
             throw new DataAccessException("Unauthorized");
         }
 
-        addPlayer(joinGameRequest.clientColor(),data.username());
+        addPlayer(joinGameRequest.playerColor(),data.username(),joinGameRequest.gameID());
 
-        return new JoinGameResult(joinGameRequest.clientColor(), joinGameRequest.gameID());
+        return new JoinGameResult(joinGameRequest.playerColor(), joinGameRequest.gameID());
     }
 }

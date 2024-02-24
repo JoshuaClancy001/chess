@@ -10,7 +10,7 @@ import java.util.ArrayList;
 public class MemoryGameDAO implements GameDAO {
     private static ArrayList<GameData> games = new ArrayList<>();
 
-    private int gameID = 1;
+    private int gameID = 0;
 
     @Override
     public GameData addGame(String gameName) {
@@ -29,6 +29,7 @@ public class MemoryGameDAO implements GameDAO {
 
     @Override
     public void updateGame(String clientColor,String username, int gameID) throws DataAccessException {
+
         for (GameData data : games){
             if (data.getGameID() == gameID){
                 if (clientColor.equals("WHITE")){
@@ -43,6 +44,7 @@ public class MemoryGameDAO implements GameDAO {
                     }
                     data.setBlackUsername(username);
                 }
+                break;
             }
             else {
                 throw new DataAccessException("no gameID");

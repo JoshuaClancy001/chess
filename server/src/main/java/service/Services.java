@@ -20,8 +20,8 @@ public class Services {
         return auth;
     }
 
-    public void addPlayer(String clientColor,String username){
-
+    public void addPlayer(String clientColor,String username, int gameID) throws DataAccessException {
+        gameDAO.updateGame(clientColor,username,gameID);
     }
 
     public GameData addGame(String gameName){
