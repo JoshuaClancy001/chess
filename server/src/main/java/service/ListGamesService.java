@@ -2,8 +2,8 @@ package service;
 
 import dataAccess.DataAccessException;
 import model.AuthData;
-import Request.ListGamesRequest;
-import Result.ListGamesResult;
+import server.Request.ListGamesRequest;
+import server.Result.ListGamesResult;
 
 public class ListGamesService extends Services {
 

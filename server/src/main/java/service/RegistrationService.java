@@ -1,7 +1,7 @@
 package service;
 
-import Request.RegisterRequest;
-import Result.RegisterResult;
+import server.Request.RegisterRequest;
+import server.Result.RegisterResult;
 import dataAccess.DataAccessException;
 import model.UserData;
 

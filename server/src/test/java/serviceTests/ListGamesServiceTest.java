@@ -1,12 +1,9 @@
 package serviceTests;
 
-import Request.ListGamesRequest;
-import Request.RegisterRequest;
-import Result.ListGamesResult;
-import Result.RegisterResult;
-import chess.ChessGame;
+import server.Request.ListGamesRequest;
+import server.Request.RegisterRequest;
+import server.Result.ListGamesResult;
 import dataAccess.DataAccessException;
-import dataAccess.GameDAO;
 import dataAccess.MemoryDAO.MemoryAuthDAO;
 import model.GameData;
 import org.junit.jupiter.api.AfterAll;
@@ -15,13 +12,10 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import service.ClearApplicationService;
 import service.ListGamesService;
-import service.LogoutService;
 import service.Services;
 
 import java.util.ArrayList;
 import java.util.UUID;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 class ListGamesServiceTest extends Services {
 

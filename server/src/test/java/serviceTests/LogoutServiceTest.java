@@ -1,11 +1,8 @@
 package serviceTests;
 
-import Request.LoginRequest;
-import Request.LogoutRequest;
-import Request.RegisterRequest;
-import Result.LoginResult;
-import Result.LogoutResult;
-import dataAccess.AuthDAO;
+import server.Request.LogoutRequest;
+import server.Request.RegisterRequest;
+import server.Result.LogoutResult;
 import dataAccess.DataAccessException;
 import dataAccess.MemoryDAO.MemoryAuthDAO;
 import model.AuthData;
@@ -14,14 +11,11 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import service.ClearApplicationService;
-import service.LoginService;
 import service.LogoutService;
 import service.Services;
 
 import java.util.ArrayList;
 import java.util.UUID;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 class LogoutServiceTest extends Services {
 

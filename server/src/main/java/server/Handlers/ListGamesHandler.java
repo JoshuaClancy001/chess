@@ -1,10 +1,10 @@
-package Handlers;
+package server.Handlers;
 
 import com.google.gson.Gson;
 import dataAccess.DataAccessException;
 import service.ListGamesService;
-import Request.ListGamesRequest;
-import Result.ListGamesResult;
+import server.Request.ListGamesRequest;
+import server.Result.ListGamesResult;
 import spark.Request;
 import spark.Response;
 

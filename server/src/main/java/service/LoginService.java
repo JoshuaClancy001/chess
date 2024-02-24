@@ -1,8 +1,8 @@
 package service;
 
 import dataAccess.DataAccessException;
-import Request.LoginRequest;
-import Result.LoginResult;
+import server.Request.LoginRequest;
+import server.Result.LoginResult;
 
 public class LoginService extends  Services{
     private LoginRequest login;

@@ -1,10 +1,10 @@
-package Handlers;
+package server.Handlers;
 
 import com.google.gson.Gson;
 import dataAccess.DataAccessException;
 import service.LogoutService;
-import Request.LogoutRequest;
-import Result.LogoutResult;
+import server.Request.LogoutRequest;
+import server.Result.LogoutResult;
 import spark.Request;
 import spark.Response;
 

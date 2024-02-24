@@ -1,20 +1,15 @@
 package serviceTests;
 
-import Request.LoginRequest;
-import Request.RegisterRequest;
-import Result.ClearApplicationResult;
+import server.Request.RegisterRequest;
 import dataAccess.MemoryDAO.MemoryAuthDAO;
 import model.AuthData;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import service.ClearApplicationService;
-import service.LogoutService;
 import service.Services;
 
 import java.util.ArrayList;
 import java.util.UUID;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 class ClearApplicationServiceTest extends Services {
 

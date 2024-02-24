@@ -1,11 +1,10 @@
 package serviceTests;
 
-import Request.CreateGameRequest;
-import Request.JoinGameRequest;
-import Request.ListGamesRequest;
-import Request.RegisterRequest;
-import Result.CreateGameResult;
-import Result.JoinGameResult;
+import server.Request.CreateGameRequest;
+import server.Request.JoinGameRequest;
+import server.Request.RegisterRequest;
+import server.Result.CreateGameResult;
+import server.Result.JoinGameResult;
 import dataAccess.DataAccessException;
 import dataAccess.MemoryDAO.MemoryAuthDAO;
 import org.junit.jupiter.api.AfterAll;
@@ -15,8 +14,6 @@ import org.junit.jupiter.api.Test;
 import service.*;
 
 import java.util.UUID;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 class JoinGamesServiceTest extends Services {
     String authToken = UUID.randomUUID().toString();

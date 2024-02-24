@@ -1,9 +1,9 @@
 package serviceTests;
 
-import Request.LoginRequest;
-import Request.RegisterRequest;
-import Result.LoginResult;
-import Result.RegisterResult;
+import server.Request.LoginRequest;
+import server.Request.RegisterRequest;
+import server.Result.LoginResult;
+import server.Result.RegisterResult;
 import dataAccess.DataAccessException;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
@@ -13,8 +13,6 @@ import service.LoginService;
 import service.RegistrationService;
 
 import java.util.UUID;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 class LoginServiceTest {
 

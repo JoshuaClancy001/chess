@@ -1,4 +1,4 @@
-package Handlers;
+package server.Handlers;
 import service.ClearApplicationService;
 import spark.Request;
 import spark.Response;

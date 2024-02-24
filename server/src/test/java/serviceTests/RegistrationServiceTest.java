@@ -1,7 +1,7 @@
 package serviceTests;
 
-import Request.RegisterRequest;
-import Result.RegisterResult;
+import server.Request.RegisterRequest;
+import server.Result.RegisterResult;
 import dataAccess.DataAccessException;
 import model.UserData;
 import org.junit.jupiter.api.AfterAll;
@@ -15,8 +15,6 @@ import dataAccess.MemoryDAO.MemoryUserDAO;
 
 import java.util.ArrayList;
 import java.util.UUID;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 class RegistrationServiceTest extends Services {
 
