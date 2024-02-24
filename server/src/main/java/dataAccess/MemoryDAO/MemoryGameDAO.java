@@ -12,6 +12,9 @@ public class MemoryGameDAO implements GameDAO {
 
     private int gameID = 1;
 
+    public void resetGameID(){
+        this.gameID = 1;
+    }
     @Override
     public GameData addGame(String gameName) {
 
@@ -56,11 +59,6 @@ public class MemoryGameDAO implements GameDAO {
             throw new DataAccessException("no gameID");
         }
 
-
-    }
-
-    @Override
-    public void deleteGame() {
 
     }
 

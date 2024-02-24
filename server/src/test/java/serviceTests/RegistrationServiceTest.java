@@ -4,9 +4,11 @@ import Request.RegisterRequest;
 import Result.RegisterResult;
 import dataAccess.DataAccessException;
 import model.UserData;
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Assertions;
+import service.ClearApplicationService;
 import service.RegistrationService;
 import service.Services;
 import dataAccess.MemoryDAO.MemoryUserDAO;
@@ -77,5 +79,9 @@ class RegistrationServiceTest extends Services {
 
         Assertions.assertThrows(DataAccessException.class,() -> new RegistrationService(request).register(request));
 
+    }
+    @AfterAll
+    static void tearDown(){
+        new ClearApplicationService().clearApplication();
     }
 }

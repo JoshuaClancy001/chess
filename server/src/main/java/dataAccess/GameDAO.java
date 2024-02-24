@@ -12,7 +12,5 @@ public interface GameDAO{
 
     public void updateGame(String clientColor,String username,int gameID)throws DataAccessException;
 
-    public void deleteGame()throws DataAccessException;
-
     public void clearGames();
 }

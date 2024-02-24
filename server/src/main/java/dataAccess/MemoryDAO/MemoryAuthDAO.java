@@ -3,6 +3,7 @@ package dataAccess.MemoryDAO;
 import dataAccess.AuthDAO;
 import dataAccess.DataAccessException;
 import model.AuthData;
+import model.UserData;
 
 import java.util.ArrayList;
 import java.util.UUID;
@@ -10,6 +11,14 @@ import java.util.UUID;
 public class MemoryAuthDAO implements AuthDAO {
 
     private static ArrayList<AuthData> authTokens = new ArrayList<>();
+
+    public ArrayList<AuthData> getUsers(){
+        return this.authTokens;
+    }
+
+    public void addAuth(String username,String authToken){
+        authTokens.add(new AuthData(username,authToken));
+    }
 
     @Override
     public String createAuth(String username) {
@@ -36,11 +45,6 @@ public class MemoryAuthDAO implements AuthDAO {
             return null;
         }
         return null;
-    }
-
-    @Override
-    public void updateAuth() {
-
     }
 
     @Override
