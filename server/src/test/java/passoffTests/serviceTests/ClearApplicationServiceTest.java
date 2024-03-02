@@ -1,4 +1,4 @@
-package serviceTests;
+package passoffTests.serviceTests;
 
 import server.Request.RegisterRequest;
 import dataAccess.MemoryDAO.MemoryAuthDAO;

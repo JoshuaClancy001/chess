@@ -43,7 +43,7 @@ public class ChessMove {
         return this.promotionPiece;
     }
 
-    public String to_string(){
+    public String toString(){
         return "(" + getStartPosition().getRow() + "," + getStartPosition().getColumn() + ") -> " +"(" + getEndPosition().getRow() + "," + getEndPosition().getColumn() + ")" + "(" + getPromotionPiece() + ")";
     }
 

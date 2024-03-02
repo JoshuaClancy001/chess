@@ -1,9 +1,8 @@
 package dataAccess.MemoryDAO;
 
-import dataAccess.AuthDAO;
+import dataAccess.DAO.AuthDAO;
 import dataAccess.DataAccessException;
 import model.AuthData;
-import model.UserData;
 
 import java.util.ArrayList;
 import java.util.UUID;

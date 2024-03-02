@@ -1,4 +1,4 @@
-package serviceTests;
+package passoffTests.serviceTests;
 
 import server.Request.ListGamesRequest;
 import server.Request.RegisterRequest;

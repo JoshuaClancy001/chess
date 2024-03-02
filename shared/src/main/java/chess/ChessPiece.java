@@ -56,22 +56,22 @@ public class ChessPiece {
         MovementRules rules = new MovementRules();
 
         if (piece.type == PieceType.KING){
-            return rules.KingMoves(board,myPosition);
+            return rules.kingMoves(board,myPosition);
         }
         else if (piece.type == PieceType.QUEEN){
-            return rules.QueenMoves(board,myPosition);
+            return rules.queenMoves(board,myPosition);
         }
         else if (piece.type == PieceType.ROOK){
-            return rules.RookMoves(board,myPosition);
+            return rules.rookMoves(board,myPosition);
         }
         else if (piece.type == PieceType.BISHOP){
-            return rules.BishopMoves(board,myPosition);
+            return rules.bishopMoves(board,myPosition);
         }
         else if (piece.type == PieceType.KNIGHT){
-            return rules.KnightMoves(board,myPosition);
+            return rules.knightMoves(board,myPosition);
         }
         else if (piece.type == PieceType.PAWN){
-            return rules.PawnMoves(board,myPosition);
+            return rules.pawnMoves(board,myPosition);
         }
         return null;
     }
