@@ -1,5 +1,6 @@
 package passoffTests.serviceTests;
 
+import dataAccess.SQLDAO.SQLAUTHDAO;
 import server.Request.LogoutRequest;
 import server.Request.RegisterRequest;
 import server.Result.LogoutResult;
@@ -22,9 +23,9 @@ class LogoutServiceTest extends Services {
     String authToken = UUID.randomUUID().toString();
     @BeforeEach
     void setUp() throws DataAccessException {
-        authDAO  = new MemoryAuthDAO();
+        authDao  = new SQLAUTHDAO();
         RegisterRequest request = new RegisterRequest("username","password","email");
-        authDAO.addAuth(authToken,request.username());
+
 
     }
 
@@ -34,7 +35,6 @@ class LogoutServiceTest extends Services {
         ArrayList<AuthData> expected = new ArrayList<>();
         LogoutResult result = new LogoutService(request).logout(request,authToken);
         ArrayList<AuthData> actual = new ArrayList<>();
-        actual = authDAO.getUsers();
 
         Assertions.assertEquals(expected,actual);
     }

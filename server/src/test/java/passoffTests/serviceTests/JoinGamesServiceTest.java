@@ -1,5 +1,6 @@
 package passoffTests.serviceTests;
 
+import dataAccess.SQLDAO.SQLAUTHDAO;
 import server.Request.CreateGameRequest;
 import server.Request.JoinGameRequest;
 import server.Request.RegisterRequest;
@@ -20,9 +21,8 @@ class JoinGamesServiceTest extends Services {
     int gameID;
     @BeforeEach
     void setUp() throws DataAccessException {
-        authDAO  = new MemoryAuthDAO();
+        authDao  = new SQLAUTHDAO();
         RegisterRequest request = new RegisterRequest("username","password","email");
-        authDAO.addAuth(authToken,request.username());
         CreateGameRequest createGameRequest = new CreateGameRequest(authToken,"game1");
         CreateGameResult createGameResult = new CreateGamesService(createGameRequest).createGame(authToken,createGameRequest);
         gameID = createGameResult.gameID();

@@ -1,5 +1,6 @@
 package passoffTests.serviceTests;
 
+import dataAccess.SQLDAO.SQLAUTHDAO;
 import server.Request.ListGamesRequest;
 import server.Request.RegisterRequest;
 import server.Result.ListGamesResult;
@@ -22,17 +23,16 @@ class ListGamesServiceTest extends Services {
     String authToken = UUID.randomUUID().toString();
     @BeforeEach
     void setUp() throws DataAccessException {
-        authDAO  = new MemoryAuthDAO();
+        authDao  = new SQLAUTHDAO();
         RegisterRequest request = new RegisterRequest("username","password","email");
-        authDAO.addAuth(authToken,request.username());
 
     }
 
     @Test
     void listGamesSuccess() throws DataAccessException {
         ListGamesRequest request = new ListGamesRequest(authToken);
-        gameDAO.addGame("game1");
-        ArrayList<GameData> expected = gameDAO.readGame();
+        gameDao.addGame("game1");
+        ArrayList<GameData> expected = gameDao.readGame();
         ListGamesResult result = new ListGamesService(request).listGames(authToken,request);
 
         Assertions.assertEquals(expected,result.games());

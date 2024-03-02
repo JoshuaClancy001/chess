@@ -1,37 +1,37 @@
 package passoffTests.serviceTests;
 
+import dataAccess.SQLDAO.SQLAUTHDAO;
 import server.Request.CreateGameRequest;
 import server.Request.RegisterRequest;
 import server.Result.CreateGameResult;
 import dataAccess.DataAccessException;
-import dataAccess.MemoryDAO.MemoryAuthDAO;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import server.Result.RegisterResult;
 import service.ClearApplicationService;
 import service.CreateGamesService;
+import service.RegistrationService;
 import service.Services;
 
-import java.util.UUID;
-
 class CreateGamesServiceTest extends Services {
-    String authToken = UUID.randomUUID().toString();
+    String authToken;
     int gameID = 1;
 
     @BeforeEach
     void setUp() throws DataAccessException {
-        gameDAO.clearGames();
+        gameDao.clearGames();
         userDao.clearUsers();
-        authDAO  = new MemoryAuthDAO();
+        authDao  = new SQLAUTHDAO();
         RegisterRequest request = new RegisterRequest("username","password","email");
-        authDAO.addAuth(authToken,request.username());
+        RegisterResult result = new RegistrationService(request).register(request);
+        authToken = result.authToken();
     }
 
     @Test
     void createGameSuccess() throws DataAccessException {
-        gameDAO.clearGames();
-        gameDAO.resetGameID();
+        gameDao.clearGames();
         CreateGameRequest request = new CreateGameRequest(authToken,"game1");
         CreateGameResult result = new CreateGamesService(request).createGame(authToken,request);
         int actual = result.gameID();
