@@ -8,7 +8,8 @@ import model.UserData;
 public class RegistrationService extends Services{
     private RegisterRequest register;
 
-    public RegistrationService(RegisterRequest request) {
+    public RegistrationService(RegisterRequest request) throws DataAccessException {
+        super();
         this.register = request;
     }
 

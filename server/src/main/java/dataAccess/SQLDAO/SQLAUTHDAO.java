@@ -18,10 +18,10 @@ public class SQLAUTHDAO implements AuthDAO {
 
     private final String[] createStatements = {
             """
-            CREATE TABLE IF NOT EXISTS  USERDAO (
+            CREATE TABLE IF NOT EXISTS  AUTHDAO (
               `authToken` varchar(256) NOT NULL,
               `username` varchar(256) NOT NULL,
-              PRIMARY KEY (`username`)
+              FOREIGN KEY (`username`)
             )
             """
     };
@@ -36,8 +36,8 @@ public class SQLAUTHDAO implements AuthDAO {
                     preparedStatement.executeUpdate();
                 }
             }
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
+        } catch (SQLException ex) {
+            throw new DataAccessException(String.format("Unable to configure database: %s", ex.getMessage()));
         }
     }
     @Override

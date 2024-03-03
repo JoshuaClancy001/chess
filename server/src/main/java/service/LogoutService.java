@@ -9,7 +9,7 @@ public class LogoutService extends Services {
 
     private LogoutRequest logout;
 
-    public LogoutService(LogoutRequest logout) {
+    public LogoutService(LogoutRequest logout) throws DataAccessException {
         this.logout = logout;
     }
     public LogoutResult logout(LogoutRequest logoutRequest, String authToken) throws DataAccessException{

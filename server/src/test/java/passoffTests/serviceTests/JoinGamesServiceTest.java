@@ -21,7 +21,7 @@ class JoinGamesServiceTest extends Services {
     int gameID;
     @BeforeEach
     void setUp() throws DataAccessException {
-        authDao  = new SQLAUTHDAO();
+        authDao  = new MemoryAuthDAO();
         RegisterRequest request = new RegisterRequest("username","password","email");
         CreateGameRequest createGameRequest = new CreateGameRequest(authToken,"game1");
         CreateGameResult createGameResult = new CreateGamesService(createGameRequest).createGame(authToken,createGameRequest);
@@ -45,7 +45,7 @@ class JoinGamesServiceTest extends Services {
     }
 
     @AfterAll
-    static void tearDown(){
+    static void tearDown() throws DataAccessException {
         new ClearApplicationService().clearApplication();
     }
 }

@@ -4,10 +4,12 @@ import dataAccess.DataAccessException;
 import server.Request.LoginRequest;
 import server.Result.LoginResult;
 
+import javax.xml.crypto.Data;
+
 public class LoginService extends  Services{
     private LoginRequest login;
 
-    public LoginService(LoginRequest login) {
+    public LoginService(LoginRequest login) throws DataAccessException {
         this.login = login;
     }
     public LoginResult login(LoginRequest loginRequest) throws DataAccessException{

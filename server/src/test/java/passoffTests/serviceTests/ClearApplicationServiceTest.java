@@ -19,7 +19,7 @@ class ClearApplicationServiceTest extends Services {
 
     @Test
     void clearApplication() throws DataAccessException {
-        authDao  = new SQLAUTHDAO();
+        authDao  = new MemoryAuthDAO();
         RegisterRequest request = new RegisterRequest("username","password","email");
         ArrayList<AuthData> expected = new ArrayList<>();
         new ClearApplicationService().clearApplication();

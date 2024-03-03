@@ -1,5 +1,6 @@
 package passoffTests.serviceTests;
 
+import dataAccess.MemoryDAO.MemoryAuthDAO;
 import dataAccess.SQLDAO.SQLAUTHDAO;
 import server.Request.CreateGameRequest;
 import server.Request.RegisterRequest;
@@ -23,7 +24,7 @@ class CreateGamesServiceTest extends Services {
     void setUp() throws DataAccessException {
         gameDao.clearGames();
         userDao.clearUsers();
-        authDao  = new SQLAUTHDAO();
+        authDao  = new MemoryAuthDAO();
         RegisterRequest request = new RegisterRequest("username","password","email");
         RegisterResult result = new RegistrationService(request).register(request);
         authToken = result.authToken();
@@ -50,7 +51,7 @@ class CreateGamesServiceTest extends Services {
 
     }
     @AfterAll
-    static void tearDown(){
+    static void tearDown() throws DataAccessException {
         new ClearApplicationService().clearApplication();
     }
 }

@@ -8,15 +8,6 @@ public class Main {
         System.out.println("♕ 240 Chess Server: " + piece);
 
         new Server().run(8080);
-/*
-        RegisterRequest registerRequest = new RegisterRequest("username","password","email");
-        RegisterRequest registerRequest2 = new RegisterRequest("username2","password2","email2");
-        RegistrationService registrationService = new RegistrationService(registerRequest);
-        //ClearApplicationService clearApplicationService = new ClearApplicationService();
-        RegisterResult registerResult = registrationService.register(registerRequest);
-        registrationService.register(registerRequest2);
-        //clearApplicationService.clearApplication();
-        */
 
     }
 }

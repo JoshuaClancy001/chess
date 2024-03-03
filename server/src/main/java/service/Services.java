@@ -1,8 +1,9 @@
 package service;
 
 import dataAccess.DataAccessException;
-import dataAccess.SQLDAO.SQLAUTHDAO;
-import dataAccess.SQLDAO.SQLGAMEDAO;
+import dataAccess.MemoryDAO.MemoryAuthDAO;
+import dataAccess.MemoryDAO.MemoryGameDAO;
+import dataAccess.MemoryDAO.MemoryUserDAO;
 import dataAccess.SQLDAO.SQLUSERDAO;
 import model.AuthData;
 import model.GameData;
@@ -10,7 +11,6 @@ import model.GameData;
 import java.util.ArrayList;
 
 public class Services {
-
     static protected SQLUSERDAO userDao;
 
     static {
@@ -21,25 +21,8 @@ public class Services {
         }
     }
 
-    static protected SQLAUTHDAO authDao;
-
-    static {
-        try {
-            authDao = new SQLAUTHDAO();
-        } catch (DataAccessException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    static protected SQLGAMEDAO gameDao;
-
-    static {
-        try {
-            gameDao = new SQLGAMEDAO();
-        } catch (DataAccessException e) {
-            throw new RuntimeException(e);
-        }
-    }
+    static protected MemoryAuthDAO authDao = new MemoryAuthDAO();
+    static protected MemoryGameDAO gameDao = new MemoryGameDAO();
 
     public String createAuth(String username){
         String auth = authDao.createAuth(username);
@@ -54,7 +37,7 @@ public class Services {
         return gameDao.addGame(gameName);
     }
 
-    public ArrayList<GameData> listGames() throws DataAccessException {
+    public ArrayList<GameData> listGames(){
         return gameDao.readGame();
     }
 

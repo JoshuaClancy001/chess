@@ -9,7 +9,7 @@ public class JoinGamesService extends Services {
 
     private JoinGameRequest joinGameRequest;
 
-    public JoinGamesService(JoinGameRequest joinGameRequest){
+    public JoinGamesService(JoinGameRequest joinGameRequest) throws DataAccessException{
         this.joinGameRequest = joinGameRequest;
     }
     public JoinGameResult joinGame(String authToken, JoinGameRequest joinGameRequest)throws DataAccessException {

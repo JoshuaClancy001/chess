@@ -9,7 +9,7 @@ public class ListGamesService extends Services {
 
     private ListGamesRequest listGames;
 
-    public ListGamesService(ListGamesRequest listGames) {
+    public ListGamesService(ListGamesRequest listGames) throws DataAccessException{
         this.listGames = listGames;
     }
     public ListGamesResult listGames(String authToken, ListGamesRequest listGamesRequest)throws DataAccessException{

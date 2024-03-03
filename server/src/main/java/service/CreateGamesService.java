@@ -10,7 +10,7 @@ public class CreateGamesService extends Services {
 
     CreateGameRequest createGameRequest;
 
-    public CreateGamesService(CreateGameRequest createGame){
+    public CreateGamesService(CreateGameRequest createGame)throws DataAccessException{
         this.createGameRequest = createGame;
     }
 

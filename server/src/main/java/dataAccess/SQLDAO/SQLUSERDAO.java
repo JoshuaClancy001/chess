@@ -5,6 +5,9 @@ import dataAccess.DataAccessException;
 import dataAccess.DatabaseManager;
 import model.UserData;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class SQLUSERDAO implements UserDAO {
@@ -44,12 +47,44 @@ public class SQLUSERDAO implements UserDAO {
 
     @Override
     public void createUser(UserData player) throws DataAccessException {
+        String sql = "update userData " +
+                "set username = ?, password = ?, email = ?";
+    try (var connection = DatabaseManager.getConnection()) {
+        try(PreparedStatement stmt = connection.prepareStatement(sql)) {
+            stmt.setString(1, player.username());
+            stmt.setString(2, player.password());
+            stmt.setString(3, player.email());
+
+            if (stmt.executeUpdate() == 1) {
+                System.out.println("Updated user: " + player.username());
+            }
+            else {
+                System.out.println(
+                        "Failed to update user " + player.username());
+            }
+        }
+        } catch(SQLException ex) {
+            // ERROR
+        }
 
     }
 
     @Override
     public String readUser(String username, String password) throws DataAccessException {
-        return null;
+        String sql = "select * from userData where username = ?";
+        try (var connection = DatabaseManager.getConnection()) {
+            try(PreparedStatement stmt = connection.prepareStatement(sql)) {
+                ResultSet resultSet = stmt.executeQuery(sql);
+                if (resultSet.wasNull()){
+                    return username;
+                }
+                else{
+                    return null;
+                }
+            }
+        } catch(SQLException ex) {
+            return null;
+        }
     }
 
     @Override
