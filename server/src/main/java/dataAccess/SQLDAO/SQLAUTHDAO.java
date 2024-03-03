@@ -20,8 +20,7 @@ public class SQLAUTHDAO implements AuthDAO {
             """
             CREATE TABLE IF NOT EXISTS  AUTHDAO (
               `authToken` varchar(256) NOT NULL,
-              `username` varchar(256) NOT NULL,
-              FOREIGN KEY (`username`)
+              `username` varchar(256) NOT NULL
             )
             """
     };

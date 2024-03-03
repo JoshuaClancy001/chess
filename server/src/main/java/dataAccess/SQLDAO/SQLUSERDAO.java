@@ -20,7 +20,7 @@ public class SQLUSERDAO implements UserDAO {
 
     private final String[] createStatements = {
             """
-            CREATE TABLE IF NOT EXISTS  USERDAO (
+            CREATE TABLE IF NOT EXISTS  USERDATA (
               `username` varchar(256) NOT NULL,
               `password` varchar(256) NOT NULL,
               `email` varchar(256) NOT NULL,
@@ -46,7 +46,7 @@ public class SQLUSERDAO implements UserDAO {
 
     @Override
     public void createUser(UserData player) throws DataAccessException {
-        String sql = "INSERT INTO userData (username, password, email) VALUES (?, ?, ?)";
+        String sql = "INSERT INTO USERDATA (username, password, email) VALUES (?, ?, ?)";
         try (var connection = DatabaseManager.getConnection()) {
             try (PreparedStatement stmt = connection.prepareStatement(sql)) {
                 stmt.setString(1, player.username());
@@ -54,10 +54,9 @@ public class SQLUSERDAO implements UserDAO {
                 stmt.setString(3, player.email());
 
                 if (stmt.executeUpdate() == 1) {
-                    System.out.println("Updated user: " + player.username());
+                    //System.out.println("Updated user: " + player.username());
                 } else {
-                    System.out.println(
-                            "Failed to update user " + player.username());
+                    //System.out.println("Failed to update user " + player.username());
                 }
             }
         } catch (SQLException ex) {
@@ -75,6 +74,9 @@ public class SQLUSERDAO implements UserDAO {
                 ResultSet resultSet = stmt.executeQuery();
 
                 if (resultSet.next()) {
+                    if(!resultSet.getString("password").equals(password)){
+                        return "Wrong Password";
+                    }
                     return resultSet.getString("username"); // Return the username if found
                 } else {
                     return null; // Return null if the username is not found
@@ -86,7 +88,7 @@ public class SQLUSERDAO implements UserDAO {
     }
 
     @Override
-    public void clearUsers() throws DataAccessException {
+    public void clearUsers()throws DataAccessException{
         String sql = "truncate userData";
         try (var connection = DatabaseManager.getConnection()) {
             try (PreparedStatement stmt = connection.prepareStatement(sql)) {
