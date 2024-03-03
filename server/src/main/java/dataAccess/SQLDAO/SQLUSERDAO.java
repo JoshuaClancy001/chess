@@ -13,7 +13,6 @@ import java.sql.SQLException;
 public class SQLUSERDAO implements UserDAO {
 
 
-
     public SQLUSERDAO() throws DataAccessException {
         configureDatabase();
     }
@@ -47,23 +46,21 @@ public class SQLUSERDAO implements UserDAO {
 
     @Override
     public void createUser(UserData player) throws DataAccessException {
-        String sql = "update userData " +
-                "set username = ?, password = ?, email = ?";
-    try (var connection = DatabaseManager.getConnection()) {
-        try(PreparedStatement stmt = connection.prepareStatement(sql)) {
-            stmt.setString(1, player.username());
-            stmt.setString(2, player.password());
-            stmt.setString(3, player.email());
+        String sql = "INSERT INTO userData (username, password, email) VALUES (?, ?, ?)";
+        try (var connection = DatabaseManager.getConnection()) {
+            try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+                stmt.setString(1, player.username());
+                stmt.setString(2, player.password());
+                stmt.setString(3, player.email());
 
-            if (stmt.executeUpdate() == 1) {
-                System.out.println("Updated user: " + player.username());
+                if (stmt.executeUpdate() == 1) {
+                    System.out.println("Updated user: " + player.username());
+                } else {
+                    System.out.println(
+                            "Failed to update user " + player.username());
+                }
             }
-            else {
-                System.out.println(
-                        "Failed to update user " + player.username());
-            }
-        }
-        } catch(SQLException ex) {
+        } catch (SQLException ex) {
             // ERROR
         }
 
@@ -73,22 +70,31 @@ public class SQLUSERDAO implements UserDAO {
     public String readUser(String username, String password) throws DataAccessException {
         String sql = "select * from userData where username = ?";
         try (var connection = DatabaseManager.getConnection()) {
-            try(PreparedStatement stmt = connection.prepareStatement(sql)) {
-                ResultSet resultSet = stmt.executeQuery(sql);
-                if (resultSet.wasNull()){
-                    return username;
-                }
-                else{
-                    return null;
+            try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+                stmt.setString(1, username);
+                ResultSet resultSet = stmt.executeQuery();
+
+                if (resultSet.next()) {
+                    return resultSet.getString("username"); // Return the username if found
+                } else {
+                    return null; // Return null if the username is not found
                 }
             }
-        } catch(SQLException ex) {
-            return null;
+        } catch (SQLException ex) {
+            throw new DataAccessException("read user fail");
         }
     }
 
     @Override
-    public void clearUsers() {
+    public void clearUsers() throws DataAccessException {
+        String sql = "truncate userData";
+        try (var connection = DatabaseManager.getConnection()) {
+            try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+                stmt.execute();
+            }
 
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

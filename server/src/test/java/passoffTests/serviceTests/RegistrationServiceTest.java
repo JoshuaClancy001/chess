@@ -80,7 +80,7 @@ class RegistrationServiceTest extends Services {
 
     }
     @AfterAll
-    static void tearDown(){
+    static void tearDown() throws DataAccessException {
         new ClearApplicationService().clearApplication();
     }
 }

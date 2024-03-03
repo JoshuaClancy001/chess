@@ -9,6 +9,6 @@ public interface UserDAO {
 
     String readUser(String username, String password) throws DataAccessException;
 
-    public void clearUsers();
+    public void clearUsers() throws DataAccessException;
 
 }
