@@ -24,7 +24,7 @@ class CreateGamesServiceTest extends Services {
     void setUp() throws DataAccessException {
         gameDao.clearGames();
         userDao.clearUsers();
-        authDao  = new MemoryAuthDAO();
+        authDao  = new SQLAUTHDAO();
         RegisterRequest request = new RegisterRequest("username","password","email");
         RegisterResult result = new RegistrationService(request).register(request);
         authToken = result.authToken();

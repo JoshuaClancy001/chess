@@ -4,6 +4,7 @@ import dataAccess.DAO.UserDAO;
 import dataAccess.DataAccessException;
 import dataAccess.DatabaseManager;
 import model.UserData;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -49,8 +50,12 @@ public class SQLUSERDAO implements UserDAO {
         String sql = "INSERT INTO USERDATA (username, password, email) VALUES (?, ?, ?)";
         try (var connection = DatabaseManager.getConnection()) {
             try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+
+                BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+                String hashedPassword = encoder.encode(player.password());
+
                 stmt.setString(1, player.username());
-                stmt.setString(2, player.password());
+                stmt.setString(2, hashedPassword);
                 stmt.setString(3, player.email());
 
                 if (stmt.executeUpdate() == 1) {
@@ -73,8 +78,10 @@ public class SQLUSERDAO implements UserDAO {
                 stmt.setString(1, username);
                 ResultSet resultSet = stmt.executeQuery();
 
+                BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+
                 if (resultSet.next()) {
-                    if(!resultSet.getString("password").equals(password)){
+                    if (!encoder.matches(password,resultSet.getString("password"))) {
                         return "Wrong Password";
                     }
                     return resultSet.getString("username"); // Return the username if found

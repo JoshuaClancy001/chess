@@ -23,7 +23,7 @@ class ListGamesServiceTest extends Services {
     String authToken = UUID.randomUUID().toString();
     @BeforeEach
     void setUp() throws DataAccessException {
-        authDao  = new MemoryAuthDAO();
+        authDao  = new SQLAUTHDAO();
         RegisterRequest request = new RegisterRequest("username","password","email");
 
     }

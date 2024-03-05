@@ -21,7 +21,7 @@ class JoinGamesServiceTest extends Services {
     int gameID;
     @BeforeEach
     void setUp() throws DataAccessException {
-        authDao  = new MemoryAuthDAO();
+        authDao  = new SQLAUTHDAO();
         RegisterRequest request = new RegisterRequest("username","password","email");
         CreateGameRequest createGameRequest = new CreateGameRequest(authToken,"game1");
         CreateGameResult createGameResult = new CreateGamesService(createGameRequest).createGame(authToken,createGameRequest);
