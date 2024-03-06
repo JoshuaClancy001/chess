@@ -1,19 +1,17 @@
 package passoffTests.serviceTests;
 
 import dataAccess.SQLDAO.SQLAUTHDAO;
+import org.junit.jupiter.api.*;
+import server.Request.LoginRequest;
 import server.Request.LogoutRequest;
 import server.Request.RegisterRequest;
+import server.Result.LoginResult;
 import server.Result.LogoutResult;
 import dataAccess.DataAccessException;
 import dataAccess.MemoryDAO.MemoryAuthDAO;
 import model.AuthData;
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import service.ClearApplicationService;
-import service.LogoutService;
-import service.Services;
+import server.Result.RegisterResult;
+import service.*;
 
 import java.util.ArrayList;
 import java.util.UUID;
@@ -25,16 +23,18 @@ class LogoutServiceTest extends Services {
     void setUp() throws DataAccessException {
         authDao  = new SQLAUTHDAO();
         RegisterRequest request = new RegisterRequest("username","password","email");
-
+        RegisterResult registerResult = new RegistrationService(request).register(request);
+        LoginRequest loginRequest = new LoginRequest("username","password");
+        LoginResult loginResult = new LoginService(loginRequest).login(loginRequest);
+        authToken = loginResult.authToken();
 
     }
 
     @Test
     void logoutSuccess() throws DataAccessException {
         LogoutRequest request = new LogoutRequest(authToken);
-        ArrayList<AuthData> expected = new ArrayList<>();
-        LogoutResult result = new LogoutService(request).logout(request,authToken);
-        ArrayList<AuthData> actual = new ArrayList<>();
+        LogoutResult expected = new LogoutResult();
+        LogoutResult actual = new LogoutService(request).logout(request,authToken);
 
         Assertions.assertEquals(expected,actual);
     }
@@ -48,8 +48,8 @@ class LogoutServiceTest extends Services {
 
     }
 
-    @AfterAll
-    static void tearDown() throws DataAccessException {
+    @AfterEach
+    void tearDown() throws DataAccessException {
         new ClearApplicationService().clearApplication();
     }
 }

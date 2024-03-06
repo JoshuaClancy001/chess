@@ -1,8 +1,11 @@
 package passoffTests.serviceTests;
 
 import dataAccess.SQLDAO.SQLAUTHDAO;
+import dataAccess.SQLDAO.SQLGAMEDAO;
+import model.GameData;
 import server.Request.CreateGameRequest;
 import server.Request.JoinGameRequest;
+import server.Request.LoginRequest;
 import server.Request.RegisterRequest;
 import server.Result.CreateGameResult;
 import server.Result.JoinGameResult;
@@ -12,6 +15,8 @@ import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import server.Result.LoginResult;
+import server.Result.RegisterResult;
 import service.*;
 
 import java.util.UUID;
@@ -21,8 +26,11 @@ class JoinGamesServiceTest extends Services {
     int gameID;
     @BeforeEach
     void setUp() throws DataAccessException {
-        authDao  = new SQLAUTHDAO();
         RegisterRequest request = new RegisterRequest("username","password","email");
+        RegisterResult registerResult = new RegistrationService(request).register(request);
+        LoginRequest loginRequest = new LoginRequest("username","password");
+        LoginResult loginResult = new LoginService(loginRequest).login(loginRequest);
+        authToken = loginResult.authToken();
         CreateGameRequest createGameRequest = new CreateGameRequest(authToken,"game1");
         CreateGameResult createGameResult = new CreateGamesService(createGameRequest).createGame(authToken,createGameRequest);
         gameID = createGameResult.gameID();
@@ -38,8 +46,10 @@ class JoinGamesServiceTest extends Services {
     }
 
     @Test
-    void joinGameFailure(){
+    void joinGameFailure() throws DataAccessException {
         JoinGameRequest request = new JoinGameRequest("Wrong","WHITE",gameID);
+
+        //GameData game = new SQLGAMEDAO().readOneGame(gameID);
 
         Assertions.assertThrows(DataAccessException.class,()-> new JoinGamesService(request).joinGame("wrong",request));
     }
