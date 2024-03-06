@@ -1,5 +1,6 @@
 package dataAccessTests.serviceTests;
 
+import org.junit.jupiter.api.BeforeEach;
 import server.Request.LoginRequest;
 import server.Request.RegisterRequest;
 import server.Result.LoginResult;
@@ -16,8 +17,15 @@ import java.util.UUID;
 
 class LoginServiceTest {
 
+    @BeforeEach
+    void setUp() throws DataAccessException {
+        new ClearApplicationService().clearApplication();
+    }
+
     @Test
     void loginSuccess() throws DataAccessException {
+        RegisterRequest registerRequest = new RegisterRequest("username","password","email");
+        RegisterResult registerResult = new RegistrationService(registerRequest).register(registerRequest);
         LoginRequest request = new LoginRequest("username","password");
         String authToken = UUID.randomUUID().toString();
         LoginResult expected = new LoginResult("username",authToken);
