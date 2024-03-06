@@ -1,4 +1,4 @@
-package passoffTests.serviceTests;
+package dataAccessTests.serviceTests;
 
 import dataAccess.SQLDAO.SQLAUTHDAO;
 import org.junit.jupiter.api.*;
@@ -8,12 +8,9 @@ import server.Request.RegisterRequest;
 import server.Result.LoginResult;
 import server.Result.LogoutResult;
 import dataAccess.DataAccessException;
-import dataAccess.MemoryDAO.MemoryAuthDAO;
-import model.AuthData;
 import server.Result.RegisterResult;
 import service.*;
 
-import java.util.ArrayList;
 import java.util.UUID;
 
 class LogoutServiceTest extends Services {

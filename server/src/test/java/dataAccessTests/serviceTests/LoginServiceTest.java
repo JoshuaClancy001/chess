@@ -1,4 +1,4 @@
-package passoffTests.serviceTests;
+package dataAccessTests.serviceTests;
 
 import server.Request.LoginRequest;
 import server.Request.RegisterRequest;

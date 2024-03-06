@@ -1,6 +1,5 @@
-package passoffTests.serviceTests;
+package dataAccessTests.serviceTests;
 
-import dataAccess.MemoryDAO.MemoryAuthDAO;
 import dataAccess.SQLDAO.SQLAUTHDAO;
 import server.Request.CreateGameRequest;
 import server.Request.RegisterRequest;

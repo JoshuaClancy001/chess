@@ -1,12 +1,9 @@
-package passoffTests.serviceTests;
+package dataAccessTests.serviceTests;
 
 import dataAccess.DataAccessException;
-import dataAccess.SQLDAO.SQLAUTHDAO;
 import dataAccess.SQLDAO.SQLGAMEDAO;
 import model.GameData;
 import server.Request.RegisterRequest;
-import dataAccess.MemoryDAO.MemoryAuthDAO;
-import model.AuthData;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import service.ClearApplicationService;

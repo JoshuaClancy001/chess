@@ -1,8 +1,5 @@
-package passoffTests.serviceTests;
+package dataAccessTests.serviceTests;
 
-import dataAccess.SQLDAO.SQLAUTHDAO;
-import dataAccess.SQLDAO.SQLGAMEDAO;
-import model.GameData;
 import server.Request.CreateGameRequest;
 import server.Request.JoinGameRequest;
 import server.Request.LoginRequest;
@@ -10,7 +7,6 @@ import server.Request.RegisterRequest;
 import server.Result.CreateGameResult;
 import server.Result.JoinGameResult;
 import dataAccess.DataAccessException;
-import dataAccess.MemoryDAO.MemoryAuthDAO;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;

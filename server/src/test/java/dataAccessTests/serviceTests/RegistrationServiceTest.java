@@ -1,4 +1,4 @@
-package passoffTests.serviceTests;
+package dataAccessTests.serviceTests;
 
 import dataAccess.SQLDAO.SQLUSERDAO;
 import server.Request.RegisterRequest;
@@ -12,7 +12,6 @@ import org.junit.jupiter.api.Assertions;
 import service.ClearApplicationService;
 import service.RegistrationService;
 import service.Services;
-import dataAccess.MemoryDAO.MemoryUserDAO;
 
 import java.util.ArrayList;
 import java.util.UUID;
