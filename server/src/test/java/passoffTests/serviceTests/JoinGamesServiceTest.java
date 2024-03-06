@@ -26,6 +26,7 @@ class JoinGamesServiceTest extends Services {
     int gameID;
     @BeforeEach
     void setUp() throws DataAccessException {
+        new ClearApplicationService().clearApplication();
         RegisterRequest request = new RegisterRequest("username","password","email");
         RegisterResult registerResult = new RegistrationService(request).register(request);
         LoginRequest loginRequest = new LoginRequest("username","password");
