@@ -163,6 +163,25 @@ public class SQLGAMEDAO implements GameDAO {
 
     }
 
+
+    public void updateChessGame(int gameID,ChessGame game) throws DataAccessException {
+        var seserializer = new Gson();
+        String json = seserializer.toJson(game);
+        String sql = "UPDATE gameData SET chessGame = ? WHERE id = ?";
+
+        try (var connection = DatabaseManager.getConnection()){
+            try (PreparedStatement stmt = connection.prepareStatement(sql)){
+                stmt.setString(1,json);
+                stmt.setInt(2,gameID);
+
+                stmt.executeUpdate();
+            }
+        }catch (SQLException ex){
+            //error
+        }
+
+    }
+
     @Override
     public void clearGames() throws DataAccessException{
         String sql = "truncate gameData";

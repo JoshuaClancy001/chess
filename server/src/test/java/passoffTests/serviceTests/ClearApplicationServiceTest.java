@@ -2,6 +2,8 @@ package passoffTests.serviceTests;
 
 import dataAccess.DataAccessException;
 import dataAccess.SQLDAO.SQLAUTHDAO;
+import dataAccess.SQLDAO.SQLGAMEDAO;
+import model.GameData;
 import server.Request.RegisterRequest;
 import dataAccess.MemoryDAO.MemoryAuthDAO;
 import model.AuthData;
@@ -19,11 +21,15 @@ class ClearApplicationServiceTest extends Services {
 
     @Test
     void clearApplication() throws DataAccessException {
-        authDao  = new SQLAUTHDAO();
+        gameDao = new SQLGAMEDAO();
         RegisterRequest request = new RegisterRequest("username","password","email");
-        ArrayList<AuthData> expected = new ArrayList<>();
+        ArrayList<GameData> expected = new ArrayList<>();
+        gameDao.addGame("game1");
         new ClearApplicationService().clearApplication();
+        ArrayList<GameData> actual = gameDao.readGame();
 
-        //Assertions.assertEquals(expected,actual);
+
+
+        Assertions.assertEquals(expected,actual);
     }
 }
