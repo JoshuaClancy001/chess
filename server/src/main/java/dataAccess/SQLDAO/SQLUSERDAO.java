@@ -21,7 +21,7 @@ public class SQLUSERDAO implements UserDAO {
 
     private final String[] createStatements = {
             """
-            CREATE TABLE IF NOT EXISTS  USERDATA (
+            CREATE TABLE IF NOT EXISTS  userData (
               `username` varchar(256) NOT NULL,
               `password` varchar(256) NOT NULL,
               `email` varchar(256) NOT NULL,
@@ -47,7 +47,7 @@ public class SQLUSERDAO implements UserDAO {
 
     @Override
     public void createUser(UserData player) throws DataAccessException {
-        String sql = "INSERT INTO USERDATA (username, password, email) VALUES (?, ?, ?)";
+        String sql = "INSERT INTO userData (username, password, email) VALUES (?, ?, ?)";
         try (var connection = DatabaseManager.getConnection()) {
             try (PreparedStatement stmt = connection.prepareStatement(sql)) {
 

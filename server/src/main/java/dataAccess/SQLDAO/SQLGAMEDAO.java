@@ -24,7 +24,7 @@ public class SQLGAMEDAO implements GameDAO {
 
     private final String[] createStatements = {
             """
-            CREATE TABLE IF NOT EXISTS GAMEDATA (
+            CREATE TABLE IF NOT EXISTS gameData (
               `id` INT AUTO_INCREMENT PRIMARY KEY,
               `whiteUsername` varchar(256) NULL,
               `blackUsername` varchar(256) NULL,
@@ -58,7 +58,7 @@ public class SQLGAMEDAO implements GameDAO {
         var serializer = new Gson();
         var json = serializer.toJson(chessGame);
 
-        String sql = "INSERT INTO GAMEDATA (whiteUsername,blackUsername,gameName,chessGame) VALUES (?,?,?,?)";
+        String sql = "INSERT INTO gameData (whiteUsername,blackUsername,gameName,chessGame) VALUES (?,?,?,?)";
         try (var connection = DatabaseManager.getConnection()){
             try(PreparedStatement stmt = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)){
                 stmt.setString(1,null);
@@ -120,8 +120,7 @@ public class SQLGAMEDAO implements GameDAO {
                     String gameName = resultSet.getString("gameName");
                     var deserializer = new Gson();
                     ChessGame chessGame = deserializer.fromJson(resultSet.getString("chessGame"), ChessGame.class);
-                    GameData game = new GameData(gameID, whiteUsername, blackUsername, gameName, chessGame);
-                    return game;
+                return new GameData(gameID, whiteUsername, blackUsername, gameName, chessGame);
             }
         } catch (SQLException ex){
             System.out.println(ex.getMessage());

@@ -22,7 +22,7 @@ public class SQLAUTHDAO implements AuthDAO {
 
     private final String[] createStatements = {
             """
-            CREATE TABLE IF NOT EXISTS  AUTHDATA (
+            CREATE TABLE IF NOT EXISTS  authData (
               `authToken` varchar(256) NOT NULL,
               `username` varchar(256) NOT NULL,
               PRIMARY KEY (`authToken`)
@@ -47,7 +47,7 @@ public class SQLAUTHDAO implements AuthDAO {
     @Override
     public String createAuth(String username) throws DataAccessException {
         String authToken = UUID.randomUUID().toString();
-        String sql = "INSERT INTO AUTHDATA (authToken, username) VALUES (?, ?)";
+        String sql = "INSERT INTO authData (authToken, username) VALUES (?, ?)";
         try (var connection = DatabaseManager.getConnection()){
             try (PreparedStatement stmt = connection.prepareStatement(sql)){
                 stmt.setString(1, authToken);
@@ -90,7 +90,7 @@ public class SQLAUTHDAO implements AuthDAO {
 
     @Override
     public void deleteAuth(String authToken) throws DataAccessException {
-        String sql = "DELETE FROM AUTHDATA WHERE authToken = ?";
+        String sql = "DELETE FROM authData WHERE authToken = ?";
         try (var connection = DatabaseManager.getConnection()){
             try (PreparedStatement stmt = connection.prepareStatement(sql)){
                 stmt.setString(1, authToken);
