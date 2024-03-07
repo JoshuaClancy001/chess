@@ -1,69 +1,76 @@
 package dataAccessTests;
 
-import chess.*;
 import dataAccess.DataAccessException;
-import dataAccess.SQLDAO.SQLAUTHDAO;
-import dataAccess.SQLDAO.SQLGAMEDAO;
-import org.junit.jupiter.api.BeforeEach;
-import server.Request.CreateGameRequest;
-import server.Request.JoinGameRequest;
-import server.Request.LoginRequest;
-import server.Request.RegisterRequest;
-import dataAccess.MemoryDAO.MemoryAuthDAO;
-import model.AuthData;
+import dataAccess.SQLDAO.SQLUSERDAO;
+import model.UserData;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import server.Result.CreateGameResult;
-import server.Result.JoinGameResult;
-import server.Result.LoginResult;
-import server.Result.RegisterResult;
-import service.*;
 
-import java.util.ArrayList;
-import java.util.UUID;
+import java.sql.SQLException;
 
-class ChessGameStoreTests extends Services {
+class ChessGameStoreTests {
 
-    String authToken = UUID.randomUUID().toString();
+    SQLUSERDAO dao = new SQLUSERDAO();
+
+    ChessGameStoreTests() throws DataAccessException {
+    }
 
     @BeforeEach
-    void setUP() throws DataAccessException {
-        new ClearApplicationService().clearApplication();
-        RegisterRequest request = new RegisterRequest("username","password","email");
-        RegisterResult registerResult = new RegistrationService(request).register(request);
-        LoginRequest loginRequest = new LoginRequest("username","password");
-        LoginResult loginResult = new LoginService(loginRequest).login(loginRequest);
-        authToken = loginResult.authToken();
+    void setUp() throws DataAccessException {
+        dao.clearUsers();
     }
 
+    //create normal user
     @Test
-    void StoreInitialGame() throws DataAccessException{
-        SQLGAMEDAO gameDao = new SQLGAMEDAO();
-        ChessGame expected = new ChessGame();
-        CreateGameRequest createGameRequest = new CreateGameRequest(authToken,"game1");
-        CreateGameResult createGameResult = new CreateGamesService(createGameRequest).createGame(authToken,createGameRequest);
-        JoinGameRequest joinGameRequest = new JoinGameRequest(authToken,"WHITE",1);
-        ChessGame actual = gameDao.readOneGame(1).getGame();
-
+    void positiveCreateUser() throws DataAccessException,SQLException {
+        String actual;
+        String expected = "No Error Thrown";
+        try {
+            dao.createUser(new UserData("username","password","email"));
+            actual = "No Error Thrown";
+        } catch (DataAccessException e) {
+            actual = "Error Thrown: " + e.getMessage();
+        }
         Assertions.assertEquals(expected,actual);
     }
 
+    // username is null
     @Test
-    void StoreNewMove() throws DataAccessException, InvalidMoveException {
-        SQLGAMEDAO gameDao = new SQLGAMEDAO();
-        ChessGame expectedG = new ChessGame();
-        expectedG.setTeamTurn(ChessGame.TeamColor.WHITE);
-        ChessGame actualGame = new ChessGame();
-        actualGame.setTeamTurn(ChessGame.TeamColor.WHITE);
-        expectedG.makeMove(new ChessMove(new ChessPosition(2,1),new ChessPosition(3,1),null));
-        ChessBoard expected = expectedG.getBoard();
-        CreateGameRequest createGameRequest = new CreateGameRequest(authToken,"game1");
-        CreateGameResult createGameResult = new CreateGamesService(createGameRequest).createGame(authToken,createGameRequest);
-        JoinGameRequest joinGameRequest = new JoinGameRequest(authToken,"WHITE",1);
-        actualGame.makeMove(new ChessMove(new ChessPosition(2,1),new ChessPosition(3,1),null));
-        gameDao.updateChessGame(1,actualGame);
-        ChessBoard actual = gameDao.readOneGame(1).getGame().getBoard();
+    void negativeCreateUser() throws DataAccessException {
+
+        Assertions.assertThrows(DataAccessException.class,()->dao.createUser(new UserData(null,"password","email")));
+    }
+
+    @Test
+    void positiveReadUser() throws DataAccessException {
+        String expected = "username";
+        dao.createUser(new UserData("username","password","email"));
+        String actual = dao.readUser("username","password");
+        Assertions.assertEquals(expected,actual);
+
+    }
+
+    //Wrong Password
+    @Test
+    void negativeReadUser() throws DataAccessException {
+        String expected = "username";
+        dao.createUser(new UserData("username","password","email"));
+        String actual = dao.readUser("username","wrong");
+        Assertions.assertNotEquals(expected,actual);
+    }
+
+    @Test
+    void positiveClearUsers() throws DataAccessException {
+        String expected = null;
+        dao.createUser(new UserData("username","password","email"));
+        dao.clearUsers();
+        String actual = dao.readUser("username","password");
 
         Assertions.assertEquals(expected,actual);
+
     }
+
+
+
 }
