@@ -1,4 +1,4 @@
-package dataAccessTests;
+package dataAccessTests.serviceTests;
 
 import chess.*;
 import dataAccess.DataAccessException;
