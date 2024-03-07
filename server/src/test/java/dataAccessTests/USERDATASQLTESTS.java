@@ -6,11 +6,10 @@ import model.UserData;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import service.Services;
 
 import java.sql.SQLException;
 
-public class USERDATASQLTESTS extends Services {
+class USERDATASQLTESTS {
 
     SQLUSERDAO dao = new SQLUSERDAO();
 

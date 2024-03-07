@@ -7,12 +7,11 @@ import model.GameData;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import service.Services;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 
-public class GAMEDATASQLTESTS extends Services {
+class GAMEDATASQLTESTS {
 
     SQLGAMEDAO dao = new SQLGAMEDAO();
 

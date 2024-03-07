@@ -7,9 +7,8 @@ import model.AuthData;
 import model.UserData;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import service.Services;
 
-public class AUTHDATASQLTESTS extends Services {
+class AUTHDATASQLTESTS {
 
     SQLAUTHDAO dao = new SQLAUTHDAO();
 
