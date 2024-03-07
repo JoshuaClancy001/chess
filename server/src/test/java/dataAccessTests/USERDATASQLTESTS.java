@@ -1,4 +1,4 @@
-package dataAccessTests.serviceTests;
+package dataAccessTests;
 
 import dataAccess.DataAccessException;
 import dataAccess.SQLDAO.SQLUSERDAO;

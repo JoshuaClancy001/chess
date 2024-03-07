@@ -1,4 +1,4 @@
-package dataAccessTests.serviceTests;
+package dataAccessTests;
 
 import org.junit.jupiter.api.BeforeEach;
 import server.Request.LoginRequest;

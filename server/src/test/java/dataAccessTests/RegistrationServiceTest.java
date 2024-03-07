@@ -1,4 +1,4 @@
-package dataAccessTests.serviceTests;
+package dataAccessTests;
 
 import dataAccess.SQLDAO.SQLUSERDAO;
 import org.eclipse.jetty.server.Authentication;

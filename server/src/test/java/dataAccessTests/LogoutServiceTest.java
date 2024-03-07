@@ -1,4 +1,4 @@
-package dataAccessTests.serviceTests;
+package dataAccessTests;
 
 import dataAccess.SQLDAO.SQLAUTHDAO;
 import org.junit.jupiter.api.*;
