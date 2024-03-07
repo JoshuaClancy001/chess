@@ -1,7 +1,11 @@
 package dataAccessTests.serviceTests;
 
 import dataAccess.SQLDAO.SQLUSERDAO;
+import org.eclipse.jetty.server.Authentication;
+import server.Request.CreateGameRequest;
+import server.Request.LoginRequest;
 import server.Request.RegisterRequest;
+import server.Result.LoginResult;
 import server.Result.RegisterResult;
 import dataAccess.DataAccessException;
 import model.UserData;
@@ -9,9 +13,7 @@ import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Assertions;
-import service.ClearApplicationService;
-import service.RegistrationService;
-import service.Services;
+import service.*;
 
 import java.util.ArrayList;
 import java.util.UUID;
@@ -27,17 +29,13 @@ class RegistrationServiceTest extends Services {
 
     @Test
     void createUserSuccess() throws DataAccessException {
-        //userDao.getUsers().clear();
-        ArrayList<UserData> expected = new ArrayList<>();
-        //ArrayList<UserData> actual = userDao.getUsers();
-        RegisterRequest request = new RegisterRequest("username","password","email");
+        SQLUSERDAO dao = new SQLUSERDAO();
+        dao.clearUsers();
+        String expected = "username";
+        dao.createUser(new UserData("username","password","email"));
+        String actual = dao.readUser("username","password");
 
-        UserData user = new UserData("username","password","email");
-        expected.add(user);
-
-        new RegistrationService(request).createUser(request);
-
-        //Assertions.assertEquals(expected,actual);
+        Assertions.assertEquals(expected,actual);
     }
 
     @Test

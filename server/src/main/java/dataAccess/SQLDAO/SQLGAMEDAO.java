@@ -77,7 +77,7 @@ public class SQLGAMEDAO implements GameDAO {
                 }
             }
         } catch (SQLException ex){
-            System.out.println(ex.getMessage());
+            throw new DataAccessException("fail");
         }
         throw new DataAccessException("no gameID");
     }
@@ -103,7 +103,7 @@ public class SQLGAMEDAO implements GameDAO {
 
                 }
             } catch (SQLException ex){
-            System.out.println(ex.getMessage());
+            throw new DataAccessException("fail");
         }
         return games;
     }
@@ -173,10 +173,13 @@ public class SQLGAMEDAO implements GameDAO {
                 stmt.setString(1,json);
                 stmt.setInt(2,gameID);
 
-                stmt.executeUpdate();
+                if (stmt.executeUpdate() == 0){
+                    throw new DataAccessException("ID doesnt exist");
+                }
+
             }
         }catch (SQLException ex){
-            //error
+            throw new DataAccessException("fail");
         }
 
     }
