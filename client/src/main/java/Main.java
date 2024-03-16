@@ -7,14 +7,8 @@ import dataAccess.DataAccessException;
 import model.AuthData;
 import model.GameData;
 import model.UserData;
-import server.Request.CreateGameRequest;
-import server.Request.ListGamesRequest;
-import server.Request.LoginRequest;
-import server.Request.RegisterRequest;
-import server.Result.CreateGameResult;
-import server.Result.ListGamesResult;
-import server.Result.LoginResult;
-import server.Result.RegisterResult;
+import server.Request.*;
+import server.Result.*;
 import ui.ClientChessBoard;
 import ui.Exception.ResponseException;
 import ui.ServerFacade;
@@ -87,7 +81,7 @@ public class Main {
             case "2" -> handleQuitAction(hasExited);
             case "3" -> handleRegisterAction(scanner, auth);
             case "4" -> handleLoginAction(scanner, auth);
-            case "5" -> handleClearApplicationAction();
+            case "5" -> handleClearApplicationAction(auth);
         }
 
     }
@@ -112,9 +106,9 @@ public class Main {
         }
     }
 
-    private void handleClearApplicationAction(){
+    private void handleClearApplicationAction(String[] auth){
         try{
-             serverFacade.serverClearApplication();
+             serverFacade.serverClearApplication(auth);
             System.out.println("Successfully Cleared the Application");
         }
         catch (ResponseException ex){
@@ -157,19 +151,42 @@ public class Main {
             case "2" -> handleLogoutAction(auth);
             case "3" -> handleCreateGameAction(scanner, auth);
             case "4" -> handleListGamesAction(scanner, auth);
-            case "5" -> handleJoinGameAction();
-            case "6" -> handleJoinGameObserverAction();
+            case "5" -> handleJoinGameAction(scanner,auth);
+            case "6" -> handleJoinGameObserverAction(scanner,auth);
         }
     }
 
-    private void handleJoinGameObserverAction() {
-        System.out.println("Joining As Observer");
-        chessBoard.printChessBoard();
+    private void handleJoinGameAction(Scanner scanner, String[] auth) throws ResponseException{
+        String playerColor;
+        System.out.print("Player Color (WHITE/BLACK): ");
+        playerColor = scanner.nextLine();
+        int gameID;
+        System.out.println("Which Game Number Do You Want To Join: ");
+        gameID = scanner.nextInt();
+        JoinGameRequest request = new JoinGameRequest(auth[0],playerColor,gameID);
+        try{
+            JoinGameResult result = serverFacade.serverJoinGame(request,auth);
+            System.out.println("Game: " + result.gameID() + " has been joined as " + playerColor);
+            chessBoard.printChessBoard();
+        }
+        catch (ResponseException ex){
+            System.out.println(ex.getMessage());
+        }
     }
 
-    private void handleJoinGameAction() {
-        System.out.println("Joining Game");
-        chessBoard.printChessBoard();
+    private void handleJoinGameObserverAction(Scanner scanner, String[] auth) {
+        int gameID;
+        System.out.println("Which Game Number Do You Want To Join: ");
+        gameID = scanner.nextInt();
+        JoinGameRequest request = new JoinGameRequest(auth[0],"",gameID);
+        try{
+            JoinGameResult result = serverFacade.serverJoinGame(request,auth);
+            System.out.println("Game: " + result.gameID() + " has been joined as an observer");
+            chessBoard.printChessBoard();
+        }
+        catch (ResponseException ex){
+            System.out.println(ex.getMessage());
+        }
     }
 
     private void handleListGamesAction(Scanner scanner, String[] auth) {
@@ -178,10 +195,10 @@ public class Main {
             ListGamesResult result = serverFacade.serverListGames(listGamesRequest, auth);
             for (GameData game : result.games()){
                 System.out.println("Game ID: " + game.getGameID());
-                System.out.println("Game ID: " + game.getBlackUsername());
-                System.out.println("Game ID: " + game.getWhiteUsername());
-                System.out.println("Game ID: " + game.getGameName());
-                System.out.println("Game ID: " + game.getGame());
+                System.out.println("Black User: " + game.getBlackUsername());
+                System.out.println("White User: " + game.getWhiteUsername());
+                System.out.println("Game Name: " + game.getGameName());
+                System.out.println("Game: " + game.getGame());
             }
         }
         catch (ResponseException ex){

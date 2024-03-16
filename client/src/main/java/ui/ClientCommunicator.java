@@ -51,8 +51,46 @@ public class ClientCommunicator {
         }
         return deserializedResponse;
     }
-    public Object doPut(){
-        return null;
+    public static <T> T doPut(String serverUrl,String path, Object request, Class<T> response, String[] auth) throws ResponseException {
+        T deserializedResponse = null;
+        try{
+            URI uri = new URI(serverUrl + path);
+            HttpURLConnection http = (HttpURLConnection) uri.toURL().openConnection();
+            http.setReadTimeout(5000);
+            http.setRequestMethod("PUT");
+            http.setDoOutput(true);
+
+            http.addRequestProperty("authorization",auth[0]);
+
+            http.connect();
+
+            try(OutputStream requestBody = http.getOutputStream();){
+                String reqData = new Gson().toJson(request);
+                requestBody.write(reqData.getBytes());
+            }
+
+            if (http.getResponseCode() == HttpURLConnection.HTTP_OK){
+                InputStream responseBody = http.getInputStream();
+                InputStreamReader reader = new InputStreamReader(responseBody);
+                deserializedResponse = new Gson().fromJson(reader, response);
+
+            }
+            else if (http.getResponseCode() == 403){
+                throw new ResponseException(403,"User already exists");
+            }
+            else if (http.getResponseCode() == 400){
+                throw new ResponseException(400, "bad request");
+            }
+            else {
+                System.out.println(http.getResponseCode());
+                System.out.println(http.getResponseMessage());
+                throw new ResponseException(500,"Description Error");
+            }
+        }
+        catch(Exception ex){
+            throw new ResponseException(500, ex.getMessage());
+        }
+        return deserializedResponse;
     }
 
     public static <T> T doGet(String serverUrl,String path, Object request, Class<T> response, String[] auth) throws ResponseException {
@@ -90,17 +128,21 @@ public class ClientCommunicator {
         return deserializedResponse;
 
     }
-    void doDelete(String serverUrl,String path) throws ResponseException {
+    void doDelete(String serverUrl,String path,String[] auth) throws ResponseException {
         try{
             URI uri = new URI(serverUrl + path);
             HttpURLConnection http = (HttpURLConnection) uri.toURL().openConnection();
             http.setReadTimeout(5000);
             http.setRequestMethod("DELETE");
+            if (auth[0].equals("") & path.equals("/session")){
+                throw new ResponseException(401, "Unauthorized");
+                }
+            http.addRequestProperty("authorization",auth[0]);
 
             http.connect();
 
             if (http.getResponseCode() == HttpURLConnection.HTTP_OK){
-                //successful
+                auth[0] = "";
             }
             else if (http.getResponseCode() == 500){
                 throw new ResponseException(500, "Description Error");

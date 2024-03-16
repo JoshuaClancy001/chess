@@ -1,14 +1,8 @@
 package ui;
 
 import dataAccess.DataAccessException;
-import server.Request.CreateGameRequest;
-import server.Request.ListGamesRequest;
-import server.Request.LoginRequest;
-import server.Request.RegisterRequest;
-import server.Result.CreateGameResult;
-import server.Result.ListGamesResult;
-import server.Result.LoginResult;
-import server.Result.RegisterResult;
+import server.Request.*;
+import server.Result.*;
 import ui.Exception.ResponseException;
 
 public class ServerFacade {
@@ -42,7 +36,16 @@ public class ServerFacade {
         }
     }
 
-    public void serverLogout() throws ResponseException{}
+    public void serverLogout(LogoutRequest request, String[] auth) throws ResponseException{
+        try{
+            ClientCommunicator clientCommunicator = new ClientCommunicator();
+            var path = "/session";
+            clientCommunicator.doDelete(serverUrl,path, auth);
+        }
+        catch (ResponseException ex){
+            throw new ResponseException(401, "Unauthorized");
+        }
+    }
 
     public CreateGameResult serverCreateGame(CreateGameRequest request,String[] auth) throws ResponseException{
         try{
@@ -65,17 +68,26 @@ public class ServerFacade {
             throw new ResponseException(ex.StatusCode(),ex.getMessage());
         }
     }
-    public void serverClearApplication() throws ResponseException{
+    public void serverClearApplication(String[] auth) throws ResponseException{
         try {
             ClientCommunicator clientCommunicator = new ClientCommunicator();
             var path = "/db";
-            clientCommunicator.doDelete(serverUrl, path);
+            clientCommunicator.doDelete(serverUrl,path,auth);
         }
         catch (ResponseException ex){
             throw new ResponseException(ex.StatusCode(),ex.getMessage());
         }
     }
-    public void serverJoinGame() throws ResponseException{}
+    public JoinGameResult serverJoinGame(JoinGameRequest request, String[] auth) throws ResponseException{
+        try{
+            ClientCommunicator clientCommunicator = new ClientCommunicator();
+            var path = "/game";
+            return clientCommunicator.doPut(serverUrl,path,request, JoinGameResult.class, auth);
+        }
+        catch (ResponseException ex){
+            throw new ResponseException(ex.StatusCode(), ex.getMessage());
+        }
+    }
 
 
 
