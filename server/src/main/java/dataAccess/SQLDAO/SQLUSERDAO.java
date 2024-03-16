@@ -65,7 +65,7 @@ public class SQLUSERDAO implements UserDAO {
                 }
             }
         } catch (SQLException ex) {
-            throw new DataAccessException("fail");
+            throw new DataAccessException(500,"fail");
         }
 
     }
@@ -90,7 +90,7 @@ public class SQLUSERDAO implements UserDAO {
                 }
             }
         } catch (SQLException ex) {
-            throw new DataAccessException("read user fail");
+            throw new DataAccessException(500,"read user fail");
         }
     }
 

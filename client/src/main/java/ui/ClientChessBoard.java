@@ -8,8 +8,6 @@ import static ui.EscapeSequences.*;
 public class ClientChessBoard {
 
     private static final int BOARD_SIZE_IN_SQUARES = 8;
-    private static final int SQUARE_SIZE_IN_CHARS = 3;
-    private static final int LINE_WIDTH_IN_CHARS = 1;
     private static final String EMPTY = "   ";
 
     public ClientChessBoard() {}
@@ -29,6 +27,7 @@ public class ClientChessBoard {
         drawHeader(out,blackHeader);
         drawRowsBlack(out,board,"Black");
         drawHeader(out,blackHeader);
+        out.print("\u001B[0m");
     }
 
     public void drawRowsWhite(PrintStream out, String[][] board, String whiteOrBlack){
@@ -45,7 +44,7 @@ public class ClientChessBoard {
             out.print(" ");
             out.print(rowNum);
             out.print(" ");
-            out.print(RESET_BG_COLOR);
+            out.print("\u001B[0m");
             out.println();
         }
     }
@@ -63,7 +62,7 @@ public class ClientChessBoard {
             out.print(" ");
             out.print(rowNum);
             out.print(" ");
-            out.print(RESET_BG_COLOR);
+            out.print("\u001B[0m");
             out.println();
         }
     }
@@ -166,7 +165,7 @@ public class ClientChessBoard {
         out.print(" ");
         drawHeaders(out,header);
         out.print(EMPTY.repeat(suffixLength));
-        out.print(RESET_BG_COLOR);
+        out.print("\u001B[0m");
         out.println();
     }
 
@@ -211,9 +210,6 @@ public class ClientChessBoard {
         addPiece(board, "N", 1,7);
         addPiece(board, "R", 1,8);
 
-
-        //adding the White Pawns
-
         addPiece(board, "P", 2, 1);
         addPiece(board, "P", 2, 2);
         addPiece(board, "P", 2, 3);
@@ -231,8 +227,6 @@ public class ClientChessBoard {
         addPiece(board, "P", 7, 6);
         addPiece(board, "P", 7, 7);
         addPiece(board, "P", 7, 8);
-
-        //adding Black Pawns
 
         addPiece(board, "R", 8,1);
         addPiece(board, "N", 8,2);

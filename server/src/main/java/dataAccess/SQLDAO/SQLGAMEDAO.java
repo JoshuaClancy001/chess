@@ -45,7 +45,7 @@ public class SQLGAMEDAO implements GameDAO {
                 }
             }
         } catch (SQLException ex) {
-            throw new DataAccessException(String.format("Unable to configure database: %s"));
+            throw new DataAccessException(500,String.format("Unable to configure database: %s"));
         }
     }
 
@@ -77,9 +77,9 @@ public class SQLGAMEDAO implements GameDAO {
                 }
             }
         } catch (SQLException ex){
-            throw new DataAccessException("fail");
+            throw new DataAccessException(500,"fail");
         }
-        throw new DataAccessException("no gameID");
+        throw new DataAccessException(400,"no gameID");
     }
 
     @Override
@@ -103,7 +103,7 @@ public class SQLGAMEDAO implements GameDAO {
 
                 }
             } catch (SQLException ex){
-            throw new DataAccessException("fail");
+            throw new DataAccessException(500, "fail");
         }
         return games;
     }
@@ -125,7 +125,7 @@ public class SQLGAMEDAO implements GameDAO {
         } catch (SQLException ex){
             System.out.println(ex.getMessage());
         }
-        throw new DataAccessException("no gameID");
+        throw new DataAccessException(400, "no gameID");
     }
 
     @Override
@@ -137,13 +137,13 @@ public class SQLGAMEDAO implements GameDAO {
                 if (game.getWhiteUsername() == null)
                     sql += "whiteUsername = ?";
                 else {
-                    throw new DataAccessException("already taken");
+                    throw new DataAccessException(403,"already taken");
                 }
             } else if (clientColor.equals("BLACK")) {
                 if (game.getBlackUsername() == null)
                     sql += "blackUsername = ?";
                 else {
-                    throw new DataAccessException("already taken");
+                    throw new DataAccessException(403, "already taken");
                 }
             }
         }
@@ -174,12 +174,12 @@ public class SQLGAMEDAO implements GameDAO {
                 stmt.setInt(2,gameID);
 
                 if (stmt.executeUpdate() == 0){
-                    throw new DataAccessException("ID doesnt exist");
+                    throw new DataAccessException(400, "ID doesnt exist");
                 }
 
             }
         }catch (SQLException ex){
-            throw new DataAccessException("fail");
+            throw new DataAccessException(500,"fail");
         }
 
     }

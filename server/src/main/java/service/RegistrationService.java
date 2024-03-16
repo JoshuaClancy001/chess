@@ -22,7 +22,7 @@ public class RegistrationService extends Services{
         UserData user = new UserData(register.username(), register.password(), register.email());
 
         if ((user.password() == null)){
-            throw new DataAccessException("bad request");
+            throw new DataAccessException(1,"bad request");
         }
 
         if (getUser(user.username(),user.password()) == null){
@@ -30,7 +30,7 @@ public class RegistrationService extends Services{
         }
 
         else if (getUser((user.username()),user.password()).equals(register.username())){
-            throw new DataAccessException("User already exists");
+            throw new DataAccessException(1,"User already exists");
         }
         else {
             userDao.createUser(user);

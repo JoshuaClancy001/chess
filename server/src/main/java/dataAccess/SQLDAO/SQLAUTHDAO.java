@@ -41,7 +41,7 @@ public class SQLAUTHDAO implements AuthDAO {
                 }
             }
         } catch (SQLException ex) {
-            throw new DataAccessException(String.format("Unable to configure database: %s", ex.getMessage()));
+            throw new DataAccessException(500, String.format("Unable to configure database: %s", ex.getMessage()));
         }
     }
     @Override
@@ -61,7 +61,7 @@ public class SQLAUTHDAO implements AuthDAO {
                 }
             }
         } catch (SQLException ex){
-            throw new DataAccessException("fail");
+            throw new DataAccessException(500,"fail");
         }
 
 
@@ -84,7 +84,7 @@ public class SQLAUTHDAO implements AuthDAO {
                 }
             }
         } catch (SQLException ex) {
-            throw new DataAccessException("read auth fail");
+            throw new DataAccessException(500,"read auth fail");
         }
     }
 
@@ -97,11 +97,11 @@ public class SQLAUTHDAO implements AuthDAO {
                 int numRowsDeleted = stmt.executeUpdate();
 
                 if (numRowsDeleted == 0){
-                    throw new DataAccessException("AuthToken Not There");
+                    throw new DataAccessException(500, "AuthToken Not There");
                 }
             }
         } catch (SQLException ex){
-            throw new DataAccessException("delete auth fail");
+            throw new DataAccessException(500,"delete auth fail");
         }
     }
 

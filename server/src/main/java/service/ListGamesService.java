@@ -17,7 +17,7 @@ public class ListGamesService extends Services {
         AuthData data = getAuth(authToken);
 
         if (data == null){
-            throw new DataAccessException("Unauthorized");
+            throw new DataAccessException(401,"Unauthorized");
         }
 
         return new ListGamesResult(listGames());

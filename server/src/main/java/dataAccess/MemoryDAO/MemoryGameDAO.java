@@ -39,12 +39,12 @@ public class MemoryGameDAO implements GameDAO {
                 if (clientColor != null) {
                     if (clientColor.equals("WHITE")) {
                         if (data.getWhiteUsername() != null) {
-                            throw new DataAccessException("already taken");
+                            throw new DataAccessException(403,"already taken");
                         }
                         data.setWhiteUsername(username);
                     } else if (clientColor.equals("BLACK")) {
                         if (data.getBlackUsername() != null) {
-                            throw new DataAccessException("already taken");
+                            throw new DataAccessException(403,"already taken");
                         }
                         data.setBlackUsername(username);
                     }
@@ -56,7 +56,7 @@ public class MemoryGameDAO implements GameDAO {
         }
 
         if (isValidGame == false){
-            throw new DataAccessException("no gameID");
+            throw new DataAccessException(401,"no gameID");
         }
 
 

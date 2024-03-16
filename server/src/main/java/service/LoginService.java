@@ -22,13 +22,13 @@ public class LoginService extends  Services{
 
         }
         else if (user == null){
-            throw new DataAccessException("User not Registered");
+            throw new DataAccessException(401,"User not Registered");
         }
         else if (user.equals("Wrong Password")){
-            throw new DataAccessException("Wrong Password");
+            throw new DataAccessException(401,"Wrong Password");
         }
         else{
-            throw new DataAccessException("User not Registered");
+            throw new DataAccessException(401,"User not Registered");
         }
 
     }

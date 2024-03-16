@@ -55,7 +55,7 @@ public class MemoryAuthDAO implements AuthDAO {
                 return;
             }
         }
-        throw new DataAccessException("AuthToken Not There");
+        throw new DataAccessException(1,"AuthToken Not There");
     }
 
     @Override
