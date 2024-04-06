@@ -3,30 +3,20 @@ package webSocketMessages.userCommands;
 public class JoinPlayer extends UserGameCommand{
 
     private int gameID;
-    private String username;
-    private String clientColor;
-    public JoinPlayer(String authToken, CommandType commandType,int gameID, String username, String clientColor ) {
+    private String playerColor;
+    public JoinPlayer(String authToken, CommandType commandType,int gameID, String playerColor) {
         super(authToken);
         this.commandType = commandType;
-        this.username = username;
-        this.clientColor = clientColor;
         this.gameID = gameID;
+        this.playerColor = playerColor;
     }
 
-    public String getUsername() {
-        return username;
+    public String getPlayerColor() {
+        return playerColor;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public String getClientColor() {
-        return clientColor;
-    }
-
-    public void setClientColor(String clientColor) {
-        this.clientColor = clientColor;
+    public void setPlayerColor(String playerColor) {
+        this.playerColor = playerColor;
     }
 
     public int getGameID() {
@@ -36,4 +26,5 @@ public class JoinPlayer extends UserGameCommand{
     public void setGameID(int gameID) {
         this.gameID = gameID;
     }
+
 }

@@ -45,7 +45,7 @@ public class WebSocketFacade extends Endpoint {
 
     public void joinGame(Integer gameID, String[] auth, String user, String clientColor) throws ResponseException, IOException {
         System.out.println("In Join Game");
-        JoinPlayer command = new JoinPlayer(auth[0], UserGameCommand.CommandType.JOIN_PLAYER,gameID, user,clientColor );
+        JoinPlayer command = new JoinPlayer(auth[0], UserGameCommand.CommandType.JOIN_PLAYER,gameID,clientColor );
 
         this.session.getBasicRemote().sendText(new Gson().toJson(command));
     }

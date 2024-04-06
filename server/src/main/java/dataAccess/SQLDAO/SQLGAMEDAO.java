@@ -85,25 +85,25 @@ public class SQLGAMEDAO implements GameDAO {
     @Override
     public ArrayList<GameData> readGame() throws DataAccessException {
         ArrayList<GameData> games = new ArrayList<>();
-        String sql = "select * from gameData";
-        try(var connection = DatabaseManager.getConnection()){
-            try (PreparedStatement stmt = connection.prepareStatement(sql)){
-                ResultSet resultSet = stmt.executeQuery();
-                    while (resultSet.next()) {
-                        int gameID = resultSet.getInt("id");
-                        String whiteUsername = resultSet.getString("whiteUsername");
-                        String blackUsername = resultSet.getString("blackUsername");
-                        String gameName = resultSet.getString("gameName");
-                        var deserializer = new Gson();
-                        ChessGame chessGame = deserializer.fromJson(resultSet.getString("chessGame"), ChessGame.class);
-                        GameData game = new GameData(gameID, whiteUsername, blackUsername, gameName, chessGame);
-                        games.add(game);
+        String sql = "SELECT * FROM gameData";
+        try (var connection = DatabaseManager.getConnection();
+             PreparedStatement stmt = connection.prepareStatement(sql);
+             ResultSet resultSet = stmt.executeQuery()) {
 
-                    }
+            while (resultSet.next()) {
+                int gameID = resultSet.getInt("id");
+                String whiteUsername = resultSet.getString("whiteUsername");
+                String blackUsername = resultSet.getString("blackUsername");
+                String gameName = resultSet.getString("gameName");
+                var deserializer = new Gson();
+                ChessGame chessGame = deserializer.fromJson(resultSet.getString("chessGame"), ChessGame.class);
+                GameData game = new GameData(gameID, whiteUsername, blackUsername, gameName, chessGame);
+                games.add(game);
+            }
 
-                }
-            } catch (SQLException ex){
-            throw new DataAccessException(500, "fail");
+        } catch (SQLException ex) {
+            // Log or handle the exception appropriately
+            throw new DataAccessException(500, "Failed to retrieve game data from database");
         }
         return games;
     }

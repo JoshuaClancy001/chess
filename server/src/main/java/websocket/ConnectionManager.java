@@ -3,7 +3,6 @@ package websocket;
 import com.google.gson.Gson;
 import org.eclipse.jetty.websocket.api.Session;
 import webSocketMessages.serverMessages.ServerMessage;
-import websocket.Connection;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -30,7 +29,7 @@ public class ConnectionManager {
         connectionsMap.remove(gameID);
     }
 
-    public void broadcast(Integer gameID, String excludeVisitorName, ServerMessage notification) throws IOException {
+    public void broadcastOthers(Integer gameID, String excludeVisitorName, ServerMessage notification) throws IOException {
         var removeList = new ArrayList<Connection>();
         if (connectionsMap.get(gameID) != null) {
             for (var c : connectionsMap.get(gameID)) {
@@ -49,4 +48,26 @@ public class ConnectionManager {
             }
         }
     }
+
+
+    public void broadcastSelf(Integer gameID, String excludeVisitorName, ServerMessage notification) throws IOException {
+        var removeList = new ArrayList<Connection>();
+        if (connectionsMap.get(gameID) != null) {
+            for (var c : connectionsMap.get(gameID)) {
+                if (c.session.isOpen()) {
+                    if (c.visitorName.equals(excludeVisitorName)) {
+                        c.send(new Gson().toJson(notification));
+                    }
+                } else {
+                    removeList.add(c);
+                }
+            }
+
+            // Clean up any connections that were left open.
+            for (var c : removeList) {
+                connectionsMap.get(gameID).remove(c);
+            }
+        }
+    }
+
 }

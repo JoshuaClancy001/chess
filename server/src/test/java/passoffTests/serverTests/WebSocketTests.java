@@ -79,6 +79,7 @@ public class WebSocketTests {
     @Order(1)
     @DisplayName("Normal Join Player")
     public void joinPlayerGood() {
+        int i = 0;
         //try join valid reserved spot
         Map<String, List<TestModels.TestMessage>> messages =
                 joinPlayer(white.user, white.authToken, gameID, ChessGame.TeamColor.WHITE, Set.of(), Set.of());

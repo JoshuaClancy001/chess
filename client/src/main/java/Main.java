@@ -42,12 +42,12 @@ public class Main implements ServerMessageHandler {
         game.setTeamTurn(ChessGame.TeamColor.WHITE);
     }
 
-    public void main(String[] args) throws ResponseException, InvalidMoveException {
+    public void main(String[] args) throws ResponseException, InvalidMoveException, IOException {
         var piece = new ChessPiece(ChessGame.TeamColor.WHITE, ChessPiece.PieceType.PAWN);
         System.out.println("♕ 240 Chess Client: " + piece);
         Run();
     }
-    public void Run() throws ResponseException, InvalidMoveException {
+    public void Run() throws ResponseException, InvalidMoveException, IOException {
         Main main = new Main(this.serverUrl);
         Scanner scanner = new Scanner(System.in);
         boolean[] hasExited = {false};
@@ -192,7 +192,7 @@ public class Main implements ServerMessageHandler {
         }
     }
 
-    public void authMenuActions(Scanner scanner, String[] command, String auth[], Boolean[] gamePlayMode) throws ResponseException {
+    public void authMenuActions(Scanner scanner, String[] command, String auth[], Boolean[] gamePlayMode) throws ResponseException, IOException {
         switch (command[0]) {
             case "1" -> handleHelpActionAuth();
             case "2" -> handleLogoutAction(auth);
@@ -203,7 +203,7 @@ public class Main implements ServerMessageHandler {
         }
     }
 
-    private void handleJoinGameAction(Scanner scanner, String[] auth, Boolean[] gamePlayMode) throws ResponseException{
+    private void handleJoinGameAction(Scanner scanner, String[] auth, Boolean[] gamePlayMode) throws ResponseException, IOException {
         String playerColor;
         System.out.print("Player Color (WHITE/BLACK): ");
         playerColor = scanner.nextLine();
@@ -217,10 +217,44 @@ public class Main implements ServerMessageHandler {
                 public void notify(String message) {
                     NotificationMessage newMessage = new Gson().fromJson(message, NotificationMessage.class);
                     LoadGameMessage newMessage1 = new Gson().fromJson(message, LoadGameMessage.class);
+                    ErrorMessage newMessage2 = new Gson().fromJson(message, ErrorMessage.class);
                     String messageString = newMessage.getNotificationMessage();
                     String messageString1 = new Gson().toJson(newMessage1);
+                    String messageString2 = new Gson().toJson(newMessage2);
                     if (messageString != null) {
                         displayNotification(messageString);
+                    }
+                    if (messageString2 != null){
+                        displayError(messageString2);
+                    }
+                    if (newMessage1.getGame() != null) {
+                        displayLoadGame(messageString1);
+                    }
+                }
+            });
+            webSocketFacade.joinGame(gameID,auth,"a",playerColor);
+            JoinGameResult result = serverFacade.serverJoinGame(request,auth);
+            System.out.println("Game: " + result.gameID() + " has been joined as " + playerColor);
+            boolean[][] validMoves = validMoveInit();
+            chessBoard.printChessBoard(this.game.getBoard(),validMoves);
+            gamePlayMode[0] = true;
+        }
+        catch (ResponseException ex){
+
+            WebSocketFacade webSocketFacade = new WebSocketFacade(serverUrl, new ServerMessageHandler() {
+                @Override
+                public void notify(String message) {
+                    NotificationMessage newMessage = new Gson().fromJson(message, NotificationMessage.class);
+                    LoadGameMessage newMessage1 = new Gson().fromJson(message, LoadGameMessage.class);
+                    ErrorMessage newMessage2 = new Gson().fromJson(message, ErrorMessage.class);
+                    String messageString = newMessage.getNotificationMessage();
+                    String messageString1 = new Gson().toJson(newMessage1);
+                    String messageString2 = new Gson().toJson(newMessage2);
+                    if (messageString != null) {
+                        displayNotification(messageString);
+                    }
+                    if (messageString2 != null){
+                        displayError(messageString2);
                     }
                     if (newMessage1.getGame() != null) {
                         displayLoadGame(messageString1);
@@ -228,16 +262,10 @@ public class Main implements ServerMessageHandler {
                 }
             });
 
-            JoinGameResult result = serverFacade.serverJoinGame(request,auth);
-            webSocketFacade.joinGame(gameID,auth,"b",playerColor);
-            System.out.println("Game: " + result.gameID() + " has been joined as " + playerColor);
-            boolean[][] validMoves = validMoveInit();
-            chessBoard.printChessBoard(this.game.getBoard(),validMoves);
-            gamePlayMode[0] = true;
+            webSocketFacade.joinGame(gameID,auth,"a",playerColor);
+
         }
-        catch (ResponseException ex){
-            System.out.println(ex.getMessage());
-        } catch (IOException e) {
+        catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
