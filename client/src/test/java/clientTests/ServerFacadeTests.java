@@ -76,23 +76,14 @@ public class ServerFacadeTests {
     }
 
     @Test
-    public void LogoutFacadePositive() throws ResponseException{
-        try {
-            RegisterRequest request = new RegisterRequest("username", "password", "email");
-            RegisterResult result = serverFacade.serverRegister(request, auth);
-            auth[0] = result.authToken();
-            String expected = "";
-            String[] wrong = {""};
-            LogoutRequest request1 = new LogoutRequest(auth[0]);
-            serverFacade.serverLogout(request1, auth);
-            String actual = "";
-            Assertions.assertEquals(expected, actual);
-        }
-        catch (ResponseException ex){
-            throw new ResponseException(401, "Unauthorized");
-        }
+    public void LogoutFacadePositive() throws ResponseException {
+        RegisterRequest request = new RegisterRequest("username", "password", "email");
+        RegisterResult result = serverFacade.serverRegister(request, auth);
+        auth[0] = result.authToken();
+        String expected = "";
+        LogoutRequest request1 = new LogoutRequest(auth[0]);
+        Assertions.assertDoesNotThrow(() -> serverFacade.serverLogout(request1, auth));
     }
-
     @Test
     void LogoutFacadeNegative() throws ResponseException {
         RegisterRequest request = new RegisterRequest("username", "password", "email");

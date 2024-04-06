@@ -29,6 +29,10 @@ public class ChessBoard {
         this.ChessBoard[position.getRow()][position.getColumn()] = null;
     }
 
+    public ChessPiece[] getRow(int rowNum){
+        return this.ChessBoard[rowNum];
+    }
+
 
 
     /**

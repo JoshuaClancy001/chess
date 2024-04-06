@@ -88,6 +88,7 @@ public class ClientCommunicator {
             }
         }
         catch(Exception ex){
+            ex.printStackTrace();
             throw new ResponseException(500, ex.getMessage());
         }
         return deserializedResponse;
