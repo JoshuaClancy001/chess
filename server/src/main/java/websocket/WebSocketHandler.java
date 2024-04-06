@@ -49,6 +49,12 @@ public class WebSocketHandler {
         SQLUSERDAO userDatabase = new SQLUSERDAO();
         AuthData auth = authDatabase.readAuth(command.getAuthString());
         ServerMessage message2 = null;
+
+        if (auth == null){
+            message2 = new ErrorMessage("Bad AuthToken");
+            conn.send(new Gson().toJson(message2));
+            return;
+        }
         try {
             GameData game = gamesDatabase.readOneGame(gameID);
             String whiteUser = game.getWhiteUsername();
