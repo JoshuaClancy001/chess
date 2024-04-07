@@ -19,10 +19,7 @@ import webSocketMessages.serverMessages.ErrorMessage;
 import webSocketMessages.serverMessages.LoadGameMessage;
 import webSocketMessages.serverMessages.NotificationMessage;
 import webSocketMessages.serverMessages.ServerMessage;
-import webSocketMessages.userCommands.JoinObserver;
-import webSocketMessages.userCommands.JoinPlayer;
-import webSocketMessages.userCommands.MakeMove;
-import webSocketMessages.userCommands.UserGameCommand;
+import webSocketMessages.userCommands.*;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -45,22 +42,51 @@ public class WebSocketHandler {
     public void onMessage(Session session, String msg) throws Exception {
         UserGameCommand command = new Gson().fromJson(msg, UserGameCommand.class);
 
+        Connection conn = new Connection(command.getAuthString(), session);
         switch (command.getCommandType()) {
             case JOIN_PLAYER -> {
-                var conn = new Connection(command.getAuthString(),session);
                 JoinPlayer joinPlayerCommand = new Gson().fromJson(msg, JoinPlayer.class);
                 join(conn, command, joinPlayerCommand.getPlayerColor(),joinPlayerCommand.getGameID());
             }
             case JOIN_OBSERVER -> {
-                var conn = new Connection(command.getAuthString(),session);
                 JoinObserver joinObserver = new Gson().fromJson(msg, JoinObserver.class);
                 joinObserver(conn,command,joinObserver.getGameID());
             }
             case MAKE_MOVE -> {
                 MakeMove makeMove = new Gson().fromJson(msg, MakeMove.class);
-                Connection conn = new Connection(command.getAuthString(), session);
                 makeMove(conn,command,makeMove.getGameID(),makeMove.getMove());
             }
+            case RESIGN -> {
+                Resign resign = new Gson().fromJson(msg, Resign.class);
+                resign(conn,command,resign.getGameID());
+            }
+        }
+    }
+    public void resign(Connection conn, UserGameCommand command, int gameID) throws DataAccessException, IOException {
+        try {
+            GameData gameData = gamesDatabase.readOneGame(gameID);
+            AuthData authData = authDatabase.readAuth(command.getAuthString());
+            ChessGame chessGame = gameData.getGame();
+            if (chessGame.getTeamTurn() == null){
+                ServerMessage someoneAlreadyResignedMessage = new ErrorMessage("You can't resign, someone already did");
+                conn.send(new Gson().toJson(someoneAlreadyResignedMessage));
+                return;
+            }
+            if (authData.username().equalsIgnoreCase(gameData.getWhiteUsername()) || authData.username().equalsIgnoreCase(gameData.getBlackUsername())){
+                chessGame.setTeamTurn(null);
+            }
+            else {
+                ServerMessage observerCantResignMessage = new ErrorMessage("You are an observer, you can't resign");
+                conn.send(new Gson().toJson(observerCantResignMessage));
+                return;
+            }
+
+            gamesDatabase.updateChessGame(gameID, chessGame);
+            ServerMessage notiMessage = new NotificationMessage(authData.username() + "Just Resigned");
+            connections.broadcastOthers(gameID, "fake", notiMessage);
+        }
+        catch (DataAccessException ex){
+            //errr
         }
     }
 
@@ -69,6 +95,10 @@ public class WebSocketHandler {
             GameData gameData = gamesDatabase.readOneGame(gameID);
             AuthData authData = authDatabase.readAuth(command.getAuthString());
             ChessGame game = gameData.getGame();
+            if (game.getTeamTurn() == null){
+                ServerMessage errorMessage = new ErrorMessage("Invalid Move");
+                conn.send(new Gson().toJson(errorMessage));
+            }
             boolean isValid = game.validMoves(move.getStartPosition()).contains(move);
             for (ChessMove chessMove : game.validMoves(move.getStartPosition())){
                 if (!authData.username().equalsIgnoreCase(game.getTeamTurn().toString())){
