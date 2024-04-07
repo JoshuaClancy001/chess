@@ -56,10 +56,37 @@ public class WebSocketHandler {
                 MakeMove makeMove = new Gson().fromJson(msg, MakeMove.class);
                 makeMove(conn,command,makeMove.getGameID(),makeMove.getMove());
             }
+            case LEAVE -> {
+                Leave leave = new Gson().fromJson(msg,Leave.class);
+                leave(conn,command,leave.getGameID());
+            }
             case RESIGN -> {
                 Resign resign = new Gson().fromJson(msg, Resign.class);
                 resign(conn,command,resign.getGameID());
             }
+        }
+    }
+    public void leave(Connection conn, UserGameCommand command, int gameID){
+        try{
+            GameData gameData = gamesDatabase.readOneGame(gameID);
+            AuthData authData = authDatabase.readAuth(command.getAuthString());
+            ChessGame chessGame = gameData.getGame();
+
+            if (authData.username().equalsIgnoreCase(gameData.getWhiteUsername())){
+                gamesDatabase.updateGame("WHITE",null,gameID);
+            }
+            else if (authData.username().equalsIgnoreCase(gameData.getBlackUsername())){
+                gamesDatabase.updateGame("BLACK",null,gameID);
+            }
+            ServerMessage notiMessage = new NotificationMessage(authData.username() + "Just Left the Game");
+            connections.broadcastOthers(gameID, conn.visitorName, notiMessage);
+            conn.session.close();
+            connections.connectionsMap.remove(conn);
+        }
+        catch (DataAccessException ex){
+            //err
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
     }
     public void resign(Connection conn, UserGameCommand command, int gameID) throws DataAccessException, IOException {
@@ -84,6 +111,7 @@ public class WebSocketHandler {
             gamesDatabase.updateChessGame(gameID, chessGame);
             ServerMessage notiMessage = new NotificationMessage(authData.username() + "Just Resigned");
             connections.broadcastOthers(gameID, "fake", notiMessage);
+            conn.session.close();
         }
         catch (DataAccessException ex){
             //errr

@@ -134,16 +134,24 @@ public class SQLGAMEDAO implements GameDAO {
         String sql = "UPDATE gameData SET ";
         if (clientColor != null){
             if (clientColor.equals("WHITE")) {
-                if (game.getWhiteUsername() == null)
-                    sql += "whiteUsername = ?";
-                else {
-                    throw new DataAccessException(403,"already taken");
+                if (username != null) {
+                    if (game.getWhiteUsername() == null || !game.getWhiteUsername().equals(username)) {
+                        sql += "whiteUsername = ?";
+                    } else {
+                        throw new DataAccessException(403, "already taken");
+                    }
+                } else {
+                    sql += "whiteUsername = NULL";
                 }
             } else if (clientColor.equals("BLACK")) {
-                if (game.getBlackUsername() == null)
-                    sql += "blackUsername = ?";
-                else {
-                    throw new DataAccessException(403, "already taken");
+                if (username != null) {
+                    if (game.getBlackUsername() == null || !game.getBlackUsername().equals(username)) {
+                        sql += "blackUsername = ?";
+                    } else {
+                        throw new DataAccessException(403, "already taken");
+                    }
+                } else {
+                    sql += "blackUsername = NULL";
                 }
             }
         }
