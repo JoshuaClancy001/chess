@@ -99,7 +99,10 @@ public class ChessGame {
         valid = validMoves(move.getStartPosition());
 
         if (this.board.getPiece(move.getStartPosition()).getTeamColor() != this.TeamColor){ // is it your turn?
-            throw new InvalidMoveException("Invalid Move");
+            throw new InvalidMoveException("Not Your Turn");
+        }
+        if (!this.board.getPiece(move.getStartPosition()).getTeamColor().equals(this.TeamColor)){
+            throw new InvalidMoveException("Not Your Piece");
         }
             if (valid.contains(move)) { // can you actually move there?
                 checkIfMoveIsLegal(move);
