@@ -11,7 +11,7 @@ import java.net.*;
 
 public class ClientCommunicator {
 
-    public static <T> T doPost(String serverUrl,String path, Object request, Class<T> response, String[] auth) throws ResponseException {
+    public  <T> T doPost(String serverUrl,String path, Object request, Class<T> response, String[] auth) throws ResponseException {
         T deserializedResponse = null;
         try{
             URI uri = new URI(serverUrl + path);
@@ -51,7 +51,7 @@ public class ClientCommunicator {
         }
         return deserializedResponse;
     }
-    public static <T> T doPut(String serverUrl,String path, Object request, Class<T> response, String[] auth) throws ResponseException {
+    public  <T> T doPut(String serverUrl,String path, Object request, Class<T> response, String[] auth) throws ResponseException {
         T deserializedResponse = null;
         try{
             URI uri = new URI(serverUrl + path);
@@ -94,7 +94,7 @@ public class ClientCommunicator {
         return deserializedResponse;
     }
 
-    public static <T> T doGet(String serverUrl,String path, Object request, Class<T> response, String[] auth) throws ResponseException {
+    public static <T> T doGet(String serverUrl, String path, Object request, Class<T> response, String[] auth) throws ResponseException {
         T deserializedResponse = null;
         try{
             URI uri = new URI(serverUrl + path);
@@ -162,7 +162,7 @@ public class ClientCommunicator {
         }
     }
 
-    private static void writeBody(Object request, HttpURLConnection http) throws  IOException {
+    private  void writeBody(Object request, HttpURLConnection http) throws  IOException {
         if (request != null) {
             http.addRequestProperty("Content-Type", "application/json");
             String reqData = new Gson().toJson(request);
@@ -171,7 +171,7 @@ public class ClientCommunicator {
             }
         }
     }
-    private static <T> T readBody(HttpURLConnection http, Class<T> responseClass) throws IOException {
+    private  <T> T readBody(HttpURLConnection http, Class<T> responseClass) throws IOException {
         T response = null;
         if (http.getContentLength() < 0) {
             try (InputStream respBody = http.getInputStream()) {
