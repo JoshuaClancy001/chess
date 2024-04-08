@@ -3,8 +3,6 @@ import Result.*;
 import chess.*;
 import com.google.gson.Gson;
 import model.GameData;
-import server.Request.*;
-import server.Result.*;
 import ui.ClientChessBoard;
 import ui.Exception.ResponseException;
 import ui.ServerFacade;
