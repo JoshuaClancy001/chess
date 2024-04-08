@@ -1,12 +1,6 @@
 import chess.*;
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonParser;
-import dataAccess.DataAccessException;
-import model.AuthData;
 import model.GameData;
-import model.UserData;
 import server.Request.*;
 import server.Result.*;
 import ui.ClientChessBoard;
@@ -20,28 +14,25 @@ import websocket.ServerMessageHandler;
 import websocket.WebSocketFacade;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Scanner;
 
 public class Main implements ServerMessageHandler {
 
+    WebSocketFacade webSocketFacade;
     ServerFacade serverFacade;
-    private ArrayList<UserData> user = new ArrayList<>();
-    private ArrayList<AuthData> auth = new ArrayList<>();
     private ClientChessBoard chessBoard = new ClientChessBoard();
-
     private ChessGame game = new ChessGame();
+    String[] user = {""};
+    int[] gameIDTemp = {1};
     private final String serverUrl;
-
-    public Main(String serverUrl) {
+    public Main(String serverUrl) throws ResponseException {
+        webSocketFacade = new WebSocketFacade(serverUrl, serverMessage -> notify(serverMessage));
         serverFacade = new ServerFacade(serverUrl);
         this.serverUrl = serverUrl;
         game.getBoard().resetBoard();
         game.setTeamTurn(ChessGame.TeamColor.WHITE);
     }
-
     public void main(String[] args) throws ResponseException, InvalidMoveException, IOException {
         var piece = new ChessPiece(ChessGame.TeamColor.WHITE, ChessPiece.PieceType.PAWN);
         System.out.println("♕ 240 Chess Client: " + piece);
@@ -53,7 +44,7 @@ public class Main implements ServerMessageHandler {
         boolean[] hasExited = {false};
         String[] auth = {""};
         String[] command = {""};
-        Boolean[] gamePlayMode = {false};
+        boolean[] gamePlayMode = {false};
         System.out.println("Welcome to 240 Chess. Press enter to get started");
         scanner.nextLine();
         while(!hasExited[0]) {
@@ -64,6 +55,7 @@ public class Main implements ServerMessageHandler {
             else if (!auth[0].equals("") && (gamePlayMode[0] == true)) {
                 String action = main.printGamePlayMenu(scanner,command);
                 main.gamePlayActions(scanner,action,auth,gamePlayMode);
+
             }
             else {
                 main.printNormMenu(scanner, command);
@@ -72,7 +64,6 @@ public class Main implements ServerMessageHandler {
 
         }
     }
-
     public String printGamePlayMenu(Scanner scanner, String[] command){
 
         Scanner scanner1 = new Scanner(System.in);
@@ -109,7 +100,6 @@ public class Main implements ServerMessageHandler {
         command[0] = scanner.nextLine();
 
     }
-
     public void normMenuActions(Scanner scanner, String[] command, boolean[] hasExited, String[] auth) throws ResponseException {
         switch (command[0]) {
             case "1" -> handleHelpActionNorm();
@@ -133,6 +123,7 @@ public class Main implements ServerMessageHandler {
             LoginResult result = serverFacade.serverLogin(loginRequest, auth);
             auth[0] = result.authToken();
             System.out.println(result.username() + " Just Logged In");
+            this.user[0] = username;
         }
         catch (ResponseException ex){
             System.out.println(ex.getMessage());
@@ -164,7 +155,8 @@ public class Main implements ServerMessageHandler {
         try{
         RegisterResult result = serverFacade.serverRegister(registerRequest,auth);
         auth[0] = result.authToken();
-            System.out.println(result.username() + " Just Registered");
+        System.out.println(result.username() + " Just Registered");
+        this.user[0] = username;
         }
         catch (ResponseException ex){
             System.out.println(ex.getMessage());
@@ -177,22 +169,32 @@ public class Main implements ServerMessageHandler {
     }
 
     private static void handleHelpActionNorm() {
-        System.out.println("You are being Helped");
+        System.out.println("Quit -> Exit the Application");
+        System.out.println("Register -> Provide a username,password, and email to register");
+        System.out.println("Login -> Provide a username and password to login");
+    }
+    public void handleHelpActionGamePlay(){
+        System.out.println("Draw Chess Board -> Draws the Current Chess Board");
+        System.out.println("Leave Game -> Exit the Current Game");
+        System.out.println("Make Move -> Provide a Piece to move(row,column) and a end square(row,column)");
+        System.out.println("Resign -> Resign from the game");
+        System.out.println("Highlight Legal Moves -> Provide a Piece(row,column) and see where that piece can move");
     }
 
-    public void gamePlayActions(Scanner scanner, String command, String[] auth, Boolean[] gamePlayMode) throws InvalidMoveException {
+    public void gamePlayActions(Scanner scanner, String command, String[] auth, boolean[] gamePlayMode) throws InvalidMoveException, ResponseException, IOException {
 
         switch (command) {
-            case "1" -> System.out.println("GamePlay Help");
+            case "1" -> handleHelpActionGamePlay();
             case "2" -> redrawChessBoard(game);
-            case "3" -> System.out.println("Leave");
-            case "4" -> makeMove(game,scanner);
+            case "3" -> leave(game,scanner,auth,gamePlayMode);
+            case "4" -> makeMove(game,scanner,auth);
             case "5" -> System.out.println("Resign");
             case "6" -> highlightLegalMoves(game,scanner);
         }
     }
 
-    public void authMenuActions(Scanner scanner, String[] command, String auth[], Boolean[] gamePlayMode) throws ResponseException, IOException {
+
+    public void authMenuActions(Scanner scanner, String[] command, String auth[], boolean[] gamePlayMode) throws ResponseException, IOException {
         switch (command[0]) {
             case "1" -> handleHelpActionAuth();
             case "2" -> handleLogoutAction(auth);
@@ -203,7 +205,7 @@ public class Main implements ServerMessageHandler {
         }
     }
 
-    private void handleJoinGameAction(Scanner scanner, String[] auth, Boolean[] gamePlayMode) throws ResponseException, IOException {
+    private void handleJoinGameAction(Scanner scanner, String[] auth, boolean[] gamePlayMode) throws ResponseException, IOException {
         String playerColor;
         System.out.print("Player Color (WHITE/BLACK): ");
         playerColor = scanner.nextLine();
@@ -211,82 +213,52 @@ public class Main implements ServerMessageHandler {
         System.out.println("Which Game Number Do You Want To Join: ");
         gameID = scanner.nextInt();
         JoinGameRequest request = new JoinGameRequest(auth[0],playerColor,gameID);
+        gameIDTemp[0] = gameID;
         try{
-            WebSocketFacade webSocketFacade = new WebSocketFacade(serverUrl, new ServerMessageHandler() {
-                @Override
-                public void notify(String message) {
-                    NotificationMessage newMessage = new Gson().fromJson(message, NotificationMessage.class);
-                    LoadGameMessage newMessage1 = new Gson().fromJson(message, LoadGameMessage.class);
-                    ErrorMessage newMessage2 = new Gson().fromJson(message, ErrorMessage.class);
-                    String messageString = newMessage.getNotificationMessage();
-                    String messageString1 = new Gson().toJson(newMessage1);
-                    String messageString2 = new Gson().toJson(newMessage2);
-                    if (messageString != null) {
-                        displayNotification(messageString);
-                    }
-                    if (messageString2 != null){
-                        displayError(messageString2);
-                    }
-                    if (newMessage1.getGame() != null) {
-                        displayLoadGame(messageString1);
-                    }
-                }
-            });
-            webSocketFacade.joinGame(gameID,auth,"a",playerColor);
             JoinGameResult result = serverFacade.serverJoinGame(request,auth);
-            System.out.println("Game: " + result.gameID() + " has been joined as " + playerColor);
-            boolean[][] validMoves = validMoveInit();
-            chessBoard.printChessBoard(this.game.getBoard(),validMoves);
+            webSocketFacade.joinGame(gameID,auth,user[0],playerColor);
             gamePlayMode[0] = true;
-        }
-        catch (ResponseException ex){
-
-            WebSocketFacade webSocketFacade = new WebSocketFacade(serverUrl, new ServerMessageHandler() {
-                @Override
-                public void notify(String message) {
-                    NotificationMessage newMessage = new Gson().fromJson(message, NotificationMessage.class);
-                    LoadGameMessage newMessage1 = new Gson().fromJson(message, LoadGameMessage.class);
-                    ErrorMessage newMessage2 = new Gson().fromJson(message, ErrorMessage.class);
-                    String messageString = newMessage.getNotificationMessage();
-                    String messageString1 = new Gson().toJson(newMessage1);
-                    String messageString2 = new Gson().toJson(newMessage2);
-                    if (messageString != null) {
-                        displayNotification(messageString);
-                    }
-                    if (messageString2 != null){
-                        displayError(messageString2);
-                    }
-                    if (newMessage1.getGame() != null) {
-                        displayLoadGame(messageString1);
-                    }
-                }
-            });
-
-            webSocketFacade.joinGame(gameID,auth,"a",playerColor);
-
         }
         catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
 
-    private void handleJoinGameObserverAction(Scanner scanner, String[] auth, Boolean[] gamePlayMode) {
+    private void handleJoinGameObserverAction(Scanner scanner, String[] auth, boolean[] gamePlayMode) {
         int gameID;
         System.out.println("Which Game Number Do You Want To Join: ");
         gameID = scanner.nextInt();
         JoinGameRequest request = new JoinGameRequest(auth[0],"",gameID);
+        gameIDTemp[0] = gameID;
         try{
             JoinGameResult result = serverFacade.serverJoinGame(request,auth);
+            webSocketFacade.joinGame(gameID,auth,user[0],"");
             System.out.println("Game: " + result.gameID() + " has been joined as an observer");
-            boolean[][] validMoves = validMoveInit();
-            chessBoard.printChessBoard(game.getBoard(),validMoves);
+            //chessBoard.printChessBoard(game.getBoard(),validMoves);
             gamePlayMode[0] = true;
         }
         catch (ResponseException ex){
             System.out.println(ex.getMessage());
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
     }
 
+    public void makeMove(ChessGame game, Scanner scanner, String[] auth) throws InvalidMoveException, IOException {
+        System.out.println("Starting Row?");
+        int startRow = scanner.nextInt();
+        System.out.println("Starting Column?");
+        int startCol = scanner.nextInt();
+        System.out.println("Ending Row");
+        int endRow = scanner.nextInt();
+        System.out.println("Ending Column");
+        int endCol = scanner.nextInt();
+        ChessPosition startPosition = new ChessPosition(startRow,startCol);
+        ChessPosition endPosition = new ChessPosition(endRow,endCol);
+
+        ChessMove newMove = new ChessMove(startPosition,endPosition,null);
+        webSocketFacade.makeMove(gameIDTemp[0],auth,newMove);
+    }
     private void handleListGamesAction(Scanner scanner, String[] auth) {
         ListGamesRequest listGamesRequest = new ListGamesRequest(auth[0]);
         try{
@@ -325,38 +297,6 @@ public class Main implements ServerMessageHandler {
         boolean[][] validMoves = validMoveInit();
         chessBoard.printChessBoard(game.getBoard(),validMoves);
     }
-
-    public void makeMove(ChessGame game, Scanner scanner) throws InvalidMoveException {
-        System.out.println("Starting Row?");
-        int startRow = scanner.nextInt();
-        System.out.println("Starting Column?");
-        int startCol = scanner.nextInt();
-        System.out.println("Ending Row");
-        int endRow = scanner.nextInt();
-        System.out.println("Ending Column");
-        int endCol = scanner.nextInt();
-        ChessPosition startPosition = new ChessPosition(startRow,startCol);
-        ChessPosition endPosition = new ChessPosition(endRow,endCol);
-
-        ChessMove newMove = new ChessMove(startPosition,endPosition,null);
-
-        boolean[][] validMoves = validMoveInit();
-
-        Collection<ChessMove> moves = game.validMoves(startPosition);
-
-        if (moves.isEmpty()){
-            System.out.println("No Legal Moves");
-        }
-        else {
-            for (ChessMove move : moves) {
-                validMoves[move.getEndPosition().getRow()][move.getEndPosition().getColumn()] = true;
-            }
-            //serverFacade.
-            //game.makeMove(newMove);
-        }
-
-
-    }
     public void highlightLegalMoves(ChessGame game, Scanner scanner){
         System.out.println("What Row?");
         int row = scanner.nextInt();
@@ -393,11 +333,31 @@ public class Main implements ServerMessageHandler {
     }
 
     private static void handleHelpActionAuth() {
-        System.out.println("You are being helped");
+        System.out.println("Logout -> Logs You Out");
+        System.out.println("Create Game -> provide a game name to create a game");
+        System.out.println("List Games -> Lists all of the games in the application");
+        System.out.println("Join Game -> Enter a color and a game number to join");
+        System.out.println("Join Observer -> Enter a game number to join as an observer\n");
+    }
+
+    public void leave(ChessGame game, Scanner scanner, String[] auth, boolean[] gamePlayMode) throws ResponseException, IOException {
+        WebSocketFacade webSocketFacade = new WebSocketFacade(serverUrl, new ServerMessageHandler() {
+            @Override
+            public void notify(String serverMessage) {
+                NotificationMessage message = new Gson().fromJson(serverMessage, NotificationMessage.class);
+                displayNotification(message.getNotificationMessage());
+
+            }
+        });
+        int gameID = scanner.nextInt();
+        webSocketFacade.leave(gameID,auth);
+        gamePlayMode[0] = false;
     }
 
     public void displayNotification(String message){
-        System.out.println(message);
+        if (message != null) {
+            System.out.println(message);
+        }
     }
 
     public void displayError(String message){
@@ -406,12 +366,32 @@ public class Main implements ServerMessageHandler {
         System.out.println(errorMessage.getErrorMessage());
     }
     public void displayLoadGame(String message){
-        LoadGameMessage loadGameMessage = new Gson().fromJson(message, LoadGameMessage.class);
-        System.out.println(loadGameMessage.getGame());
+        ChessGame chessGame = new Gson().fromJson(message, ChessGame.class);
+        boolean[][] validMoves = validMoveInit();
+        this.game = chessGame;
+        chessBoard.printChessBoard(this.game.getBoard(),validMoves);
     }
 
     @Override
-    public void notify(String serverMessage) {
+    public void notify(String message) {
+        ServerMessage serverMessage = new Gson().fromJson(message,ServerMessage.class);
+        String messageString;
+        if (serverMessage.getServerMessageType().equals(ServerMessage.ServerMessageType.NOTIFICATION)){
+            NotificationMessage newMessage = new Gson().fromJson(message, NotificationMessage.class);
+            messageString = newMessage.getNotificationMessage();
+            displayNotification(messageString);
+        }
+        else if (serverMessage.getServerMessageType().equals(ServerMessage.ServerMessageType.LOAD_GAME)){
+            LoadGameMessage newMessage1 = new Gson().fromJson(message, LoadGameMessage.class);
 
+            messageString = new Gson().toJson(newMessage1.getGame());
+            displayLoadGame(messageString);
+        }
+        else {
+            ErrorMessage newMessage2 = new Gson().fromJson(message, ErrorMessage.class);
+            messageString = new Gson().toJson(newMessage2);
+            displayError(messageString);
+
+        }
     }
 }

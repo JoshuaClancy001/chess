@@ -6,10 +6,11 @@ public class MakeMove extends UserGameCommand{
 
     int gameID;
     ChessMove move;
-    public MakeMove(String authToken,int gameID,ChessMove move) {
+    public MakeMove(String authToken,int gameID,ChessMove move,CommandType type) {
         super(authToken);
         this.gameID = gameID;
         this.move = move;
+        this.commandType = type;
     }
 
     public int getGameID() {

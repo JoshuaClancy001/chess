@@ -159,9 +159,12 @@ public class SQLGAMEDAO implements GameDAO {
 
         try (var connection = DatabaseManager.getConnection()){
             try (PreparedStatement stmt = connection.prepareStatement(sql)){
-                stmt.setString(1,username);
-                stmt.setInt(2,gameID);
-
+                if (username != null) {
+                    stmt.setString(1, username);
+                    stmt.setInt(2, gameID);
+                } else {
+                    stmt.setInt(1, gameID);
+                }
                 stmt.executeUpdate();
             }
         }catch (SQLException ex){

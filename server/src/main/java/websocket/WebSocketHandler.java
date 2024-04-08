@@ -2,6 +2,7 @@ package websocket;
 
 import chess.ChessGame;
 import chess.ChessMove;
+import chess.ChessPiece;
 import chess.InvalidMoveException;
 import com.google.gson.Gson;
 import com.mysql.cj.ServerVersion;
@@ -33,7 +34,7 @@ public class WebSocketHandler {
     SQLAUTHDAO authDatabase = new SQLAUTHDAO();
     SQLUSERDAO userDatabase = new SQLUSERDAO();
 
-    private final ConnectionManager connections = new ConnectionManager();
+    private ConnectionManager connections = new ConnectionManager();
 
     public WebSocketHandler() throws DataAccessException {
     }
@@ -67,6 +68,11 @@ public class WebSocketHandler {
         }
     }
     public void leave(Connection conn, UserGameCommand command, int gameID){
+        for (Connection connection : connections.connectionsMap.get(gameID)){
+            if (connection.visitorName.equals(command.getAuthString())){
+                conn = connection;
+            }
+        }
         try{
             GameData gameData = gamesDatabase.readOneGame(gameID);
             AuthData authData = authDatabase.readAuth(command.getAuthString());
@@ -78,10 +84,9 @@ public class WebSocketHandler {
             else if (authData.username().equalsIgnoreCase(gameData.getBlackUsername())){
                 gamesDatabase.updateGame("BLACK",null,gameID);
             }
-            ServerMessage notiMessage = new NotificationMessage(authData.username() + "Just Left the Game");
-            connections.broadcastOthers(gameID, conn.visitorName, notiMessage);
-            conn.session.close();
-            connections.connectionsMap.remove(conn);
+            ServerMessage notiMessage = new NotificationMessage(authData.username() + " Just Left the Game");
+            this.connections.broadcastOthers(gameID, conn.visitorName, notiMessage);
+            this.connections.connectionsMap.get(gameID).remove(conn);
         }
         catch (DataAccessException ex){
             //err
@@ -126,21 +131,52 @@ public class WebSocketHandler {
             if (game.getTeamTurn() == null){
                 ServerMessage errorMessage = new ErrorMessage("Invalid Move");
                 conn.send(new Gson().toJson(errorMessage));
+                return;
+            }
+            ChessGame.TeamColor color = ChessGame.TeamColor.WHITE;
+            if (authData.username().equalsIgnoreCase(gameData.getWhiteUsername())){
+                color = ChessGame.TeamColor.WHITE;
+            }
+            else if (authData.username().equalsIgnoreCase(gameData.getBlackUsername())){
+                color = ChessGame.TeamColor.BLACK;
+            }
+            else {
+                ServerMessage errorMessage = new ErrorMessage("You are observing, you cant move");
+                conn.send(new Gson().toJson(errorMessage));
+                return;
             }
             boolean isValid = game.validMoves(move.getStartPosition()).contains(move);
-            for (ChessMove chessMove : game.validMoves(move.getStartPosition())){
-                if (!authData.username().equalsIgnoreCase(game.getTeamTurn().toString())){
+            //for (ChessMove chessMove : game.validMoves(move.getStartPosition())){
+                if (!color.equals(game.getTeamTurn())){
                     isValid = false;
-                    break;
                 }
-            }
+            //}
 
             if (isValid) {
                 try {
                     game.makeMove(move);
+                    if (game.isInCheck(color)){
+                        ServerMessage errorMessage = new ErrorMessage("You are still in Check");
+                        conn.send(new Gson().toJson(errorMessage));
+                        game.undoMove(move,game.getBoard().getPiece(move.getEndPosition()));
+                        return;
+                    }
+                    if (game.isInCheckmate(color)){
+                        String enemy = "";
+                        if (authData.username().equals(gameData.getWhiteUsername())){
+                            enemy = gameData.getBlackUsername();
+                        }
+                        else {
+                            enemy = gameData.getWhiteUsername();
+                        }
+                        ServerMessage endGameMessage = new NotificationMessage("You are in CheckMate/n" + enemy +" has won");
+                        conn.send(new Gson().toJson(endGameMessage));
+                        game.setTeamTurn(null);
+                        return;
+                    }
                     gamesDatabase.updateChessGame(gameID, game);
                     ServerMessage message = new LoadGameMessage(game);
-                    ServerMessage notiMessage = new NotificationMessage(authData.username() + "Just Moved");
+                    ServerMessage notiMessage = new NotificationMessage(authData.username() + " Just Moved");
                     connections.broadcastOthers(gameID, "fake", message);
                     connections.broadcastOthers(gameID, conn.visitorName, notiMessage);
                 } catch (InvalidMoveException e) {
@@ -223,9 +259,10 @@ public class WebSocketHandler {
                 return;
             } else {
 
-                connections.add(gameID, command.getAuthString(), conn.session);
-
-                ServerMessage message = new NotificationMessage("hi" + " joined the game as " + clientColor);
+                if (!connections.connectionsMap.contains(conn)) {
+                    connections.add(gameID, command.getAuthString(), conn.session);
+                }
+                ServerMessage message = new NotificationMessage(auth.username() + " joined the game as " + clientColor);
                 ServerMessage message1 = new LoadGameMessage(game.getGame());
 
                 connections.broadcastOthers(gameID, conn.visitorName, message);
