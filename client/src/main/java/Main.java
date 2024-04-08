@@ -1,3 +1,5 @@
+import Request.*;
+import Result.*;
 import chess.*;
 import com.google.gson.Gson;
 import model.GameData;

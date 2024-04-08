@@ -1,10 +1,8 @@
 package service;
 
 import dataAccess.DataAccessException;
-import server.Request.LoginRequest;
-import server.Result.LoginResult;
-
-import javax.xml.crypto.Data;
+import Request.LoginRequest;
+import Result.LoginResult;
 
 public class LoginService extends  Services{
     private LoginRequest login;

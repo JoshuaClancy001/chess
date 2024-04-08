@@ -1,8 +1,7 @@
 package ui;
 
-import dataAccess.DataAccessException;
-import server.Request.*;
-import server.Result.*;
+import Request.*;
+import Result.*;
 import ui.Exception.ResponseException;
 
 public class ServerFacade {
@@ -13,7 +12,7 @@ public class ServerFacade {
         serverUrl = url;
     }
 
-    public RegisterResult serverRegister(RegisterRequest request,String[] auth) throws ResponseException {
+    public RegisterResult serverRegister(RegisterRequest request, String[] auth) throws ResponseException {
         try {
             ClientCommunicator clientCommunicator = new ClientCommunicator();
             var path = "/user";
@@ -47,7 +46,7 @@ public class ServerFacade {
         }
     }
 
-    public CreateGameResult serverCreateGame(CreateGameRequest request,String[] auth) throws ResponseException{
+    public CreateGameResult serverCreateGame(CreateGameRequest request, String[] auth) throws ResponseException{
         try{
             ClientCommunicator clientCommunicator = new ClientCommunicator();
             var path = "/game";
@@ -58,7 +57,7 @@ public class ServerFacade {
         }
     }
 
-    public ListGamesResult serverListGames(ListGamesRequest request,String[] auth) throws ResponseException{
+    public ListGamesResult serverListGames(ListGamesRequest request, String[] auth) throws ResponseException{
         try{
             ClientCommunicator clientCommunicator = new ClientCommunicator();
             var path = "/game";

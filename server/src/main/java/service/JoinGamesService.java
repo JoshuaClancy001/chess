@@ -2,8 +2,8 @@ package service;
 
 import dataAccess.DataAccessException;
 import model.AuthData;
-import server.Request.JoinGameRequest;
-import server.Result.JoinGameResult;
+import Request.JoinGameRequest;
+import Result.JoinGameResult;
 
 public class JoinGamesService extends Services {
 

@@ -3,7 +3,7 @@ package dataAccessTests;
 import dataAccess.DataAccessException;
 import dataAccess.SQLDAO.SQLGAMEDAO;
 import model.GameData;
-import server.Request.RegisterRequest;
+import Request.RegisterRequest;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import service.ClearApplicationService;

@@ -2,13 +2,13 @@ package dataAccessTests;
 
 import dataAccess.SQLDAO.SQLAUTHDAO;
 import org.junit.jupiter.api.*;
-import server.Request.LoginRequest;
-import server.Request.LogoutRequest;
-import server.Request.RegisterRequest;
-import server.Result.LoginResult;
-import server.Result.LogoutResult;
+import Request.LoginRequest;
+import Request.LogoutRequest;
+import Request.RegisterRequest;
+import Result.LoginResult;
+import Result.LogoutResult;
 import dataAccess.DataAccessException;
-import server.Result.RegisterResult;
+import Result.RegisterResult;
 import service.*;
 
 import java.util.UUID;

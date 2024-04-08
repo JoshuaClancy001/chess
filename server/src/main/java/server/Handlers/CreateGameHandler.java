@@ -3,8 +3,8 @@ package server.Handlers;
 import com.google.gson.Gson;
 import dataAccess.DataAccessException;
 import service.CreateGamesService;
-import server.Request.CreateGameRequest;
-import server.Result.CreateGameResult;
+import Request.CreateGameRequest;
+import Result.CreateGameResult;
 import spark.Request;
 import spark.Response;
 

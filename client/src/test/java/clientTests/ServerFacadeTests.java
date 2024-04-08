@@ -1,5 +1,7 @@
 package clientTests;
 
+import Request.*;
+import Result.*;
 import model.GameData;
 import org.junit.jupiter.api.*;
 import server.Request.*;

@@ -1,12 +1,8 @@
 package dataAccessTests;
 
 import dataAccess.SQLDAO.SQLUSERDAO;
-import org.eclipse.jetty.server.Authentication;
-import server.Request.CreateGameRequest;
-import server.Request.LoginRequest;
-import server.Request.RegisterRequest;
-import server.Result.LoginResult;
-import server.Result.RegisterResult;
+import Request.RegisterRequest;
+import Result.RegisterResult;
 import dataAccess.DataAccessException;
 import model.UserData;
 import org.junit.jupiter.api.AfterAll;
@@ -15,7 +11,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Assertions;
 import service.*;
 
-import java.util.ArrayList;
 import java.util.UUID;
 
 class RegistrationServiceTest extends Services {

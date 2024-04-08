@@ -1,18 +1,18 @@
 package dataAccessTests;
 
-import server.Request.CreateGameRequest;
-import server.Request.JoinGameRequest;
-import server.Request.LoginRequest;
-import server.Request.RegisterRequest;
-import server.Result.CreateGameResult;
-import server.Result.JoinGameResult;
+import Request.CreateGameRequest;
+import Request.JoinGameRequest;
+import Request.LoginRequest;
+import Request.RegisterRequest;
+import Result.CreateGameResult;
+import Result.JoinGameResult;
 import dataAccess.DataAccessException;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import server.Result.LoginResult;
-import server.Result.RegisterResult;
+import Result.LoginResult;
+import Result.RegisterResult;
 import service.*;
 
 import java.util.UUID;

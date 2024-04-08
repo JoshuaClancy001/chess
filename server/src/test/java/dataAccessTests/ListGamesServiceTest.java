@@ -1,20 +1,20 @@
 package dataAccessTests;
 
 import dataAccess.SQLDAO.SQLAUTHDAO;
-import server.Request.CreateGameRequest;
-import server.Request.ListGamesRequest;
-import server.Request.LoginRequest;
-import server.Request.RegisterRequest;
-import server.Result.CreateGameResult;
-import server.Result.ListGamesResult;
+import Request.CreateGameRequest;
+import Request.ListGamesRequest;
+import Request.LoginRequest;
+import Request.RegisterRequest;
+import Result.CreateGameResult;
+import Result.ListGamesResult;
 import dataAccess.DataAccessException;
 import model.GameData;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import server.Result.LoginResult;
-import server.Result.RegisterResult;
+import Result.LoginResult;
+import Result.RegisterResult;
 import service.*;
 
 import java.util.ArrayList;

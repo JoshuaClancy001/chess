@@ -3,8 +3,8 @@ package service;
 import dataAccess.DataAccessException;
 import model.AuthData;
 import model.GameData;
-import server.Request.CreateGameRequest;
-import server.Result.CreateGameResult;
+import Request.CreateGameRequest;
+import Result.CreateGameResult;
 
 public class CreateGamesService extends Services {
 

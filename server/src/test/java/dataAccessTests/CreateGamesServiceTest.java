@@ -1,15 +1,15 @@
 package dataAccessTests;
 
 import dataAccess.SQLDAO.SQLAUTHDAO;
-import server.Request.CreateGameRequest;
-import server.Request.RegisterRequest;
-import server.Result.CreateGameResult;
+import Request.CreateGameRequest;
+import Request.RegisterRequest;
+import Result.CreateGameResult;
 import dataAccess.DataAccessException;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import server.Result.RegisterResult;
+import Result.RegisterResult;
 import service.ClearApplicationService;
 import service.CreateGamesService;
 import service.RegistrationService;
