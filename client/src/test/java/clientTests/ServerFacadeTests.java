@@ -4,8 +4,6 @@ import Request.*;
 import Result.*;
 import model.GameData;
 import org.junit.jupiter.api.*;
-import server.Request.*;
-import server.Result.*;
 import server.Server;
 import ui.Exception.ResponseException;
 import ui.ServerFacade;
