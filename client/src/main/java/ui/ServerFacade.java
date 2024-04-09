@@ -61,7 +61,7 @@ public class ServerFacade {
         try{
             ClientCommunicator clientCommunicator = new ClientCommunicator();
             var path = "/game";
-            return ClientCommunicator.doGet(serverUrl,path,request, ListGamesResult.class, auth);
+            return ClientCommunicator.doGet(serverUrl,path, ListGamesResult.class, auth);
         }
         catch (ResponseException ex){
             throw new ResponseException(ex.getStatusCode(),ex.getMessage());

@@ -2,8 +2,6 @@ package ui;
 
 import com.google.gson.Gson;
 import ui.Exception.ResponseException;
-
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
@@ -12,7 +10,7 @@ import java.net.*;
 public class ClientCommunicator {
 
     public  <T> T doPost(String serverUrl,String path, Object request, Class<T> response, String[] auth) throws ResponseException {
-        T deserializedResponse = null;
+        T deserializedResponse;
         try{
             URI uri = new URI(serverUrl + path);
             HttpURLConnection http = (HttpURLConnection) uri.toURL().openConnection();
@@ -23,7 +21,7 @@ public class ClientCommunicator {
 
             http.connect();
 
-            try(OutputStream requestBody = http.getOutputStream();){
+            try(OutputStream requestBody = http.getOutputStream()){
                 String reqData = new Gson().toJson(request);
                 requestBody.write(reqData.getBytes());
             }
@@ -52,7 +50,7 @@ public class ClientCommunicator {
         return deserializedResponse;
     }
     public  <T> T doPut(String serverUrl,String path, Object request, Class<T> response, String[] auth) throws ResponseException {
-        T deserializedResponse = null;
+        T deserializedResponse;
         try{
             URI uri = new URI(serverUrl + path);
             HttpURLConnection http = (HttpURLConnection) uri.toURL().openConnection();
@@ -64,7 +62,7 @@ public class ClientCommunicator {
 
             http.connect();
 
-            try(OutputStream requestBody = http.getOutputStream();){
+            try(OutputStream requestBody = http.getOutputStream()){
                 String reqData = new Gson().toJson(request);
                 requestBody.write(reqData.getBytes());
             }
@@ -88,14 +86,13 @@ public class ClientCommunicator {
             }
         }
         catch(Exception ex){
-            ex.printStackTrace();
             throw new ResponseException(500, ex.getMessage());
         }
         return deserializedResponse;
     }
 
-    public static <T> T doGet(String serverUrl, String path, Object request, Class<T> response, String[] auth) throws ResponseException {
-        T deserializedResponse = null;
+    public static <T> T doGet(String serverUrl, String path, Class<T> response, String[] auth) throws ResponseException {
+        T deserializedResponse;
         try{
             URI uri = new URI(serverUrl + path);
             HttpURLConnection http = (HttpURLConnection) uri.toURL().openConnection();
@@ -135,7 +132,7 @@ public class ClientCommunicator {
             HttpURLConnection http = (HttpURLConnection) uri.toURL().openConnection();
             http.setReadTimeout(5000);
             http.setRequestMethod("DELETE");
-            if (auth[0].equals("") & path.equals("/session")){
+            if (auth[0].isEmpty() & path.equals("/session")){
                 throw new ResponseException(401, "Unauthorized");
                 }
             http.addRequestProperty("authorization",auth[0]);
@@ -152,39 +149,5 @@ public class ClientCommunicator {
         catch(Exception ex){
             throw new ResponseException(500, ex.getMessage());
         }
-    }
-
-
-    private void throwIfNotSuccessful(HttpURLConnection http) throws IOException, ResponseException {
-        var status = http.getResponseCode();
-        if (!isSuccessful(status)) {
-            throw new ResponseException(status, "failure: " + status);
-        }
-    }
-
-    private  void writeBody(Object request, HttpURLConnection http) throws  IOException {
-        if (request != null) {
-            http.addRequestProperty("Content-Type", "application/json");
-            String reqData = new Gson().toJson(request);
-            try (OutputStream reqBody = http.getOutputStream()) {
-                reqBody.write(reqData.getBytes());
-            }
-        }
-    }
-    private  <T> T readBody(HttpURLConnection http, Class<T> responseClass) throws IOException {
-        T response = null;
-        if (http.getContentLength() < 0) {
-            try (InputStream respBody = http.getInputStream()) {
-                InputStreamReader reader = new InputStreamReader(respBody);
-                if (responseClass != null) {
-                    response = new Gson().fromJson(reader, responseClass);
-                }
-            }
-        }
-        return response;
-    }
-
-    private boolean isSuccessful(int status) {
-        return status / 100 == 2;
     }
 }
