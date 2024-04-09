@@ -25,26 +25,18 @@ import webSocketMessages.userCommands.*;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
-
-
 @WebSocket
 public class WebSocketHandler {
-
     SQLGAMEDAO gamesDatabase = new SQLGAMEDAO();
     SQLAUTHDAO authDatabase = new SQLAUTHDAO();
     SQLUSERDAO userDatabase = new SQLUSERDAO();
-
     private ConnectionManager connections = new ConnectionManager();
-
     public WebSocketHandler() throws DataAccessException {
     }
-
     @OnWebSocketMessage
     public void onMessage(Session session, String msg) throws Exception {
         UserGameCommand command = new Gson().fromJson(msg, UserGameCommand.class);
-
         Connection conn = new Connection(command.getAuthString(), session);
-
         switch (command.getCommandType()) {
             case JOIN_PLAYER -> {
                 JoinPlayer joinPlayerCommand = new Gson().fromJson(msg, JoinPlayer.class);
@@ -78,7 +70,6 @@ public class WebSocketHandler {
             GameData gameData = gamesDatabase.readOneGame(gameID);
             AuthData authData = authDatabase.readAuth(command.getAuthString());
             ChessGame chessGame = gameData.getGame();
-
             if (authData.username().equalsIgnoreCase(gameData.getWhiteUsername())){
                 gamesDatabase.updateGame("WHITE",null,gameID);
             }
@@ -139,8 +130,7 @@ public class WebSocketHandler {
     public void makeMove(Connection conn, UserGameCommand command, int gameID, ChessMove move) throws DataAccessException, InvalidMoveException, IOException {
         for (Connection connection : connections.connectionsMap.get(gameID)){
             if (connection.visitorName.equals(command.getAuthString())){
-                conn = connection;
-            }
+                conn = connection;}
         }
         try {
             GameData gameData = gamesDatabase.readOneGame(gameID);
@@ -149,8 +139,7 @@ public class WebSocketHandler {
             if (game.getTeamTurn() == null){
                 ServerMessage errorMessage = new ErrorMessage("Invalid Move: Game is Over");
                 conn.send(new Gson().toJson(errorMessage));
-                return;
-            }
+                return;}
             ChessGame.TeamColor color = ChessGame.TeamColor.WHITE;
             ChessGame.TeamColor enemyColor = ChessGame.TeamColor.WHITE;
             String stringColor = "WHITE";
@@ -163,8 +152,7 @@ public class WebSocketHandler {
             else {
                 ServerMessage errorMessage = new ErrorMessage("You are observing, you cant move");
                 conn.send(new Gson().toJson(errorMessage));
-                return;
-            }
+                return;}
             String enemy = "";
             if (authData.username().equals(gameData.getWhiteUsername())){
                 enemy = gameData.getBlackUsername();
@@ -199,7 +187,6 @@ public class WebSocketHandler {
                     conn.send(new Gson().toJson(errorMessage));
                     return;
                 }
-
             if (isValid) {
                 try {
                     game.makeMove(move);
@@ -226,10 +213,7 @@ public class WebSocketHandler {
                 } catch (InvalidMoveException e) {
                     ServerMessage notYourTurnError = new ErrorMessage("Error: Not Your Piece");
                     conn.send(new Gson().toJson(notYourTurnError));
-
                 } catch (DataAccessException e) {
-                    throw new RuntimeException(e);
-                } catch (IOException e) {
                     throw new RuntimeException(e);
                 }
             } else {
@@ -240,9 +224,7 @@ public class WebSocketHandler {
         catch (DataAccessException ex){
             System.out.println("error");
         }
-
     }
-
     public void joinObserver(Connection conn, UserGameCommand command,int gameID) throws DataAccessException, IOException {
         try {
             AuthData auth = authDatabase.readAuth(command.getAuthString());

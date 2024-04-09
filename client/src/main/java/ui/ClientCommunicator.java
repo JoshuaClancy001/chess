@@ -2,6 +2,8 @@ package ui;
 
 import com.google.gson.Gson;
 import ui.Exception.ResponseException;
+
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
@@ -10,7 +12,7 @@ import java.net.*;
 public class ClientCommunicator {
 
     public  <T> T doPost(String serverUrl,String path, Object request, Class<T> response, String[] auth) throws ResponseException {
-        T deserializedResponse;
+        T deserializedResponse = null;
         try{
             URI uri = new URI(serverUrl + path);
             HttpURLConnection http = (HttpURLConnection) uri.toURL().openConnection();
@@ -36,21 +38,24 @@ public class ClientCommunicator {
                 throw new ResponseException(403,"User already exists");
             }
             else if (http.getResponseCode() == 400){
-                throw new ResponseException(400, "bad request");
-            }
+                throw new ResponseException(400, "bad request");}
             else {
-                System.out.println(http.getResponseCode());
-                System.out.println(http.getResponseMessage());
-                throw new ResponseException(500,"Description Error");
-            }
-        }
+                handleDescrError(http, 500);
+            }}
         catch(Exception ex){
             throw new ResponseException(500, ex.getMessage());
         }
         return deserializedResponse;
     }
+
+    private static void handleDescrError(HttpURLConnection http, int statusCode) throws IOException, ResponseException {
+        System.out.println(http.getResponseCode());
+        System.out.println(http.getResponseMessage());
+        throw new ResponseException(statusCode, "Description Error");
+    }
+
     public  <T> T doPut(String serverUrl,String path, Object request, Class<T> response, String[] auth) throws ResponseException {
-        T deserializedResponse;
+        T deserializedResponse = null;
         try{
             URI uri = new URI(serverUrl + path);
             HttpURLConnection http = (HttpURLConnection) uri.toURL().openConnection();
@@ -80,9 +85,7 @@ public class ClientCommunicator {
                 throw new ResponseException(400, "bad request");
             }
             else {
-                System.out.println(http.getResponseCode());
-                System.out.println(http.getResponseMessage());
-                throw new ResponseException(500,"Description Error");
+                handleDescrError(http, 500);
             }
         }
         catch(Exception ex){
@@ -92,7 +95,7 @@ public class ClientCommunicator {
     }
 
     public static <T> T doGet(String serverUrl, String path, Class<T> response, String[] auth) throws ResponseException {
-        T deserializedResponse;
+        T deserializedResponse = null;
         try{
             URI uri = new URI(serverUrl + path);
             HttpURLConnection http = (HttpURLConnection) uri.toURL().openConnection();
@@ -115,9 +118,7 @@ public class ClientCommunicator {
                 throw new ResponseException(500, "Description Error");
             }
             else {
-                System.out.println(http.getResponseCode());
-                System.out.println(http.getResponseMessage());
-                throw new ResponseException(600,"Description Error");
+                handleDescrError(http, 600);
             }
         }
         catch(Exception ex){

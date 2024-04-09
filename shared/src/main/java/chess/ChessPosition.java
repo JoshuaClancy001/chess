@@ -46,18 +46,3 @@ public class ChessPosition {
         return Objects.hash(row, col);
     }
 }
-
-    /*
-        }
-        if (otherPosition.getClass() == this.getClass()) {
-            ChessPosition other = (ChessPosition) otherPosition;
-            if (this.row == other.getRow() && this.col == other.getColumn()) {
-                return true;
-            } else {
-                return false;
-            }
-        }
-        else {
-            return false;
-        }
-        */

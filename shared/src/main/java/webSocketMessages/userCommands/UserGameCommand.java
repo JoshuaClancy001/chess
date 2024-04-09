@@ -35,10 +35,6 @@ public class UserGameCommand {
         return this.commandType;
     }
 
-    public void setCommandType(CommandType commandType) {
-        this.commandType = commandType;
-    }
-
     public String getMessage() {
         return message;
     }

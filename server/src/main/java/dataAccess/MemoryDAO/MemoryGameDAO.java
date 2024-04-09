@@ -11,10 +11,6 @@ public class MemoryGameDAO implements GameDAO {
     private static ArrayList<GameData> games = new ArrayList<>();
 
     private int gameID = 1;
-
-    public void resetGameID(){
-        this.gameID = 1;
-    }
     @Override
     public GameData addGame(String gameName) {
 

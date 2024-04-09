@@ -38,7 +38,7 @@ public class ClientChessBoard {
             ChessPiece[] row = board.getRow(rowNum);
             boolean[] validMoveRow = validMoves[rowNum];
             if (rowNum % 2 == 0) {
-                drawEvenRow(out, rowNum, row, whiteOrBlack, validMoveRow);
+                drawOddRow(out, rowNum, row, whiteOrBlack, validMoveRow);
             } else {
                 drawOddRow(out, rowNum, row, whiteOrBlack, validMoveRow);
             }
@@ -57,7 +57,7 @@ public class ClientChessBoard {
             ChessPiece[] row = board.getRow(rowNum);
             boolean[] validMovesRow = validMoves[rowNum];
             if (rowNum % 2 == 0) {
-                drawEvenRow(out, rowNum, row, whiteOrBlack, validMovesRow);
+                drawOddRow(out, rowNum, row, whiteOrBlack, validMovesRow);
             } else {
                 drawOddRow(out, rowNum, row, whiteOrBlack, validMovesRow);
             }
@@ -82,21 +82,6 @@ public class ClientChessBoard {
         } else {
             printPiecesBlack(out, row, rowNum, validMovesRow);
         }
-
-    }
-
-    public void drawEvenRow(PrintStream out, int rowNum, ChessPiece[] row, String whiteOrBlack, boolean[] validMovesRow) {
-
-        out.print(SET_BG_COLOR_LIGHT_GREY);
-        out.print(SET_TEXT_COLOR_BLACK);
-        out.print(SET_TEXT_BOLD);
-        out.print(" " + (rowNum) + " ");
-        if (whiteOrBlack.equals("White")) {
-            printPiecesWhite(out, row, rowNum, validMovesRow);
-        } else {
-            printPiecesBlack(out, row, rowNum, validMovesRow);
-        }
-
 
     }
 
