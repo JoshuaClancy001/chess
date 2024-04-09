@@ -10,7 +10,7 @@ import java.util.*;
  */
 public class ChessGame {
 
-    private ChessGame.TeamColor TeamColor;
+    private ChessGame.TeamColor teamColor;
     private ChessBoard board;
 
     public ChessGame() {
@@ -22,7 +22,7 @@ public class ChessGame {
      * @return Which team's turn it is
      */
     public TeamColor getTeamTurn() {
-        return this.TeamColor;
+        return this.teamColor;
     }
 
     /**
@@ -31,7 +31,7 @@ public class ChessGame {
      * @param team the team whose turn it is
      */
     public void setTeamTurn(TeamColor team) {
-        this.TeamColor = team;
+        this.teamColor = team;
     }
 
     /**
@@ -92,16 +92,19 @@ public class ChessGame {
             if (takenPiece != null) { // if you took a piece when you moved, put it back
                 this.board.addPiece(move.getEndPosition(), takenPiece);
             }
+            else {
+                this.board.addPiece(move.getEndPosition(),null);
+            }
 
     }
     public void makeMove(ChessMove move) throws InvalidMoveException {
         Collection<ChessMove> valid;
         valid = validMoves(move.getStartPosition());
 
-        if (this.board.getPiece(move.getStartPosition()).getTeamColor() != this.TeamColor){ // is it your turn?
+        if (this.board.getPiece(move.getStartPosition()).getTeamColor() != this.teamColor){ // is it your turn?
             throw new InvalidMoveException("Not Your Turn");
         }
-        if (!this.board.getPiece(move.getStartPosition()).getTeamColor().equals(this.TeamColor)){
+        if (!this.board.getPiece(move.getStartPosition()).getTeamColor().equals(this.teamColor)){
             throw new InvalidMoveException("Not Your Piece");
         }
             if (valid.contains(move)) { // can you actually move there?
@@ -117,7 +120,7 @@ public class ChessGame {
         ChessPiece piece = this.board.getPiece(move.getStartPosition());
         ChessPiece takenPiece = this.board.getPiece(move.getEndPosition());
         if (move.getPromotionPiece() != null){
-            this.board.addPiece(move.getEndPosition(),new ChessPiece(this.TeamColor, move.getPromotionPiece()));
+            this.board.addPiece(move.getEndPosition(),new ChessPiece(this.teamColor, move.getPromotionPiece()));
         }
         else {
             this.board.addPiece(move.getEndPosition(), piece);
@@ -133,11 +136,11 @@ public class ChessGame {
     }
 
     private void changeTurn() {
-        if (this.TeamColor == TeamColor.WHITE){
-            setTeamTurn(TeamColor.BLACK);
+        if (this.teamColor == teamColor.WHITE){
+            setTeamTurn(teamColor.BLACK);
         }
         else{
-            setTeamTurn(TeamColor.WHITE);
+            setTeamTurn(teamColor.WHITE);
         }
     }
 
@@ -231,12 +234,12 @@ public class ChessGame {
     public boolean isInStalemate(TeamColor teamColor) {
         boolean isInStalemate = false;
         Collection<ChessMove> validMoves = new ArrayList<>();
-        Collection<ChessMove> Moves = new ArrayList<>();
+        Collection<ChessMove> moves = new ArrayList<>();
         for (int i = 0; i < 9; i++) {
             for (int j = 0; j < 9; j++) {
                 if (board.getPiece(new ChessPosition(i, j)) != null && board.getPiece(new ChessPosition(i, j)).getTeamColor() == teamColor) {
-                    Moves = validMoves(new ChessPosition(i, j));
-                    validMoves.addAll(Moves);
+                    moves = validMoves(new ChessPosition(i, j));
+                    validMoves.addAll(moves);
                 }
             }
         }
@@ -270,11 +273,11 @@ public class ChessGame {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         ChessGame chessGame = (ChessGame) o;
-        return TeamColor == chessGame.TeamColor && Objects.equals(board, chessGame.board);
+        return teamColor == chessGame.teamColor && Objects.equals(board, chessGame.board);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(TeamColor, board);
+        return Objects.hash(teamColor, board);
     }
 }

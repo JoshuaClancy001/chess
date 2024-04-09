@@ -19,7 +19,7 @@ public class ServerFacade {
             return clientCommunicator.doPost(serverUrl, path, request, RegisterResult.class, auth);
         }
         catch (ResponseException ex){
-            throw new ResponseException(ex.StatusCode(), ex.getMessage());
+            throw new ResponseException(ex.getStatusCode(), ex.getMessage());
 
         }
     }
@@ -31,7 +31,7 @@ public class ServerFacade {
             return clientCommunicator.doPost(serverUrl,path,request, LoginResult.class, auth);
         }
         catch (ResponseException ex){
-            throw new ResponseException(ex.StatusCode(),ex.getMessage());
+            throw new ResponseException(ex.getStatusCode(),ex.getMessage());
         }
     }
 
@@ -53,7 +53,7 @@ public class ServerFacade {
             return clientCommunicator.doPost(serverUrl,path,request, CreateGameResult.class, auth);
         }
         catch (ResponseException ex){
-            throw new ResponseException(ex.StatusCode(), ex.getMessage());
+            throw new ResponseException(ex.getStatusCode(), ex.getMessage());
         }
     }
 
@@ -64,7 +64,7 @@ public class ServerFacade {
             return ClientCommunicator.doGet(serverUrl,path,request, ListGamesResult.class, auth);
         }
         catch (ResponseException ex){
-            throw new ResponseException(ex.StatusCode(),ex.getMessage());
+            throw new ResponseException(ex.getStatusCode(),ex.getMessage());
         }
     }
     public void serverClearApplication(String[] auth) throws ResponseException{
@@ -74,7 +74,7 @@ public class ServerFacade {
             clientCommunicator.doDelete(serverUrl,path,auth);
         }
         catch (ResponseException ex){
-            throw new ResponseException(ex.StatusCode(),ex.getMessage());
+            throw new ResponseException(ex.getStatusCode(),ex.getMessage());
         }
     }
     public JoinGameResult serverJoinGame(JoinGameRequest request, String[] auth) throws ResponseException{
@@ -84,7 +84,7 @@ public class ServerFacade {
             return clientCommunicator.doPut(serverUrl,path,request, JoinGameResult.class, auth);
         }
         catch (ResponseException ex){
-            throw new ResponseException(ex.StatusCode(), ex.getMessage());
+            throw new ResponseException(ex.getStatusCode(), ex.getMessage());
         }
     }
 

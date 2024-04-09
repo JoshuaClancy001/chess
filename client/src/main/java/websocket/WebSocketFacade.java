@@ -4,10 +4,7 @@ import chess.ChessMove;
 import com.google.gson.Gson;
 import ui.Exception.ResponseException;
 import webSocketMessages.serverMessages.ServerMessage;
-import webSocketMessages.userCommands.JoinPlayer;
-import webSocketMessages.userCommands.Leave;
-import webSocketMessages.userCommands.MakeMove;
-import webSocketMessages.userCommands.UserGameCommand;
+import webSocketMessages.userCommands.*;
 
 import javax.websocket.*;
 import java.io.IOException;
@@ -46,10 +43,14 @@ public class WebSocketFacade extends Endpoint {
     public void onOpen(Session session, EndpointConfig endpointConfig) {
     }
 
-    public void joinGame(Integer gameID, String[] auth, String user, String clientColor) throws ResponseException, IOException {
+    public void joinGame(Integer gameID, String[] auth, String clientColor) throws ResponseException, IOException {
         System.out.println("In Join Game");
         JoinPlayer command = new JoinPlayer(auth[0], UserGameCommand.CommandType.JOIN_PLAYER,gameID,clientColor );
 
+        this.session.getBasicRemote().sendText(new Gson().toJson(command));
+    }
+    public void joinObserver(int gameID, String[] auth) throws IOException {
+        JoinObserver command = new JoinObserver(auth[0], UserGameCommand.CommandType.JOIN_OBSERVER,gameID);
         this.session.getBasicRemote().sendText(new Gson().toJson(command));
     }
     public void leave(int gameID,String[] auth) throws IOException {
@@ -62,5 +63,9 @@ public class WebSocketFacade extends Endpoint {
         this.session.getBasicRemote().sendText(new Gson().toJson(command));
     }
 
+    public void resign(int gameID, String[] auth) throws IOException {
+        Resign command = new Resign(auth[0],gameID, UserGameCommand.CommandType.RESIGN);
+        this.session.getBasicRemote().sendText(new Gson().toJson(command));
+    }
 
 }

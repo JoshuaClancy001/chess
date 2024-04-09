@@ -36,9 +36,9 @@ public class Main implements ServerMessageHandler {
     public void main(String[] args) throws ResponseException, InvalidMoveException, IOException {
         var piece = new ChessPiece(ChessGame.TeamColor.WHITE, ChessPiece.PieceType.PAWN);
         System.out.println("♕ 240 Chess Client: " + piece);
-        Run();
+        run();
     }
-    public void Run() throws ResponseException, InvalidMoveException, IOException {
+    public void run() throws ResponseException, InvalidMoveException, IOException {
         Main main = new Main(this.serverUrl);
         Scanner scanner = new Scanner(System.in);
         boolean[] hasExited = {false};
@@ -185,10 +185,10 @@ public class Main implements ServerMessageHandler {
 
         switch (command) {
             case "1" -> handleHelpActionGamePlay();
-            case "2" -> redrawChessBoard(game);
+            case "2" -> redrawChessBoard();
             case "3" -> leave(game,scanner,auth,gamePlayMode);
             case "4" -> makeMove(game,scanner,auth);
-            case "5" -> System.out.println("Resign");
+            case "5" -> resign(game,auth,gamePlayMode);
             case "6" -> highlightLegalMoves(game,scanner);
         }
     }
@@ -216,7 +216,7 @@ public class Main implements ServerMessageHandler {
         gameIDTemp[0] = gameID;
         try{
             JoinGameResult result = serverFacade.serverJoinGame(request,auth);
-            webSocketFacade.joinGame(gameID,auth,user[0],playerColor);
+            webSocketFacade.joinGame(gameID,auth,user[0]);
             gamePlayMode[0] = true;
         }
         catch (IOException e) {
@@ -232,7 +232,7 @@ public class Main implements ServerMessageHandler {
         gameIDTemp[0] = gameID;
         try{
             JoinGameResult result = serverFacade.serverJoinGame(request,auth);
-            webSocketFacade.joinGame(gameID,auth,user[0],"");
+            webSocketFacade.joinObserver(gameID,auth);
             System.out.println("Game: " + result.gameID() + " has been joined as an observer");
             //chessBoard.printChessBoard(game.getBoard(),validMoves);
             gamePlayMode[0] = true;
@@ -244,19 +244,34 @@ public class Main implements ServerMessageHandler {
         }
     }
 
-    public void makeMove(ChessGame game, Scanner scanner, String[] auth) throws InvalidMoveException, IOException {
-        System.out.println("Starting Row?");
-        int startRow = scanner.nextInt();
-        System.out.println("Starting Column?");
-        int startCol = scanner.nextInt();
-        System.out.println("Ending Row");
-        int endRow = scanner.nextInt();
-        System.out.println("Ending Column");
-        int endCol = scanner.nextInt();
-        ChessPosition startPosition = new ChessPosition(startRow,startCol);
-        ChessPosition endPosition = new ChessPosition(endRow,endCol);
+    public void resign(ChessGame game, String[] auth, boolean[] gamePlayMode) throws IOException {
+        webSocketFacade.resign(gameIDTemp[0],auth);
+        gamePlayMode[0] = false;
 
-        ChessMove newMove = new ChessMove(startPosition,endPosition,null);
+    }
+    public void makeMove(ChessGame game, Scanner scanner, String[] auth) throws InvalidMoveException, IOException {
+        Scanner scanner1 = new Scanner(System.in);
+        String startPosition;
+        String endPosition;
+        System.out.println("Starting Position? (letter-number");
+        startPosition = scanner1.nextLine();
+        System.out.println("Ending Position? (letter-number)");
+        endPosition = scanner1.nextLine();
+        int startCol =0;
+        int endCol = 0;
+        switch (startPosition.substring(0,1)){
+            case "a"  -> startCol = 1;case "b" -> startCol = 2;case "c" -> startCol = 3;case "d" -> startCol = 4;
+            case "e" -> startCol = 5;case "f" -> startCol = 6;case "g" -> startCol = 7;case "h" -> startCol = 8;
+        }
+        switch (endPosition.substring(0,1)){
+            case "a" -> endCol = 1;case "b" -> endCol = 2;case "c" -> endCol = 3;case "d" -> endCol = 4;
+            case "e" -> endCol = 5;case "f" -> endCol = 6;case "g" -> endCol = 7;case "h" -> endCol = 8;
+        }
+
+        ChessPosition startChessPosition = new ChessPosition(Integer.parseInt(startPosition.substring(1, 2)),startCol);
+        ChessPosition endChessPosition = new ChessPosition(Integer.parseInt(endPosition.substring(1,2)),endCol);
+
+        ChessMove newMove = new ChessMove(startChessPosition,endChessPosition,null);
         webSocketFacade.makeMove(gameIDTemp[0],auth,newMove);
     }
     private void handleListGamesAction(Scanner scanner, String[] auth) {
@@ -293,19 +308,25 @@ public class Main implements ServerMessageHandler {
 
     }
 
-    public void redrawChessBoard(ChessGame game){
+    public void redrawChessBoard(){
         boolean[][] validMoves = validMoveInit();
-        chessBoard.printChessBoard(game.getBoard(),validMoves);
+        chessBoard.printChessBoard(this.game.getBoard(),validMoves);
     }
     public void highlightLegalMoves(ChessGame game, Scanner scanner){
-        System.out.println("What Row?");
-        int row = scanner.nextInt();
-        System.out.println("What Column?");
-        int col = scanner.nextInt();
-        ChessPosition position = new ChessPosition(row,col);
+        Scanner scanner1 = new Scanner(System.in);
+        String startPosition;
+        System.out.println("Starting Position? (letter-number");
+        startPosition = scanner1.nextLine();
+        int startCol =0;
+        switch (startPosition.substring(0,1)){
+            case "a"  -> startCol = 1;case "b" -> startCol = 2;case "c" -> startCol = 3;case "d" -> startCol = 4;
+            case "e" -> startCol = 5;case "f" -> startCol = 6;case "g" -> startCol = 7;case "h" -> startCol = 8;
+        }
+
+        ChessPosition startChessPosition = new ChessPosition(Integer.parseInt(startPosition.substring(1, 2)),startCol);
         boolean[][] validMoves = validMoveInit();
 
-        Collection<ChessMove> moves = game.validMoves(position);
+        Collection<ChessMove> moves = game.validMoves(startChessPosition);
 
         for (ChessMove move : moves){
             validMoves[move.getEndPosition().getRow()][move.getEndPosition().getColumn()] = true;
@@ -341,16 +362,8 @@ public class Main implements ServerMessageHandler {
     }
 
     public void leave(ChessGame game, Scanner scanner, String[] auth, boolean[] gamePlayMode) throws ResponseException, IOException {
-        WebSocketFacade webSocketFacade = new WebSocketFacade(serverUrl, new ServerMessageHandler() {
-            @Override
-            public void notify(String serverMessage) {
-                NotificationMessage message = new Gson().fromJson(serverMessage, NotificationMessage.class);
-                displayNotification(message.getNotificationMessage());
-
-            }
-        });
-        int gameID = scanner.nextInt();
-        webSocketFacade.leave(gameID,auth);
+        Scanner scanner1 = new Scanner(System.in);
+        webSocketFacade.leave(gameIDTemp[0],auth);
         gamePlayMode[0] = false;
     }
 

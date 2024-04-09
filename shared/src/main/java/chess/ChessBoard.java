@@ -10,7 +10,7 @@ import java.util.Arrays;
  */
 public class ChessBoard {
 
-    ChessPiece [][] ChessBoard = new ChessPiece[9][9];
+    ChessPiece [][] chessBoard = new ChessPiece[9][9];
     public ChessBoard() {
 
     }
@@ -22,15 +22,15 @@ public class ChessBoard {
      * @param piece    the piece to add
      */
     public void addPiece(ChessPosition position, ChessPiece piece) {
-        this.ChessBoard[position.getRow()][position.getColumn()] = piece;
+        this.chessBoard[position.getRow()][position.getColumn()] = piece;
     }
 
     public void removePiece(ChessPosition position) {
-        this.ChessBoard[position.getRow()][position.getColumn()] = null;
+        this.chessBoard[position.getRow()][position.getColumn()] = null;
     }
 
     public ChessPiece[] getRow(int rowNum){
-        return this.ChessBoard[rowNum];
+        return this.chessBoard[rowNum];
     }
 
 
@@ -43,7 +43,7 @@ public class ChessBoard {
      * position
      */
     public ChessPiece getPiece(ChessPosition position) {
-        return this.ChessBoard[position.getRow()][position.getColumn()];
+        return this.chessBoard[position.getRow()][position.getColumn()];
     }
 
     /**
@@ -103,12 +103,12 @@ public class ChessBoard {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         ChessBoard that = (ChessBoard) o;
-        return Arrays.deepEquals(ChessBoard, that.ChessBoard);
+        return Arrays.deepEquals(chessBoard, that.chessBoard);
     }
 
     @Override
     public int hashCode() {
-        return Arrays.deepHashCode(ChessBoard);
+        return Arrays.deepHashCode(chessBoard);
     }
 }
 

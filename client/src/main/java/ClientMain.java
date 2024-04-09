@@ -10,7 +10,7 @@ public class ClientMain {
             serverUrl = args[0];
         }
 
-        new Main(serverUrl).Run();
+        new Main(serverUrl).run();
     }
 
 }

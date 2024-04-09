@@ -76,7 +76,7 @@ public class ClientCommunicator {
 
             }
             else if (http.getResponseCode() == 403){
-                throw new ResponseException(403,"User already exists");
+                return null;//throw new ResponseException(403,"User already exists");
             }
             else if (http.getResponseCode() == 400){
                 throw new ResponseException(400, "bad request");
