@@ -9,10 +9,6 @@ public class MemoryUserDAO implements UserDAO {
 
     private static ArrayList<UserData> users = new ArrayList<>();
 
-    public ArrayList<UserData> getUsers(){
-        return this.users;
-    }
-
     @Override
     public void createUser(UserData player){
         users.add(player);
