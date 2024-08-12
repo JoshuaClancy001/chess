@@ -139,6 +139,8 @@ public class WebSocketHandler {
             if (game.getTeamTurn() == null){
                 ServerMessage errorMessage = new ErrorMessage("Invalid Move: Game is Over");
                 conn.send(new Gson().toJson(errorMessage));
+                ServerMessage gameMessage = new LoadGameMessage(game);
+                //conn.send(new Gson().toJson(gameMessage));
                 return;}
             ChessGame.TeamColor color = ChessGame.TeamColor.WHITE;
             ChessGame.TeamColor enemyColor = ChessGame.TeamColor.WHITE;
@@ -190,6 +192,7 @@ public class WebSocketHandler {
             if (isValid) {
                 try {
                     game.makeMove(move);
+                    gamesDatabase.updateChessGame(gameID, game);
                     if (game.isInCheckmate(enemyColor)){
                         ServerMessage endGameMessage = new NotificationMessage("CheckMate You've Won\n");
                         ServerMessage endGameMessageOthers = new NotificationMessage("CheckMate " + authData.username() + " has won the game");
@@ -199,13 +202,12 @@ public class WebSocketHandler {
                         gamesDatabase.updateChessGame(gameID,game);
                         return;
                     }
-                    if (game.isInCheck(color)){
-                        ServerMessage errorMessage = new ErrorMessage("You are still in Check");
-                        conn.send(new Gson().toJson(errorMessage));
+                    if (game.isInCheck(enemyColor)){
+                        ServerMessage errorMessage = new NotificationMessage("in Check");
+                        connections.broadcastOthers(gameID,"",errorMessage);
                         game.undoMove(move,game.getBoard().getPiece(move.getEndPosition()));
                         return;
                     }
-                    gamesDatabase.updateChessGame(gameID, game);
                     ServerMessage message = new LoadGameMessage(game);
                     ServerMessage notiMessage = new NotificationMessage(authData.username() + " Just Moved");
                     connections.broadcastOthers(gameID, "fake", message);
